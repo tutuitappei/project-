@@ -17,7 +17,6 @@ NetworkMode Gest::GetMode(void)
 
 bool Gest::ConnectHost(IPDATA hostip)
 {
-	_nethandle = ConnectNetWork();
-	_active = true;
+	_nethandle = ConnectNetWork(hostip);
 	return _active;
 }

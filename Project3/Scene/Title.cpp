@@ -1,6 +1,7 @@
 #include <iostream>
 #include<DxLib.h>
 #include <string>
+#include<sstream>
 #include "Title.h"
 #include"../Vector2.h"
 #include "SceneManager.h"
@@ -27,8 +28,12 @@ Title::Title()
 		if (mode == 1)
 		{
 			lpNetwark.SetNetWorkMode(NetworkMode::GEST);
+			std::string ipa;
 			std::string ip;
 			std::cin >> ip;
+			std::stringstream ipb = static_cast<std::stringstream>(ip);
+			std::getline(ipb,ipa,'.');
+			hostIp.d1 = ipa.;
 
 			lpNetwark.ConnectHost(hostIp);
 		}
