@@ -30,6 +30,7 @@ Title::Title()
 		if (mode == 0)
 		{
 			lpNetwark.SetNetWorkMode(NetworkMode::HOST);
+			lpNetwark.ChecLink();
 		}
 		if (mode == 1)
 		{
@@ -57,6 +58,7 @@ Title::Title()
 			lpNetwark.SetNetWorkMode(NetworkMode::OFF);
 		}
 	} while (mode < 0 || mode > 2);
+	TRACE("%d‚Å‚·\n", lpNetwark.GetActive());
 	
 }
 
@@ -114,20 +116,60 @@ void Title::Updata(void)
 	//	}
 
 	//}
-	if (GetJoypadInputState(DX_INPUT_KEY_PAD1)& PAD_INPUT_DOWN)
+	int lendx = 0;
+	int lengy = 0;
+	std::pair<int, int> data;
+	data.first = 0;
+	data.second = 0;
+	if (lpNetwark.GetNetWorkMode() == NetworkMode::HOST)
 	{
-		imagepos.y += 10;
+		if (GetNetWorkDataLength(lpNetwark.GetNetHandle()) >= sizeof(data))
+		{
+			NetWorkRecv(lpNetwark.GetNetHandle(), &data, sizeof(data));
+			imagepos.x += data.first;
+			imagepos.y += data.second;
+		}
 	}
-	if (GetJoypadInputState(DX_INPUT_KEY_PAD1) & PAD_INPUT_UP)
+	else if(lpNetwark.GetNetWorkMode() == NetworkMode::GEST)
 	{
-		imagepos.y -= 10;
+		if (GetJoypadInputState(DX_INPUT_KEY_PAD1) & PAD_INPUT_DOWN)
+		{
+			lengy = 10;
+		}
+		if (GetJoypadInputState(DX_INPUT_KEY_PAD1) & PAD_INPUT_UP)
+		{
+			lengy = -10;
+		}
+		if (GetJoypadInputState(DX_INPUT_KEY_PAD1) & PAD_INPUT_LEFT)
+		{
+			lendx = -10;
+		}
+		if (GetJoypadInputState(DX_INPUT_KEY_PAD1) & PAD_INPUT_RIGHT)
+		{
+			lendx = 10;
+		}
+		data.first = lendx;
+		data.second = lengy;
+		NetWorkSend(lpNetwark.GetNetHandle(), &data, sizeof(data));
 	}
-	if (GetJoypadInputState(DX_INPUT_KEY_PAD1) & PAD_INPUT_LEFT)
+	else if (lpNetwark.GetNetWorkMode() == NetworkMode::OFF)
 	{
-		imagepos.x -= 10;
+		if (GetJoypadInputState(DX_INPUT_KEY_PAD1) & PAD_INPUT_DOWN)
+		{
+			imagepos.y += 10;
+		}
+		if (GetJoypadInputState(DX_INPUT_KEY_PAD1) & PAD_INPUT_UP)
+		{
+			imagepos.y -= 10;
+		}
+		if (GetJoypadInputState(DX_INPUT_KEY_PAD1) & PAD_INPUT_LEFT)
+		{
+			imagepos.x -= 10;
+		}
+		if (GetJoypadInputState(DX_INPUT_KEY_PAD1) & PAD_INPUT_RIGHT)
+		{
+			imagepos.x += 10;
+		}
 	}
-	if (GetJoypadInputState(DX_INPUT_KEY_PAD1) & PAD_INPUT_RIGHT)
-	{
-		imagepos.x += 10;
-	}
+	
 }

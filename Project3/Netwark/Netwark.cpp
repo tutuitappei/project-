@@ -38,6 +38,11 @@ NetworkMode Netwark::GetNetWorkMode(void)
 	return _state->GetMode();
 }
 
+int Netwark::GetNetHandle(void)
+{
+	return _state->GetHandle();
+}
+
 bool Netwark::GetActive(void)
 {
 	return _state->GetActive();
@@ -45,7 +50,12 @@ bool Netwark::GetActive(void)
 
 bool Netwark::ConnectHost(IPDATA hostip)
 {
-	return false;
+	return _state->ConnectHost(hostip);
+}
+
+bool Netwark::ChecLink(void)
+{
+	return _state->CheckNetwork();
 }
 
 Netwark::Netwark()

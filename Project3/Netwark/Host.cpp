@@ -14,3 +14,17 @@ NetworkMode Host::GetMode(void)
 {
 	return NetworkMode(NetworkMode::HOST);
 }
+
+bool Host::CheckNetwork(void)
+{
+	while (!ProcessMessage())
+	{
+		_nethandle = GetNewAcceptNetWork();
+		if (_nethandle != -1)
+		{
+			break;
+		}
+	}
+
+	return false;
+}

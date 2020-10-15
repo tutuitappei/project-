@@ -8,5 +8,6 @@ public:
 	~Host();
 private:
 	NetworkMode GetMode(void) override;
+	bool CheckNetwork(void) override;
 };
 

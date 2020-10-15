@@ -20,9 +20,10 @@ public:
 	IPDATA GetIp(void);
 	bool SetNetWorkMode(NetworkMode mode);
 	NetworkMode GetNetWorkMode(void);
-
+	int GetNetHandle(void);
 	bool GetActive(void);
 	bool ConnectHost(IPDATA hostip);
+	bool ChecLink(void);
 private:
 	Netwark();
 	~Netwark();
