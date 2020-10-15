@@ -17,6 +17,15 @@ NetworkMode Gest::GetMode(void)
 
 bool Gest::ConnectHost(IPDATA hostip)
 {
-	_nethandle = ConnectNetWork(hostip);
+	_nethandle = ConnectNetWork(hostip, _portnum);
+	if (_nethandle >= 0)
+	{
+		_active = true;
+
+	}
+	else
+	{
+		_active = false;
+	}
 	return _active;
 }

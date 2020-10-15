@@ -152,6 +152,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="input\Pad.cpp" />
     <ClCompile Include="Netwark\Gest.cpp" />
     <ClCompile Include="Netwark\Host.cpp" />
     <ClCompile Include="main.cpp" />
@@ -165,6 +166,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="details\Vector2.h" />
+    <ClInclude Include="input\Controller.h" />
+    <ClInclude Include="input\Inputid.h" />
+    <ClInclude Include="input\Pad.h" />
     <ClInclude Include="Netwark\Gest.h" />
     <ClInclude Include="Netwark\Host.h" />
     <ClInclude Include="Netwark\Netwark.h" />
