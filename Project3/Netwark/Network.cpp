@@ -48,6 +48,11 @@ bool Netwark::GetActive(void)
 	return _state->GetActive();
 }
 
+bool Netwark::GetRevStanby(void)
+{
+	return false;
+}
+
 void Netwark::SendStanby(void)
 {
 

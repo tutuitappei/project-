@@ -34,6 +34,7 @@ public:
 	NetworkMode GetNetWorkMode(void);
 	int GetNetHandle(void);
 	bool GetActive(void);
+	bool GetRevStanby(void);
 	void SendStanby(void);
 	void SendStart(void);
 	ActivState GetActiveST(void);
