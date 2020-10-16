@@ -156,7 +156,7 @@
     <ClCompile Include="Netwark\Gest.cpp" />
     <ClCompile Include="Netwark\Host.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Netwark\Netwark.cpp" />
+    <ClCompile Include="Netwark\Network.cpp" />
     <ClCompile Include="Netwark\NetWorkst.cpp" />
     <ClCompile Include="Scene\BaseScene.cpp" />
     <ClCompile Include="Scene\Scenemanager.cpp" />
@@ -171,7 +171,7 @@
     <ClInclude Include="input\Pad.h" />
     <ClInclude Include="Netwark\Gest.h" />
     <ClInclude Include="Netwark\Host.h" />
-    <ClInclude Include="Netwark\Netwark.h" />
+    <ClInclude Include="Netwark\Network.h" />
     <ClInclude Include="Netwark\NetWorkst.h" />
     <ClInclude Include="Scene\BaseScene.h" />
     <ClInclude Include="Scene\Scenemanager.h" />

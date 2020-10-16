@@ -9,6 +9,6 @@ public:
 private:
 	NetworkMode GetMode(void)override;
 
-	bool ConnectHost(IPDATA hostip)override;
+	ActivState ConnectHost(IPDATA hostip)override;
 };
 

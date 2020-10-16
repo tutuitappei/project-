@@ -5,7 +5,7 @@
 #include "Title.h"
 #include"../Vector2.h"
 #include "SceneManager.h"
-#include"../Netwark/Netwark.h"
+#include"../Netwark/Network.h"
 #include"../_debug/_DebugConOut.h"
 #include"../input/Pad.h"
 
@@ -16,6 +16,8 @@ Title::Title()
 	Screensizey = 0;
 	imagepos.x = 0;
 	imagepos.y = 0;
+
+
 
 	Init();
 
@@ -55,6 +57,7 @@ Title::Title()
 		}
 		if (mode == 2)
 		{
+
 			lpNetwark.SetNetWorkMode(NetworkMode::OFF);
 		}
 	} while (mode < 0 || mode > 2);

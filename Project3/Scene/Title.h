@@ -3,6 +3,14 @@
 #include"../Vector2.h"
 #include"../input/Controller.h"
 
+enum class Updatamode
+{
+	SetNetWork,
+	SetHostIP,
+	StartInit,
+	Play
+};
+
 class Title:
 	public BaseScene
 {

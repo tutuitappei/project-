@@ -3,7 +3,7 @@
 
 Gest::Gest()
 {
-	_active = false;
+	_act = ActivState::Non;
 }
 
 Gest::~Gest()
@@ -15,17 +15,15 @@ NetworkMode Gest::GetMode(void)
 	return NetworkMode(NetworkMode::GEST);
 }
 
-bool Gest::ConnectHost(IPDATA hostip)
+ActivState Gest::ConnectHost(IPDATA hostip)
 {
 	_nethandle = ConnectNetWork(hostip, _portnum);
 	if (_nethandle >= 0)
 	{
-		_active = true;
+		_act = ActivState::Init;
 
 	}
-	else
-	{
-		_active = false;
-	}
-	return _active;
+
+
+	return _act;
 }
