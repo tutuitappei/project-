@@ -14,12 +14,6 @@ Title::Title()
 {
 	Screensizex = 0;
 	Screensizey = 0;
-	imagepos.x = 0;
-	imagepos.y = 0;
-
-
-
-	Init();
 
 	int mode;
 	auto ipdata = lpNetwark.GetIp();
@@ -27,7 +21,9 @@ Title::Title()
 	TRACE("自分のIPアドレス.%d.%d.%d.%d\n",ipdata.d1,ipdata.d2,ipdata.d3,ipdata.d4);
 	do
 	{
-		TRACE("モード選択…0:ホスト,1:ゲスト,2:オフライン\n");
+		TRACE("モード選択…\n0:ホスト\n1:ゲスト\n");
+		//TRACE("2:ゲスト(%d.%d.%d.%d)\n3:オフライン\n",);
+		TRACE("\n3:オフライン\n");
 		std::cin >> mode;
 		if (mode == 0)
 		{
@@ -55,13 +51,40 @@ Title::Title()
 
 			lpNetwark.ConnectHost(hostIp);
 		}
-		if (mode == 2)
+		//if ()
+		//{
+		//	if (mode == 2)
+		//	{
+		//		lpNetwark.SetNetWorkMode(NetworkMode::GEST);
+		//		std::string ipfn;
+		//		std::string ip;
+		//		std::cin >> ip;
+		//		std::stringstream ipnum(ip);
+
+		//		auto GetIpNum = [&]() {
+		//			std::getline(ipnum, ipfn, '.');
+		//			return atoi(ipfn.c_str());
+		//		};
+
+
+		//		hostIp.d1 = GetIpNum();
+		//		hostIp.d2 = GetIpNum();
+		//		hostIp.d3 = GetIpNum();
+		//		hostIp.d4 = GetIpNum();
+
+		//		lpNetwark.ConnectHost(hostIp);
+		//	}
+		//}
+		if (mode == 3)
 		{
 
 			lpNetwark.SetNetWorkMode(NetworkMode::OFF);
 		}
-	} while (mode < 0 || mode > 2);
+	} while (mode < 0 || mode > 3);
 	TRACE("%dです\n", lpNetwark.GetActive());
+
+
+	Init();
 	
 }
 
@@ -79,7 +102,36 @@ void Title::Init(void)
 {
 	_image = LoadGraph("image/images.png");
 
+	imagepos.x = 0;
+	imagepos.y = 0;
+	std::pair<int, int> data;
+	data.first = 0;
+	data.second = 0;
+	if (lpNetwark.GetNetWorkMode() == NetworkMode::HOST)
+	{
 
+		data.first = imagepos.x;
+		data.second = imagepos.y;
+		NetWorkSend(lpNetwark.GetNetHandle(), &data, sizeof(data));
+
+	}
+	else if (lpNetwark.GetNetWorkMode() == NetworkMode::GEST)
+	{
+		if (GetNetWorkDataLength(lpNetwark.GetNetHandle()) >= sizeof(data))
+		{
+			NetWorkRecv(lpNetwark.GetNetHandle(), &data, sizeof(data));
+			imagepos.x = data.first;
+			imagepos.y = data.second;
+		}
+
+	}
+	else
+	{
+		if (lpNetwark.GetNetWorkMode() != NetworkMode::OFF)
+		{
+			TRACE("初期化中に異常が発生しました\n");
+		}
+	}
 	controller = std::make_unique<Pad>();
 	controller->Setup(_id);
 }
@@ -126,11 +178,18 @@ void Title::Updata(void)
 	data.second = 0;
 	if (lpNetwark.GetNetWorkMode() == NetworkMode::HOST)
 	{
-		if (GetNetWorkDataLength(lpNetwark.GetNetHandle()) >= sizeof(data))
+		if (!lpNetwark.CheckLost())
 		{
-			NetWorkRecv(lpNetwark.GetNetHandle(), &data, sizeof(data));
-			imagepos.x += data.first;
-			imagepos.y += data.second;
+			if (GetNetWorkDataLength(lpNetwark.GetNetHandle()) >= sizeof(data))
+			{
+				NetWorkRecv(lpNetwark.GetNetHandle(), &data, sizeof(data));
+				imagepos.x += data.first;
+				imagepos.y += data.second;
+			}
+		}
+		else
+		{
+			lpNetwark.ChecLink();
 		}
 	}
 	else if(lpNetwark.GetNetWorkMode() == NetworkMode::GEST)
@@ -173,6 +232,10 @@ void Title::Updata(void)
 		{
 			imagepos.x += 10;
 		}
+	}
+	else
+	{
+		TRACE("ゲーム中に異常が発生しました\n");
 	}
 	
 }

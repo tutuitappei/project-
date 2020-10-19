@@ -78,6 +78,11 @@ bool Netwark::ChecLink(void)
 	return _state->CheckNetwork();
 }
 
+bool Netwark::CheckLost(void)
+{
+	return _state->CheckLostNetwork();
+}
+
 Netwark::Netwark()
 {
 }

@@ -46,3 +46,8 @@ bool NetWorkst::CheckNetwork(void)
 {
 	return false;
 }
+
+bool NetWorkst::CheckLostNetwork(void)
+{
+	return false;
+}

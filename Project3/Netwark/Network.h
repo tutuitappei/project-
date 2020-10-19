@@ -40,6 +40,7 @@ public:
 	ActivState GetActiveST(void);
 	ActivState ConnectHost(IPDATA hostip);
 	bool ChecLink(void);
+	bool CheckLost(void);
 
 	//MesData _mesdata;
 private:

@@ -27,7 +27,6 @@ private:
 	int Screensizex;
 	int Screensizey;
 
-
 	int _id = 0;
 
 	Vector2 imagepos;

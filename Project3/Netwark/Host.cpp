@@ -33,3 +33,17 @@ bool Host::CheckNetwork(void)
 	}
 	return false;
 }
+
+bool Host::CheckLostNetwork(void)
+{
+	_losthandle = GetLostNetWork();
+
+	if (_losthandle == _nethandle)
+	{
+		_nethandle = 0;
+		_active = !PreparationListenNetWork(_portnum);
+		_act = ActivState::Wait;
+		return true;
+	}
+	return false;
+}

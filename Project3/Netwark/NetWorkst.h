@@ -28,11 +28,13 @@ public:
 	ActivState GetActivest(void);
 	virtual ActivState ConnectHost(IPDATA hostip);
 	virtual bool CheckNetwork(void);
+	virtual bool CheckLostNetwork(void);
 protected:
 	const int _portnum = 8086;
 	bool _active;
 	ActivState _act;
 
 	int _nethandle = 0;
+	int _losthandle = 0;
 };
 
