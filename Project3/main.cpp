@@ -2,7 +2,7 @@
 #include"Scene/Scenemanager.h"
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
-{		SetGraphMode(960, 480, 16);								// 640*480ﾄﾞｯﾄ、65536色ﾓｰﾄﾞに設定
+{		SetGraphMode(896, 640, 16);								// 640*480ﾄﾞｯﾄ、65536色ﾓｰﾄﾞに設定
 		ChangeWindowMode(true);									// true:window false:ﾌﾙｽｸﾘｰﾝ
 
 		SetWindowText("1916024");

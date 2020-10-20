@@ -110,6 +110,7 @@ void Title::Init(void)
 	if (lpNetwark.GetNetWorkMode() == NetworkMode::HOST)
 	{
 
+
 		data.first = imagepos.x;
 		data.second = imagepos.y;
 		NetWorkSend(lpNetwark.GetNetHandle(), &data, sizeof(data));

@@ -1,7 +1,9 @@
 #pragma once
+#include<map>
 #include "BaseScene.h"
 #include"../Vector2.h"
 #include"../input/Controller.h"
+#include"../Map.h"
 
 enum class Updatamode
 {
@@ -10,6 +12,7 @@ enum class Updatamode
 	StartInit,
 	Play
 };
+
 
 class Title:
 	public BaseScene
@@ -26,6 +29,7 @@ private:
 
 	int Screensizex;
 	int Screensizey;
+
 
 	int _id = 0;
 
