@@ -23,17 +23,20 @@ public:
 	Map();
 	~Map();
 
-	void SetMapData(void);
+	void SetMapInit(void);
 	MapData ReturnData(void);
 	
 private:
 	void Init(void);
 	TMX::Parser _tmx;
-	int _mapchip;
 	Layer _maplayer;
 	MapData _mapData;
 
+	bool DrawMap(Layer layer);
+	MapData SetMapData();
 
+	int _mapchipdata[12];
+	int _mapchip;
 	Vector2 _mapPos;
 };
 

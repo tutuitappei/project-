@@ -33,7 +33,7 @@ Map::~Map()
 {
 }
 
-void Map::SetMapData()
+void Map::SetMapInit()
 {
 	_tmx.load("map/untitled.tmx");
 }
@@ -45,8 +45,17 @@ MapData Map::ReturnData(void)
 
 void Map::Init(void)
 {
-	//_mapData.insert(std::make_pair(Layer::BG, ));
-	//_mapData.insert(std::make_pair(Layer::Item, ));
-	//_mapData.insert(std::make_pair(Layer::Obj, ));
-	//_mapData.insert(std::make_pair(Layer::Char, ));
+	LoadDivGraph("image/map.png",12,4,3,_mapchip,_mapchip,_mapchipdata);
+}
+
+bool Map::DrawMap(Layer layer)
+{
+	_maplayer = layer;
+	//DrawGraph();
+	return true;
+}
+
+MapData Map::SetMapData()
+{
+	return MapData();
 }
