@@ -51,11 +51,32 @@ void Map::Init(void)
 bool Map::DrawMap(Layer layer)
 {
 	_maplayer = layer;
-	//DrawGraph();
+	//for (auto& _num : _mapchipdata)
+//{
+//}
 	return true;
 }
 
 MapData Map::SetMapData()
 {
+	//lpNetwark.SetNetWorkMode(NetworkMode::GEST);
+	//std::string ipfn;
+	//std::string ip;
+	//std::cin >> ip;
+	//std::stringstream ipnum(ip);
+
+	//auto GetIpNum = [&]() {
+	//	std::getline(ipnum, ipfn, '.');
+	//	return atoi(ipfn.c_str());
+	//};
+
+
+	//hostIp.d1 = GetIpNum();
+	//hostIp.d2 = GetIpNum();
+	//hostIp.d3 = GetIpNum();
+	//hostIp.d4 = GetIpNum();
+
+	//lpNetwark.ConnectHost(hostIp);
+
 	return MapData();
 }

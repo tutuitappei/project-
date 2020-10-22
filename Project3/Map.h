@@ -25,14 +25,12 @@ public:
 
 	void SetMapInit(void);
 	MapData ReturnData(void);
-	
+	bool DrawMap(Layer layer);
 private:
 	void Init(void);
 	TMX::Parser _tmx;
 	Layer _maplayer;
 	MapData _mapData;
-
-	bool DrawMap(Layer layer);
 	MapData SetMapData();
 
 	int _mapchipdata[12];

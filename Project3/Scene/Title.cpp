@@ -98,6 +98,10 @@ void Title::Draw(void)
 {
 	GetDrawScreenSize(&Screensizex,&Screensizey);
 	DrawGraph(imagepos.x,imagepos.y,_image,true);
+	_map.DrawMap(Layer::Bg);
+	_map.DrawMap(Layer::Item);
+	_map.DrawMap(Layer::Obj);
+	_map.DrawMap(Layer::Char);
 }
 
 void Title::Init(void)
