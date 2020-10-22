@@ -35,5 +35,7 @@ private:
 
 	Vector2 imagepos;
 	int _image;
+
+	Map _map;
 };
 

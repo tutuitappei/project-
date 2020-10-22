@@ -152,6 +152,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="include\src\TMXParser.cpp" />
+    <ClCompile Include="include\src\TSXParser.cpp" />
     <ClCompile Include="input\Pad.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="Netwark\Gest.cpp" />
@@ -167,6 +169,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="details\Vector2.h" />
+    <ClInclude Include="include\rapidxml\rapidxml.hpp" />
+    <ClInclude Include="include\rapidxml\rapidxml_iterators.hpp" />
+    <ClInclude Include="include\rapidxml\rapidxml_print.hpp" />
+    <ClInclude Include="include\rapidxml\rapidxml_utils.hpp" />
+    <ClInclude Include="include\TMXParser.h" />
+    <ClInclude Include="include\TSXParser.h" />
     <ClInclude Include="input\Controller.h" />
     <ClInclude Include="input\Inputid.h" />
     <ClInclude Include="input\Pad.h" />
@@ -185,6 +193,9 @@
     <ClInclude Include="Vector2.h" />
     <ClInclude Include="_debug\_DebugConOut.h" />
     <ClInclude Include="_debug\_DebugDispOut.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="include\rapidxml\manual.html" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

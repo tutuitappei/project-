@@ -10,7 +10,7 @@ namespace rapid = rapidxml;
 
 Map::Map()
 {
-	rapid::xml_document<> doc;
+	/*rapid::xml_document<> doc;
 	rapid::file<> input("./map/untitled.tmx");
 	doc.parse<0>(input.data());
 
@@ -19,7 +19,7 @@ Map::Map()
 		child != nullptr;
 		child = child->next_sibling()) {
 		cout << child->name() << " : [" << child->value() << "]\n";
-	}
+	}*/
 
 
 	_maplayer = Layer::Bg;
@@ -33,9 +33,14 @@ Map::~Map()
 {
 }
 
-int Map::SetMapData(Layer layer)
+void Map::SetMapData()
 {
-	return 0;
+	_tmx.load("map/untitled.tmx");
+}
+
+MapData Map::ReturnData(void)
+{
+	return _mapData;
 }
 
 void Map::Init(void)

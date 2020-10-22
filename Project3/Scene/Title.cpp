@@ -15,6 +15,8 @@ Title::Title()
 	Screensizex = 0;
 	Screensizey = 0;
 
+	_map.SetMapData();
+
 	int mode;
 	auto ipdata = lpNetwark.GetIp();
 	IPDATA hostIp;
