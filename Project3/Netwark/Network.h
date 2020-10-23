@@ -1,6 +1,7 @@
 #pragma once
 #include<DxLib.h>
 #include<memory>
+#include<vector>
 #include"NetWorkst.h"
 
 #define lpNetwark Netwark::GetInstance()
@@ -9,13 +10,18 @@ enum class MesType
 {
 	STANBY,
 	GAME_S,
-	POS
+	TMX_SIZE,
+	TMX_DATA,
+	POS,
+	NON
 };
 struct MesData
 {
 	MesType type;
 	int data[2];
 };
+
+using TmxBox = std::vector<char>;
 
 class Netwark
 {
@@ -34,7 +40,8 @@ public:
 	NetworkMode GetNetWorkMode(void);
 	int GetNetHandle(void);
 	bool GetActive(void);
-	bool GetRevStanby(void);
+	void GetRevStanby(void);
+	void GetRevStart(void);
 	void SendStanby(void);
 	void SendStart(void);
 	ActivState GetActiveST(void);
@@ -42,10 +49,15 @@ public:
 	bool ChecLink(void);
 	bool CheckLost(void);
 
-	//MesData _mesdata;
+	void TmxChat(void);
+	void TmxCheck(const char* filename);
+	void TmxDataSend(void);
+	void TmxDataRev(void);
 private:
 	Netwark();
 	~Netwark();
+
+	TmxBox _box;
 
 	std::unique_ptr <NetWorkst> _state;
 

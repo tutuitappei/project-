@@ -1,4 +1,7 @@
 #include<DxLib.h>
+#include<iostream>
+#include <fstream>
+#include<string>
 #include "Network.h"
 #include"../_debug/_DebugConOut.h"
 #include"Host.h"
@@ -48,19 +51,43 @@ bool Netwark::GetActive(void)
 	return _state->GetActive();
 }
 
-bool Netwark::GetRevStanby(void)
+void Netwark::GetRevStanby(void)
 {
-	return false;
+	MesData _mesd;
+	_mesd.type = MesType::NON;
+	while (_mesd.type != MesType::STANBY)
+	{
+		NetWorkRecv(lpNetwark.GetNetHandle(), &_mesd, sizeof(_mesd));
+	}
+}
+
+void Netwark::GetRevStart(void)
+{
+	MesData _mesd;
+	_mesd.type = MesType::STANBY;
+	while (_mesd.type != MesType::GAME_S)
+	{
+		NetWorkRecv(lpNetwark.GetNetHandle(), &_mesd, sizeof(_mesd));
+	}
+	TRACE("ゲーム開始合図の受信\n");
 }
 
 void Netwark::SendStanby(void)
 {
-
+	MesData _mesd;
+	_mesd.data[0] = 0;
+	_mesd.data[1] = 0;
+	_mesd.type = MesType::STANBY;
+	NetWorkSend(lpNetwark.GetNetHandle(), &_mesd, sizeof(_mesd));
 }
 
 void Netwark::SendStart(void)
 {
-
+	MesData _mesd;
+	_mesd.data[0] = 0;
+	_mesd.data[1] = 0;
+	_mesd.type = MesType::GAME_S;
+	NetWorkSend(lpNetwark.GetNetHandle(), &_mesd, sizeof(_mesd));
 }
 
 ActivState Netwark::GetActiveST(void)
@@ -81,6 +108,62 @@ bool Netwark::ChecLink(void)
 bool Netwark::CheckLost(void)
 {
 	return _state->CheckLostNetwork();
+}
+
+void Netwark::TmxChat(void)
+{
+	MesData _mesd;
+	_mesd.type = MesType::STANBY;
+	_mesd.data[0] = 0;
+	_mesd.data[1] = 0;
+	while (_mesd.type != MesType::TMX_SIZE)
+	{
+		if (GetNetWorkDataLength(lpNetwark.GetNetHandle()) >= sizeof(_mesd))
+		{
+			NetWorkRecv(lpNetwark.GetNetHandle(), &_mesd, sizeof(_mesd));
+			_box.resize(_mesd.data[0]);
+			TRACE("受け取ったサイズは%d\n", _mesd.data[0]);
+		}
+	}
+
+}
+
+void Netwark::TmxCheck(const char* filename)
+{
+	MesData _mesd;
+
+
+	std::ifstream fs(filename);
+	fs.seekg(0, std::ios_base::end);
+	_mesd.type = MesType::TMX_SIZE;
+	_mesd.data[0] = fs.tellg();
+	TRACE("%d\n", _mesd.data[0]);
+	NetWorkSend(lpNetwark.GetNetHandle(), &_mesd, sizeof(_mesd));
+}
+
+void Netwark::TmxDataSend(void)
+{
+	MesData _mesd;
+	_mesd.type = MesType::TMX_DATA;
+	_mesd.data[0] = 0;
+	_mesd.data[1];
+	//while ()
+	//{
+		NetWorkSend(lpNetwark.GetNetHandle(), &_mesd, sizeof(_mesd));
+		_mesd.data[0]++;
+	//}
+}
+
+void Netwark::TmxDataRev(void)
+{
+	MesData _mesd;
+	_mesd.type = MesType::TMX_SIZE;
+	_mesd.data[0] = 0;
+	_mesd.data[1] = 0;
+	while (_mesd.type != MesType::TMX_DATA)
+	{
+		NetWorkRecv(lpNetwark.GetNetHandle(), &_mesd, sizeof(_mesd));
+	}
 }
 
 Netwark::Netwark()

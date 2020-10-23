@@ -25,7 +25,7 @@ Title::Title()
 	{
 		TRACE("モード選択…\n0:ホスト\n1:ゲスト\n");
 		//TRACE("2:ゲスト(%d.%d.%d.%d)\n3:オフライン\n",);
-		TRACE("\n3:オフライン\n");
+		TRACE("\n2:オフライン\n");
 		std::cin >> mode;
 		if (mode == 0)
 		{
@@ -77,7 +77,7 @@ Title::Title()
 		//		lpNetwark.ConnectHost(hostIp);
 		//	}
 		//}
-		if (mode == 3)
+		if (mode == 2)
 		{
 
 			lpNetwark.SetNetWorkMode(NetworkMode::OFF);
@@ -115,22 +115,25 @@ void Title::Init(void)
 	data.second = 0;
 	if (lpNetwark.GetNetWorkMode() == NetworkMode::HOST)
 	{
-
+		lpNetwark.TmxCheck("map/untitled.tmx");
 
 		data.first = imagepos.x;
 		data.second = imagepos.y;
 		NetWorkSend(lpNetwark.GetNetHandle(), &data, sizeof(data));
 
+		lpNetwark.SendStanby();
+		lpNetwark.GetRevStart();
 	}
 	else if (lpNetwark.GetNetWorkMode() == NetworkMode::GEST)
 	{
+		lpNetwark.TmxChat();
 		if (GetNetWorkDataLength(lpNetwark.GetNetHandle()) >= sizeof(data))
 		{
 			NetWorkRecv(lpNetwark.GetNetHandle(), &data, sizeof(data));
 			imagepos.x = data.first;
 			imagepos.y = data.second;
 		}
-
+		lpNetwark.SendStart();
 	}
 	else
 	{
