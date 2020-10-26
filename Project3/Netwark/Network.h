@@ -49,6 +49,8 @@ public:
 	bool ChecLink(void);
 	bool CheckLost(void);
 
+	void Oneletter(void);
+
 	void TmxChat(void);
 	void TmxCheck(const char* filename);
 	void TmxDataSend(void);

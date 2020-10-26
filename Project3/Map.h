@@ -3,8 +3,8 @@
 #include"Vector2.h"
 #include"include/TMXParser.h"
 
-#define MAP_HEIGHT 20;
-#define MAP_WIDTH 28;
+#define MAP_HEIGHT 17;
+#define MAP_WIDTH 21;
 
 enum class Layer
 {

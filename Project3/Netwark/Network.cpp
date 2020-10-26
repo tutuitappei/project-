@@ -110,6 +110,22 @@ bool Netwark::CheckLost(void)
 	return _state->CheckLostNetwork();
 }
 
+void Netwark::Oneletter(void)
+{
+	MesData _mesd;
+	_mesd.type = MesType::TMX_DATA;
+	_mesd.data[0] = 0;
+	_mesd.data[1]= 0;
+	std::ifstream fs("map/untitled.tmx");
+	char _mapbox;
+	while (fs.get(_mapbox))
+	{
+		_mesd.data[1] << _mapbox;
+		NetWorkSend(lpNetwark.GetNetHandle(), &_mesd, sizeof(_mesd));
+		_mesd.data[0]++;
+	}
+}
+
 void Netwark::TmxChat(void)
 {
 	MesData _mesd;
@@ -143,15 +159,7 @@ void Netwark::TmxCheck(const char* filename)
 
 void Netwark::TmxDataSend(void)
 {
-	MesData _mesd;
-	_mesd.type = MesType::TMX_DATA;
-	_mesd.data[0] = 0;
-	_mesd.data[1];
-	//while ()
-	//{
-		NetWorkSend(lpNetwark.GetNetHandle(), &_mesd, sizeof(_mesd));
-		_mesd.data[0]++;
-	//}
+
 }
 
 void Netwark::TmxDataRev(void)
@@ -163,6 +171,7 @@ void Netwark::TmxDataRev(void)
 	while (_mesd.type != MesType::TMX_DATA)
 	{
 		NetWorkRecv(lpNetwark.GetNetHandle(), &_mesd, sizeof(_mesd));
+		TRACE("%d\n", _mesd.data[1]);
 	}
 }
 
