@@ -35,7 +35,7 @@ Map::~Map()
 
 void Map::SetMapInit()
 {
-	_tmx.load("map/untitled.tmx");
+	_tmx.load("map/untitled2.tmx");
 }
 
 MapData Map::ReturnData(void)

@@ -116,13 +116,14 @@ void Netwark::Oneletter(void)
 	_mesd.type = MesType::TMX_DATA;
 	_mesd.data[0] = 0;
 	_mesd.data[1]= 0;
-	std::ifstream fs("map/untitled.tmx");
+	std::ifstream fs("map/untitled2.tmx");
 	char _mapbox;
 	while (fs.get(_mapbox))
 	{
-		_mesd.data[1] << _mapbox;
+		_mesd.data[1] = static_cast<int>(_mapbox);
 		NetWorkSend(lpNetwark.GetNetHandle(), &_mesd, sizeof(_mesd));
 		_mesd.data[0]++;
+		TRACE("ëóÇ¡ÇΩï∂éöêîÇÕ%d\n", _mesd.data[0]);
 	}
 }
 
@@ -167,11 +168,11 @@ void Netwark::TmxDataRev(void)
 	MesData _mesd;
 	_mesd.type = MesType::TMX_SIZE;
 	_mesd.data[0] = 0;
-	_mesd.data[1] = 0;
 	while (_mesd.type != MesType::TMX_DATA)
 	{
 		NetWorkRecv(lpNetwark.GetNetHandle(), &_mesd, sizeof(_mesd));
-		TRACE("%d\n", _mesd.data[1]);
+		(static_cast<char>(_mesd.data[1]));
+		TRACE("%d\n", );
 	}
 }
 

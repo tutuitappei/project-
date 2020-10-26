@@ -115,7 +115,7 @@ void Title::Init(void)
 	data.second = 0;
 	if (lpNetwark.GetNetWorkMode() == NetworkMode::HOST)
 	{
-		lpNetwark.TmxCheck("map/untitled.tmx");
+		lpNetwark.TmxCheck("map/untitled2.tmx");
 		lpNetwark.Oneletter();
 
 		data.first = imagepos.x;
