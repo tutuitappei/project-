@@ -20,12 +20,37 @@ Title::Title()
 	int mode;
 	auto ipdata = lpNetwark.GetIp();
 	IPDATA hostIp;
+	IPDATA oldhostIp;
 	TRACE("自分のIPアドレス.%d.%d.%d.%d\n",ipdata.d1,ipdata.d2,ipdata.d3,ipdata.d4);
 	do
 	{
 		TRACE("モード選択…\n0:ホスト\n1:ゲスト\n");
-		//TRACE("2:ゲスト(%d.%d.%d.%d)\n3:オフライン\n",);
-		TRACE("\n2:オフライン\n");
+		std::ifstream ifs("oldhost.txt");
+		if (!ifs) {
+			TRACE("前の相手のホストIPがありませんでした\n");
+		}
+		std::string buf;
+		ifs >> buf;
+		if (ifs) 
+		{
+			std::string ipfn;
+			std::string ip;
+			std::cin >> ip;
+			std::stringstream ipnum(ip);
+
+			auto GetIpNum = [&]() {
+				std::getline(ipnum, ipfn, '.');
+				return atoi(ipfn.c_str());
+			};
+
+
+			oldhostIp.d1 = GetIpNum();
+			oldhostIp.d2 = GetIpNum();
+			oldhostIp.d3 = GetIpNum();
+			oldhostIp.d4 = GetIpNum();
+			TRACE("2:ゲスト(%d.%d.%d.%d)\n",oldhostIp.d1, oldhostIp.d2, oldhostIp.d3, oldhostIp.d4);
+		}
+		TRACE("3:オフライン\n");
 		std::cin >> mode;
 		if (mode == 0)
 		{
@@ -52,37 +77,28 @@ Title::Title()
 			hostIp.d4 = GetIpNum();
 
 			lpNetwark.ConnectHost(hostIp);
+
+			std::ofstream ofs("oldhost.txt");
+			if (ofs) 
+			{
+				ofs << ipfn << std::endl;
+			}
+			else
+			{
+				TRACE("ファイルオープンに失敗\n");
+			}
+
 		}
-		//if ()
-		//{
-		//	if (mode == 2)
-		//	{
-		//		lpNetwark.SetNetWorkMode(NetworkMode::GEST);
-		//		std::string ipfn;
-		//		std::string ip;
-		//		std::cin >> ip;
-		//		std::stringstream ipnum(ip);
-
-		//		auto GetIpNum = [&]() {
-		//			std::getline(ipnum, ipfn, '.');
-		//			return atoi(ipfn.c_str());
-		//		};
-
-
-		//		hostIp.d1 = GetIpNum();
-		//		hostIp.d2 = GetIpNum();
-		//		hostIp.d3 = GetIpNum();
-		//		hostIp.d4 = GetIpNum();
-
-		//		lpNetwark.ConnectHost(hostIp);
-		//	}
-		//}
 		if (mode == 2)
 		{
-
+			lpNetwark.SetNetWorkMode(NetworkMode::GEST);
+			lpNetwark.ConnectHost(oldhostIp);
+		}
+		if (mode == 3)
+		{
 			lpNetwark.SetNetWorkMode(NetworkMode::OFF);
 		}
-	} while (mode < 0 || mode > 3);
+	} while (mode < 0 || mode > 4);
 	TRACE("%dです\n", lpNetwark.GetActive());
 
 

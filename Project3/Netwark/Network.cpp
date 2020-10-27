@@ -172,13 +172,19 @@ void Netwark::TmxDataSend(void)
 
 void Netwark::TmxDataRev(void)
 {
+	std::ofstream ofs("test.tmx");
+	if (!ofs) {
+		TRACE("ファイルオープンに失敗\n");
+	}
+
+
 	MesData _mesd;
 	_mesd.type = MesType::TMX_SIZE;
 	_mesd.data[0] = 0;
 	int _numdata;
 	char _numbox;
 	start = std::chrono::system_clock::now();
-	while ((_mesd.type != MesType::TMX_DATA)||(_mesd.data[0] != ((bot/4)-(88/4))))
+	while ((_mesd.type != MesType::TMX_DATA)||(_mesd.data[0] != bot-88))
 	{
 		NetWorkRecv(lpNetwark.GetNetHandle(), &_mesd, sizeof(_mesd));
 		_numdata = _mesd.data[1];
