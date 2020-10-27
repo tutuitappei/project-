@@ -128,6 +128,7 @@ void Title::Init(void)
 	else if (lpNetwark.GetNetWorkMode() == NetworkMode::GEST)
 	{
 		lpNetwark.TmxChat();
+		lpNetwark.TmxDataRev();
 		if (GetNetWorkDataLength(lpNetwark.GetNetHandle()) >= sizeof(data))
 		{
 			NetWorkRecv(lpNetwark.GetNetHandle(), &data, sizeof(data));

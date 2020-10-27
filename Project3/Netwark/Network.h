@@ -2,6 +2,7 @@
 #include<DxLib.h>
 #include<memory>
 #include<vector>
+#include<chrono>
 #include"NetWorkst.h"
 
 #define lpNetwark Netwark::GetInstance()
@@ -60,8 +61,10 @@ private:
 	~Netwark();
 
 	TmxBox _box;
-
+	int bot = 0;
 	std::unique_ptr <NetWorkst> _state;
+
+	std::chrono::system_clock::time_point  start, end;
 
 	static Netwark* s_Instance;
 };

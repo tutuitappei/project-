@@ -79,6 +79,7 @@ void Netwark::SendStanby(void)
 	_mesd.data[1] = 0;
 	_mesd.type = MesType::STANBY;
 	NetWorkSend(lpNetwark.GetNetHandle(), &_mesd, sizeof(_mesd));
+	TRACE("開始待ち状態の送信\n");
 }
 
 void Netwark::SendStart(void)
@@ -88,6 +89,7 @@ void Netwark::SendStart(void)
 	_mesd.data[1] = 0;
 	_mesd.type = MesType::GAME_S;
 	NetWorkSend(lpNetwark.GetNetHandle(), &_mesd, sizeof(_mesd));
+	TRACE("ゲーム開始合図の送信\n");
 }
 
 ActivState Netwark::GetActiveST(void)
@@ -118,6 +120,7 @@ void Netwark::Oneletter(void)
 	_mesd.data[1]= 0;
 	std::ifstream fs("map/untitled2.tmx");
 	char _mapbox;
+	start = std::chrono::system_clock::now();
 	while (fs.get(_mapbox))
 	{
 		_mesd.data[1] = static_cast<int>(_mapbox);
@@ -125,6 +128,8 @@ void Netwark::Oneletter(void)
 		_mesd.data[0]++;
 		TRACE("送った文字数は%d\n", _mesd.data[0]);
 	}
+	end = std::chrono::system_clock::now();
+	TRACE("%dミリ秒\n", std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count());
 }
 
 void Netwark::TmxChat(void)
@@ -133,6 +138,7 @@ void Netwark::TmxChat(void)
 	_mesd.type = MesType::STANBY;
 	_mesd.data[0] = 0;
 	_mesd.data[1] = 0;
+	
 	while (_mesd.type != MesType::TMX_SIZE)
 	{
 		if (GetNetWorkDataLength(lpNetwark.GetNetHandle()) >= sizeof(_mesd))
@@ -141,6 +147,7 @@ void Netwark::TmxChat(void)
 			_box.resize(_mesd.data[0]);
 			TRACE("受け取ったサイズは%d\n", _mesd.data[0]);
 		}
+		bot = _mesd.data[0];
 	}
 
 }
@@ -168,12 +175,19 @@ void Netwark::TmxDataRev(void)
 	MesData _mesd;
 	_mesd.type = MesType::TMX_SIZE;
 	_mesd.data[0] = 0;
-	while (_mesd.type != MesType::TMX_DATA)
+	int _numdata;
+	char _numbox;
+	start = std::chrono::system_clock::now();
+	while ((_mesd.type != MesType::TMX_DATA)||(_mesd.data[0] != ((bot/4)-(88/4))))
 	{
 		NetWorkRecv(lpNetwark.GetNetHandle(), &_mesd, sizeof(_mesd));
-		(static_cast<char>(_mesd.data[1]));
-		TRACE("%d\n", );
+		_numdata = _mesd.data[1];
+		_numbox = static_cast<char>(_numdata);
+		_box = static_cast<TmxBox>(_numbox);
+		TRACE("ID%d  Data%d\n",_mesd.data[0], _numbox);
 	}
+	end = std::chrono::system_clock::now();
+	TRACE("%dミリ秒\n", std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count());
 }
 
 Netwark::Netwark()
