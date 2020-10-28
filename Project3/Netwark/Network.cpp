@@ -2,6 +2,7 @@
 #include<iostream>
 #include <fstream>
 #include<string>
+#include <vector>
 #include "Network.h"
 #include"../_debug/_DebugConOut.h"
 #include"Host.h"

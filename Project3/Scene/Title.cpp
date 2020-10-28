@@ -78,15 +78,15 @@ Title::Title()
 
 			lpNetwark.ConnectHost(hostIp);
 
-			std::ofstream ofs("oldhost.txt");
-			if (ofs) 
-			{
-				ofs << ipfn << std::endl;
-			}
-			else
-			{
-				TRACE("ファイルオープンに失敗\n");
-			}
+			//std::ofstream ofs("oldhost.txt");
+			//if (ofs) 
+			//{
+			//	ofs << ipfn << std::endl;
+			//}
+			//else
+			//{
+			//	TRACE("ファイルオープンに失敗\n");
+			//}
 
 		}
 		if (mode == 2)

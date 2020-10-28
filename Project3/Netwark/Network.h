@@ -7,7 +7,7 @@
 
 #define lpNetwark Netwark::GetInstance()
 
-enum class MesType
+enum class MesType : unsigned char
 {
 	STANBY,
 	GAME_S,
