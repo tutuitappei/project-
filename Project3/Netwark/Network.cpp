@@ -219,21 +219,20 @@ void Netwark::LetterSet(void)
 	//auto GetLetters = [&]() {
 	//};
 
-	//while (!fs.eof())
-	//{
-	//	while ()
-	//	{
+	while (!fs.eof())
+	{
 
-	//	}
-	//	do
-	//	{
+		do
+		{
+			_mesd.data[0] = _uniond.iData[0];
+			_mesd.data[1] = _uniond.iData[1];
+			NetWorkSend(lpNetwark.GetNetHandle(), &_mesd, sizeof(_mesd));
+		} while (ifs.find("< / ") == std::string::npos);
+	}
+	if (SendWait())
+	{
 
-	//	} while (ifs.find("< / data>") == std::string::npos);
-	//}
-	//if (SendWait())
-	//{
-
-	//}
+	}
 }
 
 bool Netwark::SendWait(void)
