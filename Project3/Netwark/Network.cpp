@@ -113,30 +113,12 @@ bool Netwark::CheckLost(void)
 	return _state->CheckLostNetwork();
 }
 
-void Netwark::Oneletter(void)
-{
-	MesData _mesd;
-	_mesd.type = MesType::TMX_DATA;
-	_mesd.data[0] = 0;
-	_mesd.data[1]= 0;
-	std::ifstream fs("map/untitled2.tmx");
-	char _mapbox;
-	start = std::chrono::system_clock::now();
-	while (fs.get(_mapbox))
-	{
-		_mesd.data[1] = static_cast<int>(_mapbox);
-		NetWorkSend(lpNetwark.GetNetHandle(), &_mesd, sizeof(_mesd));
-		_mesd.data[0]++;
-		TRACE("ëóÇ¡ÇΩï∂éöêîÇÕ%d\n", _mesd.data[0]);
-	}
-	end = std::chrono::system_clock::now();
-	TRACE("%dÉ~Éäïb\n", std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count());
-}
-
 void Netwark::TmxChat(void)
 {
 	MesData _mesd;
 	_mesd.type = MesType::STANBY;
+	_mesd.shortd = 0;
+	_mesd.chard = 0;
 	_mesd.data[0] = 0;
 	_mesd.data[1] = 0;
 	
@@ -161,7 +143,10 @@ void Netwark::TmxCheck(const char* filename)
 	std::ifstream fs(filename);
 	fs.seekg(0, std::ios_base::end);
 	_mesd.type = MesType::TMX_SIZE;
+	_mesd.shortd = 0;
+	_mesd.chard = 0;
 	_mesd.data[0] = fs.tellg();
+	_mesd.data[1] = 0;
 	TRACE("%d\n", _mesd.data[0]);
 	NetWorkSend(lpNetwark.GetNetHandle(), &_mesd, sizeof(_mesd));
 }
@@ -185,18 +170,79 @@ void Netwark::TmxDataRev(void)
 	int _numdata;
 	char _numbox;
 	start = std::chrono::system_clock::now();
-	while ((_mesd.type != MesType::TMX_DATA)||(_mesd.data[0] != bot-88))
+	while ((_mesd.type != MesType::TMX_DATA)||(_mesd.shortd != bot))
 	{
 		NetWorkRecv(lpNetwark.GetNetHandle(), &_mesd, sizeof(_mesd));
 		_numdata = _mesd.data[1];
 		_numbox = static_cast<char>(_numdata);
 		_box = static_cast<TmxBox>(_numbox);
-		TRACE("ID%d  Data%d\n",_mesd.data[0], _numbox);
+		TRACE("ID%d  Data%d\n",_mesd.shortd);
 	}
 	end = std::chrono::system_clock::now();
 	TRACE("%dÉ~Éäïb\n", std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count());
 }
 
+void Netwark::Oneletter(void)
+{
+	MesData _mesd;
+	_mesd.type = MesType::TMX_DATA;
+	_mesd.data[0] = 0;
+	_mesd.data[1] = 0;
+	std::ifstream fs("map/untitled2.tmx");
+	char _mapbox;
+	start = std::chrono::system_clock::now();
+	while (fs.get(_mapbox))
+	{
+		_mesd.data[1] = static_cast<int>(_mapbox);
+		NetWorkSend(lpNetwark.GetNetHandle(), &_mesd, sizeof(_mesd));
+		_mesd.data[0]++;
+		TRACE("ëóÇ¡ÇΩï∂éöêîÇÕ%d\n", _mesd.data[0]);
+	}
+	end = std::chrono::system_clock::now();
+	//LetterSet();
+	TRACE("%dÉ~Éäïb\n", std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count());
+}
+
+void Netwark::LetterSet(void)
+{
+	std::string ifs;
+	std::ifstream fs("map/untitled2.tmx");
+	//std::iostream 
+	//"<data encoding = "csv">"
+	//"< / data>"
+
+	auto GetLetters = [&]() {
+		//std::getline();
+	};
+
+	while (!fs.eof())
+	{
+		if (!fs.eof())
+		{
+
+			break;
+		}
+	}
+	do
+	{
+
+	} while (ifs.find("< / data>") == std::string::npos);
+
+
+	if (SendWait())
+	{
+
+	}
+}
+
+bool Netwark::SendWait(void)
+{
+	//if ()
+	//{
+	//	return true;
+	//}
+	return false;
+}
 Netwark::Netwark()
 {
 }
@@ -204,3 +250,4 @@ Netwark::Netwark()
 Netwark::~Netwark()
 {
 }
+

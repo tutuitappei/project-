@@ -14,13 +14,21 @@ enum class MesType : unsigned char
 	TMX_SIZE,
 	TMX_DATA,
 	POS,
-	NON
 };
 struct MesData
 {
 	MesType type;
+	unsigned short shortd;
+	unsigned char chard;
 	int data[2];
 };
+union unionData
+{
+	char cData[8];
+	int iData[2];
+	long long lData;
+};
+
 
 using TmxBox = std::vector<char>;
 
@@ -59,6 +67,8 @@ public:
 private:
 	Netwark();
 	~Netwark();
+	bool SendWait(void);
+	void LetterSet(void);
 
 	TmxBox _box;
 	int bot = 0;
