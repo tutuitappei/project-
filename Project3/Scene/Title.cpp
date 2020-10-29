@@ -35,7 +35,7 @@ Title::Title()
 		{
 			std::string ipfn;
 			std::string ip;
-			std::cin >> ip;
+			ip = buf;
 			std::stringstream ipnum(ip);
 
 			auto GetIpNum = [&]() {
@@ -78,15 +78,15 @@ Title::Title()
 
 			lpNetwark.ConnectHost(hostIp);
 
-			//std::ofstream ofs("oldhost.txt");
-			//if (ofs) 
-			//{
-			//	ofs << ipfn << std::endl;
-			//}
-			//else
-			//{
-			//	TRACE("ファイルオープンに失敗\n");
-			//}
+			std::ofstream ofs("oldhost.txt");
+			if (ofs) 
+			{
+				ofs << ip << std::endl;
+			}
+			else
+			{
+				TRACE("ファイルオープンに失敗\n");
+			}
 
 		}
 		if (mode == 2)

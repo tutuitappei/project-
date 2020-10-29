@@ -205,34 +205,35 @@ void Netwark::Oneletter(void)
 
 void Netwark::LetterSet(void)
 {
-	std::string ifs;
+	MesData _mesd;
+	unionData _uniond;
+	_mesd.type = MesType::TMX_DATA;
+	_mesd.data[0] = 0;
+	_mesd.data[1] = 0;
 	std::ifstream fs("map/untitled2.tmx");
+	std::string ifs;
 	//std::iostream 
 	//"<data encoding = "csv">"
 	//"< / data>"
 
 	auto GetLetters = [&]() {
-		//std::getline();
 	};
 
 	while (!fs.eof())
 	{
-		if (!fs.eof())
+		//while ()
+		//{
+
+		//}
+		do
 		{
 
-			break;
-		}
+		} while (ifs.find("< / data>") == std::string::npos);
 	}
-	//do
-	//{
+	if (SendWait())
+	{
 
-	//} while (ifs.find("< / data>") == std::string::npos);
-
-
-	//if (SendWait())
-	//{
-
-	//}
+	}
 }
 
 bool Netwark::SendWait(void)
