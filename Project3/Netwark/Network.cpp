@@ -216,24 +216,24 @@ void Netwark::LetterSet(void)
 	//"<data encoding = "csv">"
 	//"< / data>"
 
-	auto GetLetters = [&]() {
-	};
+	//auto GetLetters = [&]() {
+	//};
 
-	while (!fs.eof())
-	{
-		//while ()
-		//{
+	//while (!fs.eof())
+	//{
+	//	while ()
+	//	{
 
-		//}
-		do
-		{
+	//	}
+	//	do
+	//	{
 
-		} while (ifs.find("< / data>") == std::string::npos);
-	}
-	if (SendWait())
-	{
+	//	} while (ifs.find("< / data>") == std::string::npos);
+	//}
+	//if (SendWait())
+	//{
 
-	}
+	//}
 }
 
 bool Netwark::SendWait(void)
