@@ -55,7 +55,7 @@ bool Netwark::GetActive(void)
 void Netwark::GetRevStanby(void)
 {
 	MesData _mesd;
-	_mesd.type = MesType::NON;
+	_mesd.type = MesType::TMX_DATA;
 	while (_mesd.type != MesType::STANBY)
 	{
 		NetWorkRecv(lpNetwark.GetNetHandle(), &_mesd, sizeof(_mesd));
@@ -223,16 +223,16 @@ void Netwark::LetterSet(void)
 			break;
 		}
 	}
-	do
-	{
+	//do
+	//{
 
-	} while (ifs.find("< / data>") == std::string::npos);
+	//} while (ifs.find("< / data>") == std::string::npos);
 
 
-	if (SendWait())
-	{
+	//if (SendWait())
+	//{
 
-	}
+	//}
 }
 
 bool Netwark::SendWait(void)
