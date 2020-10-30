@@ -37,6 +37,14 @@ bool Netwark::SetNetWorkMode(NetworkMode mode)
 	return false;
 }
 
+void Netwark::Updata(void)
+{
+}
+
+void Netwark::Thread(void)
+{
+
+}
 NetworkMode Netwark::GetNetWorkMode(void)
 {
 	return _state->GetMode();
@@ -158,49 +166,83 @@ void Netwark::TmxDataSend(void)
 
 void Netwark::TmxDataRev(void)
 {
-	std::ofstream ofs("test.tmx");
-	if (!ofs) {
-		TRACE("ファイルオープンに失敗\n");
-	}
+	//std::ofstream ifs("test.tmx");
+	//if (!ifs) {
+	//	TRACE("ファイルオープンに失敗\n");
+	//}
 
 
-	MesData _mesd;
-	_mesd.type = MesType::TMX_SIZE;
-	_mesd.data[0] = 0;
-	int _numdata;
-	char _numbox;
+	//MesData _mesd;
+	//_mesd.type = MesType::TMX_SIZE;
+	//_mesd.data[0] = 0;
+	//int _numdata;
+	//char _numbox;
+	//while ((_mesd.type != MesType::TMX_DATA)||(_mesd.shortd != bot))
+	//{
+	//	NetWorkRecv(lpNetwark.GetNetHandle(), &_mesd, sizeof(_mesd));
+	//	_numdata = _mesd.data[1];
+	//	_numbox = static_cast<char>(_numdata);
+	//	_box = static_cast<TmxBox>(_numbox);
+	//	TRACE("ID%d  Data%d\n",_mesd.shortd);
+	//}
+
 	start = std::chrono::system_clock::now();
-	while ((_mesd.type != MesType::TMX_DATA)||(_mesd.shortd != bot))
-	{
-		NetWorkRecv(lpNetwark.GetNetHandle(), &_mesd, sizeof(_mesd));
-		_numdata = _mesd.data[1];
-		_numbox = static_cast<char>(_numdata);
-		_box = static_cast<TmxBox>(_numbox);
-		TRACE("ID%d  Data%d\n",_mesd.shortd);
-	}
+	LetterReceive();
 	end = std::chrono::system_clock::now();
 	TRACE("%dミリ秒\n", std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count());
 }
 
 void Netwark::Oneletter(void)
 {
+	//MesData _mesd;
+	//_mesd.type = MesType::TMX_DATA;
+	//_mesd.data[0] = 0;
+	//_mesd.data[1] = 0;
+	//std::ifstream ifs("map/untitled2.tmx");
+	//char _mapbox;
+	//while (ifs.get(_mapbox))
+	//{
+	//	_mesd.data[1] = static_cast<int>(_mapbox);
+	//	NetWorkSend(lpNetwark.GetNetHandle(), &_mesd, sizeof(_mesd));
+	//	_mesd.data[0]++;
+	//	TRACE("送った文字数は%d\n", _mesd.data[0]);
+	//}
+
+	start = std::chrono::system_clock::now();
+	LetterSet();
+	end = std::chrono::system_clock::now();
+	TRACE("%dミリ秒\n", std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count());
+}
+
+void Netwark::LetterReceive(void)
+{
 	MesData _mesd;
+	unionData _uniond;
 	_mesd.type = MesType::TMX_DATA;
 	_mesd.data[0] = 0;
 	_mesd.data[1] = 0;
-	std::ifstream fs("map/untitled2.tmx");
-	char _mapbox;
-	start = std::chrono::system_clock::now();
-	while (fs.get(_mapbox))
-	{
-		_mesd.data[1] = static_cast<int>(_mapbox);
-		NetWorkSend(lpNetwark.GetNetHandle(), &_mesd, sizeof(_mesd));
-		_mesd.data[0]++;
-		TRACE("送った文字数は%d\n", _mesd.data[0]);
+	std::string fs;
+
+	std::ofstream ofs("map/revmap.tmx");
+	std::ifstream ifs("tmx.dat");
+	if ((!ofs)||(!ifs))
+	{		
+		TRACE("ファイルオープンに失敗\n");
 	}
-	end = std::chrono::system_clock::now();
-	//LetterSet();
-	TRACE("%dミリ秒\n", std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count());
+
+	if (!ofs.eof())
+	{
+		do
+		{
+			if (ofs.eof())
+			{
+				break;
+			}
+		} while (fs.find("data encoding ") == std::string::npos);
+		_uniond.iData[0] = _mesd.data[0];
+		_uniond.iData[1] = _mesd.data[1];
+	}
+	
 }
 
 void Netwark::LetterSet(void)
@@ -210,24 +252,30 @@ void Netwark::LetterSet(void)
 	_mesd.type = MesType::TMX_DATA;
 	_mesd.data[0] = 0;
 	_mesd.data[1] = 0;
-	std::ifstream fs("map/untitled2.tmx");
-	std::string ifs;
+	std::ifstream ifs("map/untitled2.tmx");
+	std::string fs;
 	//std::iostream 
-	//"<data encoding = "csv">"
-	//"< / data>"
 
 	//auto GetLetters = [&]() {
 	//};
 
-	while (!fs.eof())
+	while (!ifs.eof())
 	{
-
 		do
 		{
-			_mesd.data[0] = _uniond.iData[0];
-			_mesd.data[1] = _uniond.iData[1];
-			NetWorkSend(lpNetwark.GetNetHandle(), &_mesd, sizeof(_mesd));
-		} while (ifs.find("< / ") == std::string::npos);
+			if (ifs.eof())
+			{
+				break;
+			}
+		} while (fs.find("data encoding ") == std::string::npos);
+		if (!ifs.eof())
+		{
+			//ifs.getline();
+			while (fs.find("< / data>") == std::string::npos)
+			{
+			}
+		}
+
 	}
 	if (SendWait())
 	{

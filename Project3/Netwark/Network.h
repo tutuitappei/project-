@@ -3,6 +3,7 @@
 #include<memory>
 #include<vector>
 #include<chrono>
+#include<thread>
 #include"NetWorkst.h"
 
 #define lpNetwark Netwark::GetInstance()
@@ -44,6 +45,9 @@ public:
 		return *s_Instance;
 	}
 
+	void Updata(void);
+	void Thread(void);
+
 	IPDATA GetIp(void);
 	bool SetNetWorkMode(NetworkMode mode);
 	NetworkMode GetNetWorkMode(void);
@@ -69,6 +73,7 @@ private:
 	~Netwark();
 	bool SendWait(void);
 	void LetterSet(void);
+	void LetterReceive(void);
 
 	TmxBox _box;
 	int bot = 0;
