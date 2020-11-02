@@ -7,6 +7,7 @@
 
 enum class SCENE {
 	TITLE,
+	LOGIN,
 	GAME,
 	GAMEOVER
 };

@@ -3,13 +3,23 @@
 #include "BaseScene.h"
 #include"../Vector2.h"
 #include"../input/Controller.h"
+#include"../Map.h"
 
-class Title:
-	public BaseScene
+enum class Updatamode
+{
+	SetNetWork,
+	SetHostIP,
+	StartInit,
+	Play
+};
+
+
+class LoginScene :
+    public BaseScene
 {
 public:
-	Title();
-	~Title();
+	LoginScene();
+	~LoginScene();
 
 	void Draw(void)override;
 	void Init(void);
@@ -17,8 +27,16 @@ public:
 private:
 	std::unique_ptr<Controller> controller;
 
+	int Screensizex;
+	int Screensizey;
+
+
+	int _id = 0;
+
 	Vector2 imagepos;
 	int _image;
 
+	Layer _layer;
+	Map _map;
 };
 

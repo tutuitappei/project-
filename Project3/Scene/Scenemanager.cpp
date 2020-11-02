@@ -2,6 +2,8 @@
 #include"../Vector2.h"
 #include "SceneManager.h"
 #include"Title.h"
+#include"LoginScene.h"
+#include"GameScene.h"
 
 
 BaseScene* SceneManager::m_pScene = NULL;
@@ -27,20 +29,23 @@ void SceneManager::ChangeScene(SCENE scene)
 	{
 		delete m_pScene;
 	}
-	//switch (scene)
-	//{
-	//case SCENE::TITLE:
-	//	m_pScene = new Title();
-	//	break;
-	//case SCENE::GAME:
-	//	m_pScene = new Game();
-	//	break;
+	switch (scene)
+	{
+	case SCENE::TITLE:
+		m_pScene = new Title();
+		break;
+	case SCENE::LOGIN:
+		m_pScene = new LoginScene();
+		break;
+	case SCENE::GAME:
+		m_pScene = new GameScene();
+		break;
 	//case SCENE::GAMEOVER:
 	//	m_pScene = new Gameover();
-	//	break;
-	//default:
-	//	break;
-	//}
+		break;
+	default:
+		break;
+	}
 }
 
 bool SceneManager::Endflag(void)
