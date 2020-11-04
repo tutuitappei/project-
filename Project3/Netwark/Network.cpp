@@ -125,7 +125,7 @@ void Netwark::TmxChat(void)
 {
 	MesData _mesd;
 	_mesd.type = MesType::STANBY;
-	_mesd.shortd = 0;
+	_mesd.id = 0;
 	_mesd.chard = 0;
 	_mesd.data[0] = 0;
 	_mesd.data[1] = 0;
@@ -151,7 +151,7 @@ void Netwark::TmxCheck(const char* filename)
 	std::ifstream fs(filename);
 	fs.seekg(0, std::ios_base::end);
 	_mesd.type = MesType::TMX_SIZE;
-	_mesd.shortd = 0;
+	_mesd.id = 0;
 	_mesd.chard = 0;
 	_mesd.data[0] = fs.tellg();
 	_mesd.data[1] = 0;
@@ -177,13 +177,13 @@ void Netwark::TmxDataRev(void)
 	//_mesd.data[0] = 0;
 	//int _numdata;
 	//char _numbox;
-	//while ((_mesd.type != MesType::TMX_DATA)||(_mesd.shortd != bot))
+	//while ((_mesd.type != MesType::TMX_DATA)||(_mesd.id != bot))
 	//{
 	//	NetWorkRecv(lpNetwark.GetNetHandle(), &_mesd, sizeof(_mesd));
 	//	_numdata = _mesd.data[1];
 	//	_numbox = static_cast<char>(_numdata);
 	//	_box = static_cast<TmxBox>(_numbox);
-	//	TRACE("ID%d  Data%d\n",_mesd.shortd);
+	//	TRACE("ID%d  Data%d\n",_mesd.id);
 	//}
 
 	start = std::chrono::system_clock::now();
@@ -227,7 +227,7 @@ void Netwark::LetterReceive(void)
 	std::ifstream ifs("tmx.dat");
 	if ((!ofs)||(!ifs))
 	{		
-		TRACE("ファイルオープンに失敗\n");
+		TRACE("何かのファイルオープンに失敗\n");
 	}
 
 	if (!ofs.eof())

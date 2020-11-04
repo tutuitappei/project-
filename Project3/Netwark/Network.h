@@ -19,8 +19,9 @@ enum class MesType : unsigned char
 struct MesData
 {
 	MesType type;
-	unsigned short shortd;
+	unsigned short id;
 	unsigned char chard;
+	unsigned int length;
 	int data[2];
 };
 union unionData
@@ -74,6 +75,10 @@ private:
 	bool SendWait(void);
 	void LetterSet(void);
 	void LetterReceive(void);
+
+	unsigned int lengthd;
+	int count;
+	int volume;
 
 	TmxBox _box;
 	int bot = 0;
