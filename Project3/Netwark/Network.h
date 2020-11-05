@@ -19,8 +19,8 @@ enum class MesType : unsigned char
 struct MesData
 {
 	MesType type;
-	unsigned short id;
 	unsigned char chard;
+	unsigned short id;
 	unsigned int length;
 	int data[2];
 };

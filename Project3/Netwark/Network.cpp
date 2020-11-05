@@ -155,7 +155,7 @@ void Netwark::TmxCheck(const char* filename)
 	_mesd.chard = 0;
 	_mesd.data[0] = fs.tellg();
 	_mesd.data[1] = 0;
-	TRACE("%d\n", _mesd.data[0]);
+	TRACE("受け取ったサイズは%dです\n", _mesd.data[0]);
 	NetWorkSend(lpNetwark.GetNetHandle(), &_mesd, sizeof(_mesd));
 }
 
@@ -166,53 +166,53 @@ void Netwark::TmxDataSend(void)
 
 void Netwark::TmxDataRev(void)
 {
-	//std::ofstream ifs("test.tmx");
-	//if (!ifs) {
-	//	TRACE("ファイルオープンに失敗\n");
-	//}
+	std::ofstream ifs("test.tmx");
+	if (!ifs) {
+		TRACE("ファイルオープンに失敗\n");
+	}
 
 
 	start = std::chrono::system_clock::now();
-	//MesData _mesd;
-	//_mesd.type = MesType::TMX_SIZE;
-	//_mesd.data[0] = 0;
-	//int _numdata;
-	//char _numbox;
-	//while ((_mesd.type != MesType::TMX_DATA)||(_mesd.id != bot))
-	//{
-	//	NetWorkRecv(lpNetwark.GetNetHandle(), &_mesd, sizeof(_mesd));
-	//	_numdata = _mesd.data[1];
-	//	_numbox = static_cast<char>(_numdata);
-	//	_box = static_cast<TmxBox>(_numbox);
-	//	TRACE("ID%d  Data%d\n",_mesd.id);
-	//}
+	MesData _mesd;
+	_mesd.type = MesType::TMX_SIZE;
+	_mesd.data[0] = 0;
+	int _numdata;
+	char _numbox;
+	while ((_mesd.type != MesType::TMX_DATA)||(_mesd.id != bot))
+	{
+		NetWorkRecv(lpNetwark.GetNetHandle(), &_mesd, sizeof(_mesd));
+		_numdata = _mesd.data[1];
+		_numbox = static_cast<char>(_numdata);
+		_box = static_cast<TmxBox>(_numbox);
+		TRACE("ID%d  Data%d\n",_mesd.id);
+	}
 
-	LetterReceive();
+	//LetterReceive();
 	end = std::chrono::system_clock::now();
-	TRACE("%dミリ秒\n", std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count());
+	//TRACE("%dミリ秒\n", std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count());
 }
 
 void Netwark::Oneletter(void)
 {
 
 	start = std::chrono::system_clock::now();
-	//MesData _mesd;
-	//_mesd.type = MesType::TMX_DATA;
-	//_mesd.data[0] = 0;
-	//_mesd.data[1] = 0;
-	//std::ifstream ifs("map/untitled2.tmx");
-	//char _mapbox;
-	//while (ifs.get(_mapbox))
-	//{
-	//	_mesd.data[1] = static_cast<int>(_mapbox);
-	//	NetWorkSend(lpNetwark.GetNetHandle(), &_mesd, sizeof(_mesd));
-	//	_mesd.data[0]++;
-	//	TRACE("送った文字数は%d\n", _mesd.data[0]);
-	//}
+	MesData _mesd;
+	_mesd.type = MesType::TMX_DATA;
+	_mesd.data[0] = 0;
+	_mesd.data[1] = 0;
+	std::ifstream ifs("map/untitled2.tmx");
+	char _mapbox;
+	while (ifs.get(_mapbox))
+	{
+		_mesd.data[1] = static_cast<int>(_mapbox);
+		NetWorkSend(lpNetwark.GetNetHandle(), &_mesd, sizeof(_mesd));
+		_mesd.data[0]++;
+		TRACE("送った文字数は%d\n", _mesd.data[0]);
+	}
 
 	//LetterSet();
 	end = std::chrono::system_clock::now();
-	TRACE("%dミリ秒\n", std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count());
+	//TRACE("%dミリ秒\n", std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count());
 }
 
 void Netwark::LetterReceive(void)
