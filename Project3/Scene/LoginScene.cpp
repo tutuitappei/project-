@@ -51,6 +51,7 @@ LoginScene::LoginScene()
 			oldhostIp.d4 = GetIpNum();
 			TRACE("2:ゲスト(%d.%d.%d.%d)\n", oldhostIp.d1, oldhostIp.d2, oldhostIp.d3, oldhostIp.d4);
 		}
+		ifs.close();
 		TRACE("3:オフライン\n");
 		std::cin >> mode;
 		if (mode == 0)
@@ -88,6 +89,7 @@ LoginScene::LoginScene()
 			{
 				TRACE("ファイルオープンに失敗\n");
 			}
+			ofs.close();
 
 		}
 		if (mode == 2)

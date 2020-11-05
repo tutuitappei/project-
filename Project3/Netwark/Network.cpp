@@ -172,6 +172,7 @@ void Netwark::TmxDataRev(void)
 	//}
 
 
+	start = std::chrono::system_clock::now();
 	//MesData _mesd;
 	//_mesd.type = MesType::TMX_SIZE;
 	//_mesd.data[0] = 0;
@@ -186,7 +187,6 @@ void Netwark::TmxDataRev(void)
 	//	TRACE("ID%d  Data%d\n",_mesd.id);
 	//}
 
-	start = std::chrono::system_clock::now();
 	LetterReceive();
 	end = std::chrono::system_clock::now();
 	TRACE("%dƒ~ƒŠ•b\n", std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count());
@@ -194,6 +194,8 @@ void Netwark::TmxDataRev(void)
 
 void Netwark::Oneletter(void)
 {
+
+	start = std::chrono::system_clock::now();
 	//MesData _mesd;
 	//_mesd.type = MesType::TMX_DATA;
 	//_mesd.data[0] = 0;
@@ -208,8 +210,7 @@ void Netwark::Oneletter(void)
 	//	TRACE("‘—‚Á‚½•¶š”‚Í%d\n", _mesd.data[0]);
 	//}
 
-	start = std::chrono::system_clock::now();
-	LetterSet();
+	//LetterSet();
 	end = std::chrono::system_clock::now();
 	TRACE("%dƒ~ƒŠ•b\n", std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count());
 }
