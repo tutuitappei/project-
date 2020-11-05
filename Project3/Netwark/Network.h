@@ -21,7 +21,7 @@ struct MesData
 	MesType type;
 	unsigned char chard;
 	unsigned short id;
-	unsigned int length;
+	//unsigned int length;
 	int data[2];
 };
 union unionData
@@ -76,9 +76,9 @@ private:
 	void LetterSet(void);
 	void LetterReceive(void);
 
-	unsigned int lengthd;
-	int count;
-	int volume;
+	//unsigned int lengthd;
+	//int count;
+	//int volume;
 
 	TmxBox _box;
 	int bot = 0;

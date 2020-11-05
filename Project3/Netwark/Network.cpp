@@ -68,6 +68,7 @@ void Netwark::GetRevStanby(void)
 	{
 		NetWorkRecv(lpNetwark.GetNetHandle(), &_mesd, sizeof(_mesd));
 	}
+	TRACE("‰Šú‰»î•ñ‚ÌóM\n");
 }
 
 void Netwark::GetRevStart(void)
@@ -178,13 +179,13 @@ void Netwark::TmxDataRev(void)
 	_mesd.data[0] = 0;
 	int _numdata;
 	char _numbox;
-	while ((_mesd.type != MesType::TMX_DATA)||(_mesd.id != bot))
+	while ((_mesd.type != MesType::TMX_DATA)||(_mesd.data[0] != bot-88))
 	{
 		NetWorkRecv(lpNetwark.GetNetHandle(), &_mesd, sizeof(_mesd));
 		_numdata = _mesd.data[1];
 		_numbox = static_cast<char>(_numdata);
 		_box = static_cast<TmxBox>(_numbox);
-		TRACE("ID%d  Data%d\n",_mesd.id);
+		TRACE("ID%d  Data%d\n",_mesd.data[0],_numdata);
 	}
 
 	//LetterReceive();

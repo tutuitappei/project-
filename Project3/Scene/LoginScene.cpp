@@ -139,6 +139,7 @@ void LoginScene::Init(void)
 		lpNetwark.TmxCheck("map/untitled2.tmx");
 		lpNetwark.Oneletter();
 
+
 		data.first = imagepos.x;
 		data.second = imagepos.y;
 		NetWorkSend(lpNetwark.GetNetHandle(), &data, sizeof(data));
@@ -150,12 +151,14 @@ void LoginScene::Init(void)
 	{
 		lpNetwark.TmxChat();
 		lpNetwark.TmxDataRev();
+
 		if (GetNetWorkDataLength(lpNetwark.GetNetHandle()) >= sizeof(data))
 		{
 			NetWorkRecv(lpNetwark.GetNetHandle(), &data, sizeof(data));
 			imagepos.x = data.first;
 			imagepos.y = data.second;
 		}
+		lpNetwark.GetRevStanby();
 		lpNetwark.SendStart();
 	}
 	else
