@@ -84,6 +84,7 @@ private:
 	void LetterSet(void);
 	void LetterReceive(void);
 	void SetHeader(Header head, MesPacket pack);
+	void SendHeader(void);
 
 	//unsigned int lengthd;
 	//int count;

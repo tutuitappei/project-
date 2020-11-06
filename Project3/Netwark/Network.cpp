@@ -66,7 +66,7 @@ void Netwark::GetRevStanby(void)
 	_mesd.type = MesType::TMX_DATA;
 	while (_mesd.type != MesType::STANBY)
 	{
-		NetWorkRecv(lpNetwark.GetNetHandle(), &_mesd, sizeof(_mesd));
+		NetWorkRecv(GetNetHandle(), &_mesd, sizeof(_mesd));
 	}
 	TRACE("初期化情報の受信\n");
 }
@@ -88,7 +88,7 @@ void Netwark::SendStanby(void)
 	_mesd.data[0] = 0;
 	_mesd.data[1] = 0;
 	_mesd.type = MesType::STANBY;
-	NetWorkSend(lpNetwark.GetNetHandle(), &_mesd, sizeof(_mesd));
+	NetWorkSend(GetNetHandle(), &_mesd, sizeof(_mesd));
 	TRACE("開始待ち状態の送信\n");
 }
 
@@ -98,7 +98,7 @@ void Netwark::SendStart(void)
 	_mesd.data[0] = 0;
 	_mesd.data[1] = 0;
 	_mesd.type = MesType::GAME_S;
-	NetWorkSend(lpNetwark.GetNetHandle(), &_mesd, sizeof(_mesd));
+	NetWorkSend(GetNetHandle(), &_mesd, sizeof(_mesd));
 	TRACE("ゲーム開始合図の送信\n");
 }
 
@@ -133,9 +133,9 @@ void Netwark::TmxChat(void)
 	
 	while (_mesd.type != MesType::TMX_SIZE)
 	{
-		if (GetNetWorkDataLength(lpNetwark.GetNetHandle()) >= sizeof(_mesd))
+		if (GetNetWorkDataLength(GetNetHandle()) >= sizeof(_mesd))
 		{
-			NetWorkRecv(lpNetwark.GetNetHandle(), &_mesd, sizeof(_mesd));
+			NetWorkRecv(GetNetHandle(), &_mesd, sizeof(_mesd));
 			_box.resize(_mesd.data[0]);
 			TRACE("受け取ったサイズは%d\n", _mesd.data[0]);
 		}
@@ -157,7 +157,7 @@ void Netwark::TmxCheck(const char* filename)
 	_mesd.data[0] = fs.tellg();
 	_mesd.data[1] = 0;
 	TRACE("受け取ったサイズは%dです\n", _mesd.data[0]);
-	NetWorkSend(lpNetwark.GetNetHandle(), &_mesd, sizeof(_mesd));
+	NetWorkSend(GetNetHandle(), &_mesd, sizeof(_mesd));
 }
 
 void Netwark::TmxDataSend(void)
@@ -181,7 +181,7 @@ void Netwark::TmxDataRev(void)
 	char _numbox;
 	while ((_mesd.type != MesType::TMX_DATA)||(_mesd.data[0] != bot-88))
 	{
-		NetWorkRecv(lpNetwark.GetNetHandle(), &_mesd, sizeof(_mesd));
+		NetWorkRecv(GetNetHandle(), &_mesd, sizeof(_mesd));
 		_numdata = _mesd.data[1];
 		_numbox = static_cast<char>(_numdata);
 		_box = static_cast<TmxBox>(_numbox);
@@ -206,7 +206,7 @@ void Netwark::Oneletter(void)
 	while (ifs.get(_mapbox))
 	{
 		_mesd.data[1] = static_cast<int>(_mapbox);
-		NetWorkSend(lpNetwark.GetNetHandle(), &_mesd, sizeof(_mesd));
+		NetWorkSend(GetNetHandle(), &_mesd, sizeof(_mesd));
 		_mesd.data[0]++;
 		TRACE("送った文字数は%d\n", _mesd.data[0]);
 	}
@@ -250,9 +250,10 @@ void Netwark::LetterReceive(void)
 void Netwark::LetterSet(void)
 {
 	MesPacket _data;
-	SetHeader(Header{ MesType::STANBY,0,0,0 }, _data);
+	SetHeader(Header{ MesType::TMX_SIZE,0,0,1 }, _data);
 
 
+	NetWorkSend(GetNetHandle(), &_data, sizeof(_data));
 
 
 	MesData _mesd;
@@ -304,10 +305,15 @@ bool Netwark::SendWait(void)
 void Netwark::SetHeader(Header head, MesPacket pack)
 {
 	MesPacket _data;
-	_data.insert(pack.begin(), { head.hamu[0] });
+	//_data.insert(pack.begin(), { head.hamu[0] });
+	//_data.insert(pack.begin(), { head.hamu[1] });
+	//pack.insert(pack.begin(), { head.hamu[0] });
+	//pack.insert(pack.begin(), { head.hamu[1] });
 
-	_data.insert(pack.begin(), { head.hamu[1] });
+}
 
+void Netwark::SendHeader(void)
+{
 }
 
 Netwark::Netwark()
