@@ -24,14 +24,22 @@ struct MesData
 	//unsigned int length;
 	int data[2];
 };
+union Header
+{
+	MesData hd;
+	unsigned int hamu[2];
+};
 union unionData
 {
-	char cData[8];
+	//unsigned int uiData
+	//int iData;
+	//char cData[4];
 	int iData[2];
+	char cData[8];
 	long long lData;
 };
 
-
+using MesPacket = std::vector<unionData>;
 using TmxBox = std::vector<char>;
 
 class Netwark
@@ -75,6 +83,7 @@ private:
 	bool SendWait(void);
 	void LetterSet(void);
 	void LetterReceive(void);
+	void SetHeader(Header head, MesPacket pack);
 
 	//unsigned int lengthd;
 	//int count;

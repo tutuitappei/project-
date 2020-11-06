@@ -195,7 +195,6 @@ void Netwark::TmxDataRev(void)
 
 void Netwark::Oneletter(void)
 {
-
 	start = std::chrono::system_clock::now();
 	MesData _mesd;
 	_mesd.type = MesType::TMX_DATA;
@@ -203,6 +202,7 @@ void Netwark::Oneletter(void)
 	_mesd.data[1] = 0;
 	std::ifstream ifs("map/untitled2.tmx");
 	char _mapbox;
+
 	while (ifs.get(_mapbox))
 	{
 		_mesd.data[1] = static_cast<int>(_mapbox);
@@ -249,6 +249,12 @@ void Netwark::LetterReceive(void)
 
 void Netwark::LetterSet(void)
 {
+	MesPacket _data;
+	SetHeader(Header{ MesType::STANBY,0,0,0 }, _data);
+
+
+
+
 	MesData _mesd;
 	unionData _uniond;
 	_mesd.type = MesType::TMX_DATA;
@@ -293,6 +299,17 @@ bool Netwark::SendWait(void)
 	//}
 	return false;
 }
+
+
+void Netwark::SetHeader(Header head, MesPacket pack)
+{
+	MesPacket _data;
+	_data.insert(pack.begin(), { head.hamu[0] });
+
+	_data.insert(pack.begin(), { head.hamu[1] });
+
+}
+
 Netwark::Netwark()
 {
 }
