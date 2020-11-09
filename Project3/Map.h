@@ -5,6 +5,7 @@
 
 #define MAP_HEIGHT 17;
 #define MAP_WIDTH 21;
+#define MAP_CHIP_SIZE 32;
 
 enum class Layer
 {

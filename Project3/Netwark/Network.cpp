@@ -60,6 +60,11 @@ bool Netwark::GetActive(void)
 	return _state->GetActive();
 }
 
+bool Netwark::SetMestype(MesType _mtype)
+{
+	return false;
+}
+
 void Netwark::GetRevStanby(void)
 {
 	MesData _mesd;
@@ -126,8 +131,8 @@ void Netwark::TmxChat(void)
 {
 	MesData _mesd;
 	_mesd.type = MesType::STANBY;
-	_mesd.id = 0;
-	_mesd.chard = 0;
+	_mesd.sendID = 0;
+	_mesd.next = 0;
 	_mesd.data[0] = 0;
 	_mesd.data[1] = 0;
 	
@@ -152,8 +157,8 @@ void Netwark::TmxCheck(const char* filename)
 	std::ifstream fs(filename);
 	fs.seekg(0, std::ios_base::end);
 	_mesd.type = MesType::TMX_SIZE;
-	_mesd.id = 0;
-	_mesd.chard = 0;
+	_mesd.sendID = 0;
+	_mesd.next = 0;
 	_mesd.data[0] = fs.tellg();
 	_mesd.data[1] = 0;
 	TRACE("Žó‚¯Žæ‚Á‚½ƒTƒCƒY‚Í%d‚Å‚·\n", _mesd.data[0]);

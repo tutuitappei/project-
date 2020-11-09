@@ -10,6 +10,7 @@
 
 enum class MesType : unsigned char
 {
+	NON = 100,
 	STANBY,
 	GAME_S,
 	TMX_SIZE,
@@ -19,8 +20,8 @@ enum class MesType : unsigned char
 struct MesData
 {
 	MesType type;
-	unsigned char chard;
-	unsigned short id;
+	unsigned char next;		//データ送信が分割の場合に次があるかないか
+	unsigned short sendID;	//分割送信時のナンバリング
 	//unsigned int length;
 	int data[2];
 };
@@ -62,6 +63,7 @@ public:
 	NetworkMode GetNetWorkMode(void);
 	int GetNetHandle(void);
 	bool GetActive(void);
+	bool SetMestype(MesType _mtype);
 	void GetRevStanby(void);
 	void GetRevStart(void);
 	void SendStanby(void);

@@ -74,7 +74,7 @@ namespace TSX {
     if( root_node->first_node( "tile" ) != 0 ) {
       for( rapidxml::xml_node<>* tile_node = root_node->first_node( "tile" ); tile_node; tile_node = tile_node->next_sibling() ) {
         Tile tile;
-        //tile - id
+        //tile - sendID
         tile.id = std::atoi( tile_node->first_attribute( "id" )->value() );
         //tile - terrain
         std::string tmp = tile_node->first_attribute( "terrain" )->value();

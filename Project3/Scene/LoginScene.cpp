@@ -26,7 +26,7 @@ LoginScene::LoginScene()
 	do
 	{
 		TRACE("モード選択…\n0:ホスト\n1:ゲスト\n");
-		std::ifstream ifs("oldhost.txt");
+		std::ifstream ifs("ini/oldhost.txt");
 		if (!ifs) {
 			TRACE("前の相手のホストIPがありませんでした\n");
 		}
@@ -80,7 +80,7 @@ LoginScene::LoginScene()
 
 			lpNetwark.ConnectHost(hostIp);
 
-			std::ofstream ofs("oldhost.txt");
+			std::ofstream ofs("ini/oldhost.txt");
 			if (ofs)
 			{
 				ofs << ip << std::endl;

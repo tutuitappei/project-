@@ -23,7 +23,7 @@ Map::Map()
 
 
 	_maplayer = Layer::Bg;
-	_mapchip = 32;
+	_mapchip = MAP_CHIP_SIZE;
 	_mapPos.x = 0;
 	_mapPos.y = 0;
 	Init();
