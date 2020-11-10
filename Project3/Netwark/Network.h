@@ -32,9 +32,9 @@ union Header
 };
 union unionData
 {
-	//unsigned int uiData
+	unsigned int uiData;
 	//int iData;
-	//char cData[4];
+	//char cData[4];   //cData[0]→横のマス数:cData[1]→縦のマス数:cData[2]→レイヤーID:cData[3]→今は空の容量確保;
 	int iData[2];
 	char cData[8];
 	long long lData;
@@ -63,7 +63,8 @@ public:
 	NetworkMode GetNetWorkMode(void);
 	int GetNetHandle(void);
 	bool GetActive(void);
-	bool SetMestype(MesType _mtype);
+	bool SendMes(MesType _mtype);
+	bool SendMes(MesType _mtype, MesPacket _mpacket);
 	void GetRevStanby(void);
 	void GetRevStart(void);
 	void SendStanby(void);
