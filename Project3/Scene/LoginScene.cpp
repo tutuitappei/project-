@@ -107,6 +107,8 @@ LoginScene::LoginScene()
 
 	Init();
 
+
+	lpScene.ChangeScene(SCENE::GAME);
 }
 
 LoginScene::~LoginScene()
@@ -137,6 +139,7 @@ void LoginScene::Init(void)
 	if (lpNetwark.GetNetWorkMode() == NetworkMode::HOST)
 	{
 		lpNetwark.TmxCheck("map/untitled2.tmx");
+		//lpNetwark.TmxCheck("map/movetest.tmx");
 		lpNetwark.Oneletter();
 
 
@@ -208,7 +211,5 @@ void LoginScene::Updata(void)
 
 	//}
 
-
-	
 
 }

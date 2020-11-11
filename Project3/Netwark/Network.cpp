@@ -250,6 +250,7 @@ void Netwark::Oneletter(void)
 	_mesd.data[0] = 0;
 	_mesd.data[1] = 0;
 	std::ifstream ifs("map/untitled2.tmx");
+	//std::ifstream ifs("map/movetest.tmx");
 	char _mapbox;
 
 	while (ifs.get(_mapbox))
@@ -311,6 +312,7 @@ void Netwark::LetterSet(void)
 	_mesd.data[0] = 0;
 	_mesd.data[1] = 0;
 	std::ifstream ifs("map/untitled2.tmx");
+	//std::ifstream ifs("map/movetest.tmx");
 	std::string fs;
 	//std::iostream 
 
