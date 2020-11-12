@@ -23,9 +23,11 @@ GameScene::~GameScene()
 
 void GameScene::Draw(void)
 {
+	for (int a = 0; a < playernum; a++)
+	{
+		DrawGraph(imagepos[a].x, imagepos[a].y, imagechar[a][((animCnt / 8) % 4 * 5) + static_cast<int>(_dir[a])], true);
+	}
 
-	DrawGraph(imagepos[playerID].x, imagepos[playerID].y, imagechar[playerID][((animCnt / 8) % 4 * 5) + static_cast<int>(_dir[playerID])], true);
-	
 	_map.DrawMap(Layer::Bg);
 	_map.DrawMap(Layer::Item);
 	_map.DrawMap(Layer::Obj);
@@ -55,7 +57,7 @@ void GameScene::Init(void)
 	{
 		playernum = 1;
 		playerID = 0;
-		TRACE("プレイヤーの数 % d人\n", playernum);
+		TRACE("プレイヤーの数%d人\n", playernum);
 	}
 	else
 	{
@@ -188,6 +190,44 @@ void GameScene::HostUpdata(void)
 
 void GameScene::GestUpdata(void)
 {
+	if (!lpNetwark.CheckLost())
+	{
+		if (GetNetWorkDataLength(lpNetwark.GetNetHandle()) >= sizeof(data))
+		{
+			NetWorkRecv(lpNetwark.GetNetHandle(), &data, sizeof(data));
+			imagepos[0].x += data.first;
+			imagepos[0].y += data.second;
+		}
+	}
+	else
+	{
+		lpNetwark.ChecLink();
+	}
+
+
+	if (GetJoypadInputState(DX_INPUT_KEY_PAD1) & PAD_INPUT_DOWN)
+	{
+		imagepos[1].y += 10;
+		lengy = 10;
+	}
+	if (GetJoypadInputState(DX_INPUT_KEY_PAD1) & PAD_INPUT_UP)
+	{
+		imagepos[1].y -= 10;
+		lengy = -10;
+	}
+	if (GetJoypadInputState(DX_INPUT_KEY_PAD1) & PAD_INPUT_LEFT)
+	{
+		imagepos[1].x -= 10;
+		lendx = -10;
+	}
+	if (GetJoypadInputState(DX_INPUT_KEY_PAD1) & PAD_INPUT_RIGHT)
+	{
+		imagepos[1].x += 10;
+		lendx = 10;
+	}
+	data.first = lendx;
+	data.second = lengy;
+	NetWorkSend(lpNetwark.GetNetHandle(), &data, sizeof(data));
 }
 
 void GameScene::OffLineUpdata(void)
