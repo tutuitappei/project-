@@ -11,6 +11,9 @@
 
 GameScene::GameScene()
 {
+	data.first = 0;
+	data.second = 0;
+	aliveFrag = true;
 	Init();
 }
 
@@ -20,6 +23,13 @@ GameScene::~GameScene()
 
 void GameScene::Draw(void)
 {
+
+	DrawGraph(imagepos[playerID].x, imagepos[playerID].y, imagechar[playerID][((animCnt / 8) % 4 * 5) + static_cast<int>(_dir[playerID])], true);
+	
+	_map.DrawMap(Layer::Bg);
+	_map.DrawMap(Layer::Item);
+	_map.DrawMap(Layer::Obj);
+	_map.DrawMap(Layer::Char);
 }
 
 void GameScene::Init(void)
@@ -27,32 +37,45 @@ void GameScene::Init(void)
 	if ((lpNetwark.GetNetWorkMode() == NetworkMode::HOST) || (lpNetwark.GetNetWorkMode() == NetworkMode::GEST))
 	{
 		playernum = 2;
+		TRACE("プレイヤーの数%d人\n", playernum);
+		if ((lpNetwark.GetNetWorkMode() == NetworkMode::HOST))
+		{
+			playerID = 0;
+		}
+		else if ((lpNetwark.GetNetWorkMode() == NetworkMode::GEST))
+		{
+			playerID = 1;
+		}
+		else
+		{
+			TRACE("ホストかゲストを取得できてないじゃないですか～。やだ～www。\n");
+		}
 	}
 	else if (lpNetwark.GetNetWorkMode() == NetworkMode::OFF)
 	{
 		playernum = 1;
+		playerID = 0;
+		TRACE("プレイヤーの数 % d人\n", playernum);
 	}
 	else
 	{
-		TRACE("現在のネットワーク状態を取得できてないじゃないですか～。やだ～。\n")
+		TRACE("現在のネットワーク状態を取得できてないじゃないですか～。やだ～www。\n");
 	}
+
+	_dir[playerID] = DIR::DOWN;
 	for (int a = 0; a < playernum; a++)
 	{
-		if ()
-		{
-
-		}
+		LoadDivGraph("image/bomberman.png", 20, 5, 4, 32, 50, imagechar[a]);
 	}
+
+	controller = std::make_unique<Pad>();
+	controller->Setup(playernum);
 }
 
 void GameScene::Updata(void)
 {
 	//GameSceneに移す
-	int lendx = 0;
-	int lengy = 0;
-	std::pair<int, int> data;
-	data.first = 0;
-	data.second = 0;
+
 	if (lpNetwark.GetNetWorkMode() == NetworkMode::HOST)
 	{
 		if (!lpNetwark.CheckLost())
@@ -60,8 +83,8 @@ void GameScene::Updata(void)
 			if (GetNetWorkDataLength(lpNetwark.GetNetHandle()) >= sizeof(data))
 			{
 				NetWorkRecv(lpNetwark.GetNetHandle(), &data, sizeof(data));
-				imagepos.x += data.first;
-				imagepos.y += data.second;
+				imagepos[1].x += data.first;
+				imagepos[1].y += data.second;
 			}
 		}
 		else
@@ -95,23 +118,111 @@ void GameScene::Updata(void)
 	{
 		if (GetJoypadInputState(DX_INPUT_KEY_PAD1) & PAD_INPUT_DOWN)
 		{
-			imagepos.y += 10;
+			SetDir(DIR::DOWN);
+			imagepos[0].y += 10;
 		}
 		if (GetJoypadInputState(DX_INPUT_KEY_PAD1) & PAD_INPUT_UP)
 		{
-			imagepos.y -= 10;
+			SetDir(DIR::UP);
+			imagepos[0].y -= 10;
 		}
 		if (GetJoypadInputState(DX_INPUT_KEY_PAD1) & PAD_INPUT_LEFT)
 		{
-			imagepos.x -= 10;
+			SetDir(DIR::LEFT);
+			imagepos[0].x -= 10;
 		}
 		if (GetJoypadInputState(DX_INPUT_KEY_PAD1) & PAD_INPUT_RIGHT)
 		{
-			imagepos.x += 10;
+			SetDir(DIR::RIGHT);
+			imagepos[0].x += 10;
 		}
 	}
 	else
 	{
 		TRACE("ゲーム中に異常が発生しました\n");
 	}
+	animCnt++;
+}
+
+void GameScene::HostUpdata(void)
+{
+	if (!lpNetwark.CheckLost())
+	{
+		if (GetNetWorkDataLength(lpNetwark.GetNetHandle()) >= sizeof(data))
+		{
+			NetWorkRecv(lpNetwark.GetNetHandle(), &data, sizeof(data));
+			imagepos[1].x += data.first;
+			imagepos[1].y += data.second;
+		}
+	}
+	else
+	{
+		lpNetwark.ChecLink();
+	}
+
+
+	if (GetJoypadInputState(DX_INPUT_KEY_PAD1) & PAD_INPUT_DOWN)
+	{
+		imagepos[0].y += 10;
+		lengy = 10;
+	}
+	if (GetJoypadInputState(DX_INPUT_KEY_PAD1) & PAD_INPUT_UP)
+	{
+		imagepos[0].y -= 10;
+		lengy = -10;
+	}
+	if (GetJoypadInputState(DX_INPUT_KEY_PAD1) & PAD_INPUT_LEFT)
+	{
+		imagepos[0].x -= 10;
+		lendx = -10;
+	}
+	if (GetJoypadInputState(DX_INPUT_KEY_PAD1) & PAD_INPUT_RIGHT)
+	{
+		imagepos[0].x += 10;
+		lendx = 10;
+	}
+	data.first = lendx;
+	data.second = lengy;
+	NetWorkSend(lpNetwark.GetNetHandle(), &data, sizeof(data));
+}
+
+void GameScene::GestUpdata(void)
+{
+}
+
+void GameScene::OffLineUpdata(void)
+{
+	if (GetJoypadInputState(DX_INPUT_KEY_PAD1) & PAD_INPUT_DOWN)
+	{
+		SetDir(DIR::DOWN);
+		imagepos[0].y += 10;
+	}
+	if (GetJoypadInputState(DX_INPUT_KEY_PAD1) & PAD_INPUT_UP)
+	{
+		SetDir(DIR::UP);
+		imagepos[0].y -= 10;
+	}
+	if (GetJoypadInputState(DX_INPUT_KEY_PAD1) & PAD_INPUT_LEFT)
+	{
+		SetDir(DIR::LEFT);
+		imagepos[0].x -= 10;
+	}
+	if (GetJoypadInputState(DX_INPUT_KEY_PAD1) & PAD_INPUT_RIGHT)
+	{
+		SetDir(DIR::RIGHT);
+		imagepos[0].x += 10;
+	}
+}
+
+void GameScene::SetDir(DIR dir)
+{
+	for (int a = 0; a < playernum; a++)
+	{
+		_dir[a] = dir;
+	}
+}
+
+bool GameScene::CheckAlive(void)
+{
+	return aliveFrag;
 }

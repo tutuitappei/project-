@@ -107,8 +107,6 @@ LoginScene::LoginScene()
 
 	Init();
 
-
-	lpScene.ChangeScene(SCENE::GAME);
 }
 
 LoginScene::~LoginScene()
@@ -177,6 +175,9 @@ void LoginScene::Init(void)
 
 void LoginScene::Updata(void)
 {
+
+
+	lpScene.ChangeScene(SCENE::GAME);
 	//for (auto data : controller->GetCntData())
 	//{
 

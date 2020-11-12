@@ -9,7 +9,7 @@
 
 Title::Title()
 {
-	
+	Init();
 }
 
 Title::~Title()
@@ -18,11 +18,13 @@ Title::~Title()
 
 void Title::Draw(void)
 {
+	GetDrawScreenSize(&Screensizex, &Screensizey);
 }
 
 void Title::Init(void)
 {
-
+	Screensizex = 0;
+	Screensizey = 0;
 }
 
 void Title::Updata(void)

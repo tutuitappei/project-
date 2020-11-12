@@ -5,9 +5,9 @@
 enum class InputID
 {
 	Up,
+	Right,
 	Down,
 	Left,
-	Right,
 	Btn1,
 	Btn2,
 	Max

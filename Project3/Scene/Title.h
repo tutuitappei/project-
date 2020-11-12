@@ -15,10 +15,8 @@ public:
 	void Init(void);
 	void Updata(void)override;
 private:
-	std::unique_ptr<Controller> controller;
 
-	Vector2 imagepos;
-	int _image;
-
+	int Screensizex;
+	int Screensizey;
 };
 
