@@ -12,9 +12,9 @@ bool Pad::Setup(int no)
 	{
 		_inputTbl = {
 			{InputID::Up,PAD_INPUT_UP},
-			{InputID::Right,PAD_INPUT_RIGHT},
 			{InputID::Down,PAD_INPUT_DOWN},
 			{InputID::Left,PAD_INPUT_LEFT},
+			{InputID::Right,PAD_INPUT_RIGHT},
 			{InputID::Btn1,PAD_INPUT_1},
 			{InputID::Btn2,PAD_INPUT_2}
 		};
@@ -23,9 +23,9 @@ bool Pad::Setup(int no)
 	{
 		_inputTbl = {
 			{InputID::Up,PAD_INPUT_UP},
-			{InputID::Right,PAD_INPUT_RIGHT},
 			{InputID::Down,PAD_INPUT_DOWN},
 			{InputID::Left,PAD_INPUT_LEFT},
+			{InputID::Right,PAD_INPUT_RIGHT},
 			{InputID::Btn1,PAD_INPUT_1},
 			{InputID::Btn2,PAD_INPUT_2}
 		};

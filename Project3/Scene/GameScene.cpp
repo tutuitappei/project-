@@ -25,7 +25,7 @@ void GameScene::Draw(void)
 {
 	for (int a = 0; a < playernum; a++)
 	{
-		DrawGraph(imagepos[a].x, imagepos[a].y, imagechar[a][((animCnt / 8) % 4 * 5) + static_cast<int>(_dir[a])], true);
+		DrawGraph(imagepos[a].x, imagepos[a].y, imagechar[a][(((animCnt / 10) % 2 + 2) * 5) + static_cast<int>(_dir[a])], true);
 	}
 
 	_map.DrawMap(Layer::Bg);
@@ -153,8 +153,11 @@ void GameScene::HostUpdata(void)
 		if (GetNetWorkDataLength(lpNetwark.GetNetHandle()) >= sizeof(data))
 		{
 			NetWorkRecv(lpNetwark.GetNetHandle(), &data, sizeof(data));
-			imagepos[1].x += data.first;
-			imagepos[1].y += data.second;
+			if ((imagepos[1].x != data.first)||(imagepos[1].y != data.second))
+			{
+				imagepos[1].x += data.first;
+				imagepos[1].y += data.second;
+			}
 		}
 	}
 	else
@@ -195,8 +198,12 @@ void GameScene::GestUpdata(void)
 		if (GetNetWorkDataLength(lpNetwark.GetNetHandle()) >= sizeof(data))
 		{
 			NetWorkRecv(lpNetwark.GetNetHandle(), &data, sizeof(data));
-			imagepos[0].x += data.first;
-			imagepos[0].y += data.second;
+			if ((imagepos[0].x != data.first) || (imagepos[0].y != data.second))
+			{
+				imagepos[0].x += data.first;
+				imagepos[0].y += data.second;
+			}
+
 		}
 	}
 	else

@@ -6,12 +6,19 @@
 
 enum class DIR
 {
-	UP,
-	RIGHT,
 	DOWN,
 	LEFT,
+	UP,
+	RIGHT,
 	DEAD,
 	MAX
+};
+
+enum class Animstate
+{
+	Idel,
+	Walk,
+	Max
 };
 
 class GameScene :
