@@ -1,25 +1,10 @@
 #pragma once
 #include "BaseScene.h"
 #include"../input/Controller.h"
+#include"../Obj/Player.h"
+#include"../Obj/Block.h"
 #include"../Map.h"
 #include"../Vector2.h"
-
-enum class DIR
-{
-	DOWN,
-	LEFT,
-	UP,
-	RIGHT,
-	DEAD,
-	MAX
-};
-
-enum class Animstate
-{
-	Idel,
-	Walk,
-	Max
-};
 
 class GameScene :
     public BaseScene
@@ -38,14 +23,13 @@ private:
 	void GestUpdata(void);
 	void OffLineUpdata(void);
 	void SetDir(DIR dir);
-	bool CheckAlive(void);
+	bool CheckAlive(int pnum);
 
 	int playernum = 0;
-	int playerID = 0;
 
 	Vector2 imagepos[2];
 	int imagechar[2][20];
-	bool aliveFrag;
+	bool aliveFrag[2];
 
 	int animCnt;
 
@@ -55,6 +39,8 @@ private:
 
 	DIR _dir[2];
 
+	Player _player;
+	Block _block;
 	Layer _layer;
 	Map _map;
 };

@@ -152,6 +152,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Obj\Block.cpp" />
+    <ClCompile Include="Obj\Obj.cpp" />
+    <ClCompile Include="Obj\Player.cpp" />
     <ClCompile Include="Scene\GameScene.cpp" />
     <ClCompile Include="include\src\TMXParser.cpp" />
     <ClCompile Include="include\src\TSXParser.cpp" />
@@ -171,7 +174,10 @@
     <ClCompile Include="_debug\_DebugDispOut.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Obj\Block.h" />
     <ClInclude Include="details\Vector2.h" />
+    <ClInclude Include="Obj\Obj.h" />
+    <ClInclude Include="Obj\Player.h" />
     <ClInclude Include="Scene\GameScene.h" />
     <ClInclude Include="include\rapidxml\rapidxml.hpp" />
     <ClInclude Include="include\rapidxml\rapidxml_iterators.hpp" />

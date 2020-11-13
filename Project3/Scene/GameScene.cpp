@@ -13,7 +13,6 @@ GameScene::GameScene()
 {
 	data.first = 0;
 	data.second = 0;
-	aliveFrag = true;
 	Init();
 }
 
@@ -23,9 +22,11 @@ GameScene::~GameScene()
 
 void GameScene::Draw(void)
 {
+	
 	for (int a = 0; a < playernum; a++)
 	{
-		DrawGraph(imagepos[a].x, imagepos[a].y, imagechar[a][(((animCnt / 10) % 2 + 2) * 5) + static_cast<int>(_dir[a])], true);
+		//auto animmode = ;
+		DrawGraph(imagepos[a].x, imagepos[a].y, imagechar[a][(((animCnt / 10) % 4) * 5) + static_cast<int>(_dir[a])], true);
 	}
 
 	_map.DrawMap(Layer::Bg);
@@ -68,6 +69,8 @@ void GameScene::Init(void)
 	for (int a = 0; a < playernum; a++)
 	{
 		LoadDivGraph("image/bomberman.png", 20, 5, 4, 32, 50, imagechar[a]);
+
+		aliveFrag[a] = true;
 	}
 
 	controller = std::make_unique<Pad>();
@@ -142,6 +145,12 @@ void GameScene::Updata(void)
 	else
 	{
 		TRACE("ÉQÅ[ÉÄíÜÇ…àŸèÌÇ™î≠ê∂ÇµÇ‹ÇµÇΩ\n");
+	}
+	_player.Update();
+	_block.Update();
+	for (int a = 0; a < playernum; a++)
+	{
+		CheckAlive(a);
 	}
 	animCnt++;
 }
@@ -269,7 +278,7 @@ void GameScene::SetDir(DIR dir)
 	}
 }
 
-bool GameScene::CheckAlive(void)
+bool GameScene::CheckAlive(int pnum)
 {
-	return aliveFrag;
+	return aliveFrag[pnum];
 }
