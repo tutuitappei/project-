@@ -4,7 +4,6 @@
 #include<sstream>
 #include "LoginScene.h"
 #include "Title.h"
-#include"../Vector2.h"
 #include "SceneManager.h"
 #include"../Netwark/Network.h"
 #include"../_debug/_DebugConOut.h"
@@ -136,8 +135,8 @@ void LoginScene::Init(void)
 	data.second = 0;
 	if (lpNetwark.GetNetWorkMode() == NetworkMode::HOST)
 	{
-		lpNetwark.TmxCheck("map/untitled2.tmx");
-		//lpNetwark.TmxCheck("map/movetest.tmx");
+		//lpNetwark.TmxCheck("map/untitled2.tmx");
+		lpNetwark.TmxCheck("map/movetest.tmx");
 		lpNetwark.Oneletter();
 
 

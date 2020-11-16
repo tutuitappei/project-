@@ -2,6 +2,7 @@
 #include <string>
 #include "Obj.h"
 #include"Block.h"
+#include"../input/Controller.h"
 #include"../Map.h"
 #include"../Vector2.h"
 
@@ -29,11 +30,14 @@ public:
     Player();
     ~Player();
 
+
+    void SetID(int num);
+    int CheckID(void);
+
     void Update(void) override;
     void DrawObj(void) override;
 private:
     void Init(void);
-    int CheckID();
     void SetMap(void);
     void SetAnimSt(void);
 
@@ -49,5 +53,6 @@ private:
 
     std::pair<DIR, Animstate> _state;
     int playerID = 0;
+    Vector2 _pos = { 0,0 };
 };
 

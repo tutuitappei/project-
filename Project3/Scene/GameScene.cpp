@@ -3,7 +3,6 @@
 #include <string>
 #include<sstream>
 #include "GameScene.h"
-#include"../Vector2.h"
 #include "SceneManager.h"
 #include"../Netwark/Network.h"
 #include"../_debug/_DebugConOut.h"

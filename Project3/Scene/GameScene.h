@@ -26,6 +26,7 @@ private:
 	bool CheckAlive(int pnum);
 
 	int playernum = 0;
+	int playerID = 0;
 
 	Vector2 imagepos[2];
 	int imagechar[2][20];
