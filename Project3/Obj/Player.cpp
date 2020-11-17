@@ -1,4 +1,5 @@
 #include<DxLib.h>
+#include<functional>
 #include"../Netwark/Network.h"
 #include "Player.h"
 #include"../_debug/_DebugConOut.h"
@@ -61,6 +62,11 @@ int Player::CheckID(void)
 	return playerID;
 }
 
+int Player::CheckDrop(unsigned int time, int num)
+{
+	return num / (time / 60);
+}
+
 bool Player::Alive(void)
 {
 	return false;
@@ -68,6 +74,7 @@ bool Player::Alive(void)
 
 void Player::Move(void)
 {
+
 	if (CheckAnimSt(_state.second) && CheckMove(_state.first))
 	{
 
@@ -76,6 +83,7 @@ void Player::Move(void)
 
 bool Player::CheckMove(DIR _dir)
 {
+
 	return true;
 }
 

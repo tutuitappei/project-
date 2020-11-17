@@ -33,6 +33,7 @@ public:
 
     void SetID(int num);
     int CheckID(void);
+    int CheckDrop(unsigned int time, int num);
 
     void Update(void) override;
     void DrawObj(void) override;

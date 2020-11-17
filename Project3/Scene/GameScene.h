@@ -33,6 +33,8 @@ private:
 	bool aliveFrag[2];
 
 	int animCnt;
+	unsigned int framCnt;
+	unsigned int oldfCnt;
 
 	int lendx = 0;
 	int lengy = 0;

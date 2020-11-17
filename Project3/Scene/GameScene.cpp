@@ -12,6 +12,9 @@ GameScene::GameScene()
 {
 	data.first = 0;
 	data.second = 0;
+	animCnt = 0;
+	oldfCnt = 0;
+	framCnt = 0;
 	Init();
 }
 
@@ -151,7 +154,9 @@ void GameScene::Updata(void)
 	{
 		CheckAlive(a);
 	}
+	oldfCnt = framCnt;
 	animCnt++;
+	framCnt++;
 }
 
 void GameScene::HostUpdata(void)
