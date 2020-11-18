@@ -23,14 +23,12 @@ private:
 	void GestUpdata(void);
 	void OffLineUpdata(void);
 	void SetDir(DIR dir);
-	bool CheckAlive(int pnum);
 
 	int playernum = 0;
 	int playerID = 0;
 
 	Vector2 imagepos[2];
 	int imagechar[2][20];
-	bool aliveFrag[2];
 
 	int animCnt;
 	unsigned int framCnt;

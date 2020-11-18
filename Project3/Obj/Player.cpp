@@ -10,6 +10,7 @@ Player::Player()
 	_state.first = DIR::DOWN;
 	_state.second = Animstate::Idel;
 
+	aliveFrag[CheckID()] = true;
 	Init();
 }
 
@@ -19,7 +20,10 @@ Player::~Player()
 
 void Player::Update(void)
 {
-	Move();
+	if (CheckAlive(playerID))
+	{
+		Move();
+	}
 }
 
 void Player::DrawObj(void)
@@ -83,7 +87,10 @@ void Player::Move(void)
 
 bool Player::CheckMove(DIR _dir)
 {
-
+	if (static_cast<int>(_dir) > static_cast<int>(DIR::RIGHT))
+	{
+		return false;
+	}
 	return true;
 }
 
@@ -106,4 +113,14 @@ void Player::GestUpdata(void)
 
 void Player::OffLineUpdata(void)
 {
+}
+
+bool Player::CheckAlive(int pnum)
+{
+	aliveFrag[pnum] = true;
+	if (CheckHitKey(KEY_INPUT_O))
+	{
+		aliveFrag[pnum] = false;
+	}
+	return aliveFrag[pnum];
 }

@@ -46,6 +46,7 @@ private:
     void Move(void);
 
     bool CheckMove(DIR _dir);
+    bool CheckAlive(int pnum);
     bool CheckAnimSt(Animstate _as);
 
     void HostUpdata(void);
@@ -55,5 +56,6 @@ private:
     std::pair<DIR, Animstate> _state;
     int playerID = 0;
     Vector2 _pos = { 0,0 };
+    bool aliveFrag[2];
 };
 

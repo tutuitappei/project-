@@ -71,8 +71,6 @@ void GameScene::Init(void)
 	for (int a = 0; a < playernum; a++)
 	{
 		LoadDivGraph("image/bomberman.png", 20, 5, 4, 32, 50, imagechar[a]);
-
-		aliveFrag[a] = true;
 	}
 
 	controller = std::make_unique<Pad>();
@@ -83,196 +81,193 @@ void GameScene::Updata(void)
 {
 	//GameSceneÇ…à⁄Ç∑
 
-	if (lpNetwark.GetNetWorkMode() == NetworkMode::HOST)
-	{
-		if (!lpNetwark.CheckLost())
-		{
-			if (GetNetWorkDataLength(lpNetwark.GetNetHandle()) >= sizeof(data))
-			{
-				NetWorkRecv(lpNetwark.GetNetHandle(), &data, sizeof(data));
-				imagepos[1].x += data.first;
-				imagepos[1].y += data.second;
-			}
-		}
-		else
-		{
-			lpNetwark.ChecLink();
-		}
-	}
-	else if (lpNetwark.GetNetWorkMode() == NetworkMode::GEST)
-	{
-		if (GetJoypadInputState(DX_INPUT_KEY_PAD1) & PAD_INPUT_DOWN)
-		{
-			lengy = 10;
-		}
-		if (GetJoypadInputState(DX_INPUT_KEY_PAD1) & PAD_INPUT_UP)
-		{
-			lengy = -10;
-		}
-		if (GetJoypadInputState(DX_INPUT_KEY_PAD1) & PAD_INPUT_LEFT)
-		{
-			lendx = -10;
-		}
-		if (GetJoypadInputState(DX_INPUT_KEY_PAD1) & PAD_INPUT_RIGHT)
-		{
-			lendx = 10;
-		}
-		data.first = lendx;
-		data.second = lengy;
-		NetWorkSend(lpNetwark.GetNetHandle(), &data, sizeof(data));
-	}
-	else if (lpNetwark.GetNetWorkMode() == NetworkMode::OFF)
-	{
-		if (GetJoypadInputState(DX_INPUT_KEY_PAD1) & PAD_INPUT_DOWN)
-		{
-			SetDir(DIR::DOWN);
-			imagepos[0].y += 10;
-		}
-		if (GetJoypadInputState(DX_INPUT_KEY_PAD1) & PAD_INPUT_UP)
-		{
-			SetDir(DIR::UP);
-			imagepos[0].y -= 10;
-		}
-		if (GetJoypadInputState(DX_INPUT_KEY_PAD1) & PAD_INPUT_LEFT)
-		{
-			SetDir(DIR::LEFT);
-			imagepos[0].x -= 10;
-		}
-		if (GetJoypadInputState(DX_INPUT_KEY_PAD1) & PAD_INPUT_RIGHT)
-		{
-			SetDir(DIR::RIGHT);
-			imagepos[0].x += 10;
-		}
-	}
-	else
-	{
-		TRACE("ÉQÅ[ÉÄíÜÇ…àŸèÌÇ™î≠ê∂ÇµÇ‹ÇµÇΩ\n");
-	}
+	//if (lpNetwark.GetNetWorkMode() == NetworkMode::HOST)
+	//{
+	//	if (!lpNetwark.CheckLost())
+	//	{
+	//		if (GetNetWorkDataLength(lpNetwark.GetNetHandle()) >= sizeof(data))
+	//		{
+	//			NetWorkRecv(lpNetwark.GetNetHandle(), &data, sizeof(data));
+	//			imagepos[1].x += data.first;
+	//			imagepos[1].y += data.second;
+	//		}
+	//	}
+	//	else
+	//	{
+	//		lpNetwark.ChecLink();
+	//	}
+	//}
+	//else if (lpNetwark.GetNetWorkMode() == NetworkMode::GEST)
+	//{
+	//	if (GetJoypadInputState(DX_INPUT_KEY_PAD1) & PAD_INPUT_DOWN)
+	//	{
+	//		lengy = 10;
+	//	}
+	//	if (GetJoypadInputState(DX_INPUT_KEY_PAD1) & PAD_INPUT_UP)
+	//	{
+	//		lengy = -10;
+	//	}
+	//	if (GetJoypadInputState(DX_INPUT_KEY_PAD1) & PAD_INPUT_LEFT)
+	//	{
+	//		lendx = -10;
+	//	}
+	//	if (GetJoypadInputState(DX_INPUT_KEY_PAD1) & PAD_INPUT_RIGHT)
+	//	{
+	//		lendx = 10;
+	//	}
+	//	data.first = lendx;
+	//	data.second = lengy;
+	//	NetWorkSend(lpNetwark.GetNetHandle(), &data, sizeof(data));
+	//}
+	//else if (lpNetwark.GetNetWorkMode() == NetworkMode::OFF)
+	//{
+	//	if (GetJoypadInputState(DX_INPUT_KEY_PAD1) & PAD_INPUT_DOWN)
+	//	{
+	//		SetDir(DIR::DOWN);
+	//		imagepos[0].y += 10;
+	//	}
+	//	if (GetJoypadInputState(DX_INPUT_KEY_PAD1) & PAD_INPUT_UP)
+	//	{
+	//		SetDir(DIR::UP);
+	//		imagepos[0].y -= 10;
+	//	}
+	//	if (GetJoypadInputState(DX_INPUT_KEY_PAD1) & PAD_INPUT_LEFT)
+	//	{
+	//		SetDir(DIR::LEFT);
+	//		imagepos[0].x -= 10;
+	//	}
+	//	if (GetJoypadInputState(DX_INPUT_KEY_PAD1) & PAD_INPUT_RIGHT)
+	//	{
+	//		SetDir(DIR::RIGHT);
+	//		imagepos[0].x += 10;
+	//	}
+	//}
+	//else
+	//{
+	//	TRACE("ÉQÅ[ÉÄíÜÇ…àŸèÌÇ™î≠ê∂ÇµÇ‹ÇµÇΩ\n");
+	//}
 	_player.Update();
 	_block.Update();
-	for (int a = 0; a < playernum; a++)
-	{
-		CheckAlive(a);
-	}
+
 	oldfCnt = framCnt;
 	animCnt++;
 	framCnt++;
 }
-
-void GameScene::HostUpdata(void)
-{
-	if (!lpNetwark.CheckLost())
-	{
-		if (GetNetWorkDataLength(lpNetwark.GetNetHandle()) >= sizeof(data))
-		{
-			NetWorkRecv(lpNetwark.GetNetHandle(), &data, sizeof(data));
-			if ((imagepos[1].x != data.first)||(imagepos[1].y != data.second))
-			{
-				imagepos[1].x += data.first;
-				imagepos[1].y += data.second;
-			}
-		}
-	}
-	else
-	{
-		lpNetwark.ChecLink();
-	}
-
-
-	if (GetJoypadInputState(DX_INPUT_KEY_PAD1) & PAD_INPUT_DOWN)
-	{
-		imagepos[0].y += 10;
-		lengy = 10;
-	}
-	if (GetJoypadInputState(DX_INPUT_KEY_PAD1) & PAD_INPUT_UP)
-	{
-		imagepos[0].y -= 10;
-		lengy = -10;
-	}
-	if (GetJoypadInputState(DX_INPUT_KEY_PAD1) & PAD_INPUT_LEFT)
-	{
-		imagepos[0].x -= 10;
-		lendx = -10;
-	}
-	if (GetJoypadInputState(DX_INPUT_KEY_PAD1) & PAD_INPUT_RIGHT)
-	{
-		imagepos[0].x += 10;
-		lendx = 10;
-	}
-	data.first = lendx;
-	data.second = lengy;
-	NetWorkSend(lpNetwark.GetNetHandle(), &data, sizeof(data));
-}
-
-void GameScene::GestUpdata(void)
-{
-	if (!lpNetwark.CheckLost())
-	{
-		if (GetNetWorkDataLength(lpNetwark.GetNetHandle()) >= sizeof(data))
-		{
-			NetWorkRecv(lpNetwark.GetNetHandle(), &data, sizeof(data));
-			if ((imagepos[0].x != data.first) || (imagepos[0].y != data.second))
-			{
-				imagepos[0].x += data.first;
-				imagepos[0].y += data.second;
-			}
-
-		}
-	}
-	else
-	{
-		lpNetwark.ChecLink();
-	}
-
-
-	if (GetJoypadInputState(DX_INPUT_KEY_PAD1) & PAD_INPUT_DOWN)
-	{
-		imagepos[1].y += 10;
-		lengy = 10;
-	}
-	if (GetJoypadInputState(DX_INPUT_KEY_PAD1) & PAD_INPUT_UP)
-	{
-		imagepos[1].y -= 10;
-		lengy = -10;
-	}
-	if (GetJoypadInputState(DX_INPUT_KEY_PAD1) & PAD_INPUT_LEFT)
-	{
-		imagepos[1].x -= 10;
-		lendx = -10;
-	}
-	if (GetJoypadInputState(DX_INPUT_KEY_PAD1) & PAD_INPUT_RIGHT)
-	{
-		imagepos[1].x += 10;
-		lendx = 10;
-	}
-	data.first = lendx;
-	data.second = lengy;
-	NetWorkSend(lpNetwark.GetNetHandle(), &data, sizeof(data));
-}
-
-void GameScene::OffLineUpdata(void)
-{
-	if (GetJoypadInputState(DX_INPUT_KEY_PAD1) & PAD_INPUT_DOWN)
-	{
-		SetDir(DIR::DOWN);
-		imagepos[0].y += 10;
-	}
-	if (GetJoypadInputState(DX_INPUT_KEY_PAD1) & PAD_INPUT_UP)
-	{
-		SetDir(DIR::UP);
-		imagepos[0].y -= 10;
-	}
-	if (GetJoypadInputState(DX_INPUT_KEY_PAD1) & PAD_INPUT_LEFT)
-	{
-		SetDir(DIR::LEFT);
-		imagepos[0].x -= 10;
-	}
-	if (GetJoypadInputState(DX_INPUT_KEY_PAD1) & PAD_INPUT_RIGHT)
-	{
-		SetDir(DIR::RIGHT);
-		imagepos[0].x += 10;
-	}
-}
+//
+//void GameScene::HostUpdata(void)
+//{
+//	if (!lpNetwark.CheckLost())
+//	{
+//		if (GetNetWorkDataLength(lpNetwark.GetNetHandle()) >= sizeof(data))
+//		{
+//			NetWorkRecv(lpNetwark.GetNetHandle(), &data, sizeof(data));
+//			if ((imagepos[1].x != data.first)||(imagepos[1].y != data.second))
+//			{
+//				imagepos[1].x += data.first;
+//				imagepos[1].y += data.second;
+//			}
+//		}
+//	}
+//	else
+//	{
+//		lpNetwark.ChecLink();
+//	}
+//
+//
+//	if (GetJoypadInputState(DX_INPUT_KEY_PAD1) & PAD_INPUT_DOWN)
+//	{
+//		imagepos[0].y += 10;
+//		lengy = 10;
+//	}
+//	if (GetJoypadInputState(DX_INPUT_KEY_PAD1) & PAD_INPUT_UP)
+//	{
+//		imagepos[0].y -= 10;
+//		lengy = -10;
+//	}
+//	if (GetJoypadInputState(DX_INPUT_KEY_PAD1) & PAD_INPUT_LEFT)
+//	{
+//		imagepos[0].x -= 10;
+//		lendx = -10;
+//	}
+//	if (GetJoypadInputState(DX_INPUT_KEY_PAD1) & PAD_INPUT_RIGHT)
+//	{
+//		imagepos[0].x += 10;
+//		lendx = 10;
+//	}
+//	data.first = lendx;
+//	data.second = lengy;
+//	NetWorkSend(lpNetwark.GetNetHandle(), &data, sizeof(data));
+//}
+//
+//void GameScene::GestUpdata(void)
+//{
+//	if (!lpNetwark.CheckLost())
+//	{
+//		if (GetNetWorkDataLength(lpNetwark.GetNetHandle()) >= sizeof(data))
+//		{
+//			NetWorkRecv(lpNetwark.GetNetHandle(), &data, sizeof(data));
+//			if ((imagepos[0].x != data.first) || (imagepos[0].y != data.second))
+//			{
+//				imagepos[0].x += data.first;
+//				imagepos[0].y += data.second;
+//			}
+//
+//		}
+//	}
+//	else
+//	{
+//		lpNetwark.ChecLink();
+//	}
+//
+//
+//	if (GetJoypadInputState(DX_INPUT_KEY_PAD1) & PAD_INPUT_DOWN)
+//	{
+//		imagepos[1].y += 10;
+//		lengy = 10;
+//	}
+//	if (GetJoypadInputState(DX_INPUT_KEY_PAD1) & PAD_INPUT_UP)
+//	{
+//		imagepos[1].y -= 10;
+//		lengy = -10;
+//	}
+//	if (GetJoypadInputState(DX_INPUT_KEY_PAD1) & PAD_INPUT_LEFT)
+//	{
+//		imagepos[1].x -= 10;
+//		lendx = -10;
+//	}
+//	if (GetJoypadInputState(DX_INPUT_KEY_PAD1) & PAD_INPUT_RIGHT)
+//	{
+//		imagepos[1].x += 10;
+//		lendx = 10;
+//	}
+//	data.first = lendx;
+//	data.second = lengy;
+//	NetWorkSend(lpNetwark.GetNetHandle(), &data, sizeof(data));
+//}
+//
+//void GameScene::OffLineUpdata(void)
+//{
+//	if (GetJoypadInputState(DX_INPUT_KEY_PAD1) & PAD_INPUT_DOWN)
+//	{
+//		SetDir(DIR::DOWN);
+//		imagepos[0].y += 10;
+//	}
+//	if (GetJoypadInputState(DX_INPUT_KEY_PAD1) & PAD_INPUT_UP)
+//	{
+//		SetDir(DIR::UP);
+//		imagepos[0].y -= 10;
+//	}
+//	if (GetJoypadInputState(DX_INPUT_KEY_PAD1) & PAD_INPUT_LEFT)
+//	{
+//		SetDir(DIR::LEFT);
+//		imagepos[0].x -= 10;
+//	}
+//	if (GetJoypadInputState(DX_INPUT_KEY_PAD1) & PAD_INPUT_RIGHT)
+//	{
+//		SetDir(DIR::RIGHT);
+//		imagepos[0].x += 10;
+//	}
+//}
 
 void GameScene::SetDir(DIR dir)
 {
@@ -282,7 +277,3 @@ void GameScene::SetDir(DIR dir)
 	}
 }
 
-bool GameScene::CheckAlive(int pnum)
-{
-	return aliveFrag[pnum];
-}
