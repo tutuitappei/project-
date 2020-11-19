@@ -89,9 +89,12 @@ bool Player::Alive(void)
 void Player::Move(void)
 {
 
-	if (CheckAnimSt(_state.second) && CheckMove(_state.first))
+	if (CheckMove(_state.first))
 	{
-
+		if ((lpNetwark.GetNetWorkMode() == NetworkMode::OFF))
+		{
+			DefUpdata();
+		}
 	}
 }
 
@@ -115,26 +118,33 @@ bool Player::CheckAnimSt(Animstate _as)
 
 void Player::DefUpdata(void)
 {
-	std::pair<int, int> data;
+	MesPacket mpacket;
+	unionData umdata;
+
 		if (GetJoypadInputState(DX_INPUT_KEY_PAD1) & PAD_INPUT_DOWN)
 	{
-		_pos.y = 10;
+		_pos.y += 10;
+		SetDir(DIR::DOWN);
 	}
 	if (GetJoypadInputState(DX_INPUT_KEY_PAD1) & PAD_INPUT_UP)
 	{
-		_pos.y = -10;
+		_pos.y += -10;
+		SetDir(DIR::UP);
 	}
 	if (GetJoypadInputState(DX_INPUT_KEY_PAD1) & PAD_INPUT_LEFT)
 	{
-		_pos.x = -10;
+		_pos.x += -10;
+		SetDir(DIR::LEFT);
 	}
 	if (GetJoypadInputState(DX_INPUT_KEY_PAD1) & PAD_INPUT_RIGHT)
 	{
-		_pos.x = 10;
+		_pos.x += 10;
+		SetDir(DIR::RIGHT);
 	}
-	data.first = _pos.x;
-	data.second = _pos.y;
-	NetWorkSend(lpNetwark.GetNetHandle(), &data, sizeof(data));
+	umdata.iData[0] = _pos.x;
+	umdata.iData[1] = _pos.y;
+	//lpNetwark.SendMes(MesType::POS, mpacket);
+	//lpNetwark.GetNetHandle(), & data, sizeof(data)
 }
 
 void Player::NetUpdata(void)
@@ -156,7 +166,7 @@ void Player::NetUpdata(void)
 	}
 }
 
-void Player::OutUpdata(void)
+void Player::AutUpdata(void)
 {
 }
 
@@ -166,6 +176,7 @@ bool Player::CheckAlive(int pnum)
 	if (CheckHitKey(KEY_INPUT_O))
 	{
 		aliveFrag[pnum] = false;
+		SetDir(DIR::DEAD);
 	}
 	return aliveFrag[pnum];
 }

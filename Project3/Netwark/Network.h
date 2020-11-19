@@ -16,6 +16,8 @@ enum class MesType : unsigned char
 	TMX_SIZE,
 	TMX_DATA,
 	POS,
+	BOM_SET,
+	MAX
 };
 struct MesData
 {
@@ -40,6 +42,8 @@ union unionData
 };
 
 using MesPacket = std::vector<unionData>;
+using RevPacket = std::pair<MesType, MesPacket>;
+using MesPacketList = std::vector<RevPacket>;
 using TmxBox = std::vector<char>;
 
 class Netwark
@@ -64,6 +68,7 @@ public:
 	bool GetActive(void);
 	bool SendMes(MesType _mtype);
 	bool SendMes(MesType _mtype, MesPacket _mpacket);
+	void RecvMes(void);
 	void GetRevStanby(void);
 	void GetRevStart(void);
 	void SendStanby(void);
@@ -91,7 +96,7 @@ private:
 	//unsigned int lengthd;
 	//int count;
 	//int volume;
-
+	MesPacketList list;
 	TmxBox _box;
 	int bot = 0;
 	std::unique_ptr <NetWorkst> _state;

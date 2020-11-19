@@ -54,7 +54,7 @@ private:
 
     void DefUpdata(void);
     void NetUpdata(void);
-    void OutUpdata(void);
+    void AutUpdata(void);
 
     std::pair<DIR, Animstate> _state;
     int imagechar[2][20];

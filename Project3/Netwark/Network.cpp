@@ -109,6 +109,55 @@ bool Netwark::SendMes(MesType _mtype, MesPacket _mpacket)
 	return false;
 }
 
+void Netwark::RecvMes(void)
+{
+	//int _intSendCnt = 1400;
+
+	//MesData data;
+	//data.sendID = 0;
+	//Header header;
+
+	//_mpacket.insert(_mpacket.begin(), { header.hamu[1] });
+	//_mpacket.insert(_mpacket.begin(), { header.hamu[0] });
+
+	//auto _headerSize = sizeof header;
+
+	RevPacket _mpacket;
+	MesType _mtype{ MesType::NON };
+	Header header(Header{ _mtype,0,0,0 });
+	auto _headerSize = sizeof header;
+
+	NetWorkRecv(GetNetHandle(), &_mpacket, sizeof(_mpacket));
+	list.push_back((header.hd.type, _mpacket));
+
+	//do
+	//{
+	//	if (_mpacket.size() < _intSendCnt)
+	//	{
+	//		//header.hd.lenght = _mpacket.size() - 2;
+	//		header.hd.next = 0;
+
+	//		NetWorkSend(GetNetHandle(), &_mpacket, sizeof(_mpacket));
+	//		_mpacket.erase(_mpacket.begin() + _headerSize, _mpacket.end());
+	//	}
+	//	else if (_mpacket.size() >= _intSendCnt)
+	//	{
+	//		//header.hd.lenght = _intSendCnt - 2;
+	//		header.hd.next = 1;
+
+
+	//		NetWorkSend(GetNetHandle(), &_mpacket, sizeof(_intSendCnt));
+	//		_mpacket.erase(_mpacket.begin() + _headerSize, _mpacket.begin() + _intSendCnt);
+	//	}
+	//	else
+	//	{
+	//		TRACE("_mpacket.size‚à‚µ‚­‚Í_intSendCnt‚ªˆÙí‚Å‚·\n");
+	//	}
+	//	data.sendID++;
+	//} while (header.hd.next != 0);
+
+}
+
 void Netwark::GetRevStanby(void)
 {
 	MesData _mesd;

@@ -27,6 +27,8 @@ void GameScene::Draw(void)
 	_map.DrawMap(Layer::Item);
 	_map.DrawMap(Layer::Obj);
 	_map.DrawMap(Layer::Char);
+
+	_player.DrawObj();
 }
 
 void GameScene::Init(void)
