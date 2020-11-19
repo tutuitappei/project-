@@ -9,8 +9,10 @@ Player::Player()
 {
 	_state.first = DIR::DOWN;
 	_state.second = Animstate::Idel;
-
 	aliveFrag[CheckID()] = true;
+
+	animCnt = 0;
+
 	Init();
 }
 
@@ -24,10 +26,13 @@ void Player::Update(void)
 	{
 		Move();
 	}
+
+	animCnt++;
 }
 
 void Player::DrawObj(void)
 {
+	DrawGraph(_pos.x, _pos.y, imagechar[CheckID()][(((animCnt / 10) % 4) * 5) + static_cast<int>(_dir[CheckID()])], true);
 }
 
 void Player::SetMap(void)
@@ -54,6 +59,11 @@ void Player::Init(void)
 		_pos.x = data.first;
 		_pos.y = data.second;
 	}
+
+	LoadDivGraph("image/bomberman.png", 20, 5, 4, 32, 50, imagechar[CheckID()]);
+
+	controller = std::make_unique<Pad>();
+	controller->Setup(CheckID());
 }
 
 void Player::SetID(int num)
@@ -103,15 +113,50 @@ bool Player::CheckAnimSt(Animstate _as)
 	return false;
 }
 
-void Player::HostUpdata(void)
+void Player::DefUpdata(void)
 {
+	std::pair<int, int> data;
+		if (GetJoypadInputState(DX_INPUT_KEY_PAD1) & PAD_INPUT_DOWN)
+	{
+		_pos.y = 10;
+	}
+	if (GetJoypadInputState(DX_INPUT_KEY_PAD1) & PAD_INPUT_UP)
+	{
+		_pos.y = -10;
+	}
+	if (GetJoypadInputState(DX_INPUT_KEY_PAD1) & PAD_INPUT_LEFT)
+	{
+		_pos.x = -10;
+	}
+	if (GetJoypadInputState(DX_INPUT_KEY_PAD1) & PAD_INPUT_RIGHT)
+	{
+		_pos.x = 10;
+	}
+	data.first = _pos.x;
+	data.second = _pos.y;
+	NetWorkSend(lpNetwark.GetNetHandle(), &data, sizeof(data));
 }
 
-void Player::GestUpdata(void)
+void Player::NetUpdata(void)
 {
+	std::pair<int, int> data;
+
+		if (!lpNetwark.CheckLost())
+	{
+		if (GetNetWorkDataLength(lpNetwark.GetNetHandle()) >= sizeof(data))
+		{
+			NetWorkRecv(lpNetwark.GetNetHandle(), &data, sizeof(data));
+			_pos.x += data.first;
+			_pos.y += data.second;
+		}
+	}
+	else
+	{
+		lpNetwark.ChecLink();
+	}
 }
 
-void Player::OffLineUpdata(void)
+void Player::OutUpdata(void)
 {
 }
 
@@ -123,4 +168,9 @@ bool Player::CheckAlive(int pnum)
 		aliveFrag[pnum] = false;
 	}
 	return aliveFrag[pnum];
+}
+
+void Player::SetDir(DIR dir)
+{
+	_dir[CheckID()] = dir;
 }

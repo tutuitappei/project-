@@ -38,9 +38,12 @@ public:
     void Update(void) override;
     void DrawObj(void) override;
 private:
+    std::unique_ptr<Controller> controller;
+
     void Init(void);
     void SetMap(void);
     void SetAnimSt(void);
+    void SetDir(DIR dir);
 
     bool Alive(void);
     void Move(void);
@@ -49,13 +52,18 @@ private:
     bool CheckAlive(int pnum);
     bool CheckAnimSt(Animstate _as);
 
-    void HostUpdata(void);
-    void GestUpdata(void);
-    void OffLineUpdata(void);
+    void DefUpdata(void);
+    void NetUpdata(void);
+    void OutUpdata(void);
 
     std::pair<DIR, Animstate> _state;
+    int imagechar[2][20];
     int playerID = 0;
+    DIR _dir[2];
     Vector2 _pos = { 0,0 };
     bool aliveFrag[2];
+
+
+    int animCnt;
 };
 

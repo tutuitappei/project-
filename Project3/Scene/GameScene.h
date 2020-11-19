@@ -17,28 +17,16 @@ public:
 	void Init(void);
 	void Updata(void)override;
 private:
-	std::unique_ptr<Controller> controller;
-
-	void HostUpdata(void);
-	void GestUpdata(void);
-	void OffLineUpdata(void);
-	void SetDir(DIR dir);
 
 	int playernum = 0;
 	int playerID = 0;
 
-	Vector2 imagepos[2];
-	int imagechar[2][20];
-
-	int animCnt;
 	unsigned int framCnt;
 	unsigned int oldfCnt;
 
 	int lendx = 0;
 	int lengy = 0;
 	std::pair<int, int> data;
-
-	DIR _dir[2];
 
 	Player _player;
 	Block _block;
