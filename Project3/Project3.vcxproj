@@ -152,6 +152,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="input\Keyboard1.cpp" />
     <ClCompile Include="Obj\Bomb.cpp" />
     <ClCompile Include="Obj\Block.cpp" />
     <ClCompile Include="Obj\Obj.cpp" />
@@ -175,6 +176,7 @@
     <ClCompile Include="_debug\_DebugDispOut.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="input\Keyboard1.h" />
     <ClInclude Include="Obj\Bomb.h" />
     <ClInclude Include="Obj\Block.h" />
     <ClInclude Include="details\Vector2.h" />

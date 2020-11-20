@@ -3,14 +3,17 @@
 #include"../Netwark/Network.h"
 #include "Player.h"
 #include"../_debug/_DebugConOut.h"
+#include"../input/Keyboard1.h"
 #include"../input/Pad.h"
 
 Player::Player()
 {
+	cdir.first = InputID::Down;
+	cdir.second = InputID::Down;
 	_state.first = DIR::DOWN;
 	_state.second = Animstate::Idel;
 	aliveFrag[CheckID()] = true;
-
+	_bpos = { _pos.x,_pos.y + (PL_Y - HBlockSize) };
 	animCnt = 0;
 
 	Init();
@@ -22,6 +25,19 @@ Player::~Player()
 
 void Player::Update(void)
 {
+
+	if (CheckHitKey(KEY_INPUT_PGUP))
+	{
+		controller = std::make_unique<Pad>();
+		controller->Setup(CheckID());
+	}
+	else if (CheckHitKey(KEY_INPUT_PGDN))
+	{
+		controller = std::make_unique<Keyboard1>();
+		controller->Setup(CheckID());
+	}
+
+	(*controller)();
 	if (CheckAlive(playerID))
 	{
 		Move();
@@ -32,6 +48,7 @@ void Player::Update(void)
 
 void Player::DrawObj(void)
 {
+	DrawBox(_bpos.x, _bpos.y, _bpos.x + PL_X, _bpos.y + HBlockSize, 0xffffff, false);
 	DrawGraph(_pos.x, _pos.y, imagechar[CheckID()][(((animCnt / 10) % 4) * 5) + static_cast<int>(_dir[CheckID()])], true);
 }
 
@@ -61,8 +78,9 @@ void Player::Init(void)
 	}
 
 	LoadDivGraph("image/bomberman.png", 20, 5, 4, 32, 50, imagechar[CheckID()]);
-
-	controller = std::make_unique<Pad>();
+	
+	controller = std::make_unique<Keyboard1>();
+	//controller = std::make_unique<Pad>();
 	controller->Setup(CheckID());
 }
 
@@ -98,6 +116,29 @@ void Player::Move(void)
 	}
 }
 
+bool Player::hitOBject(void)
+{
+	return false;
+}
+
+InputID Player::CheckDIR(void)
+{
+	for (auto &data : controller->GetCntData())
+	{
+		if (data.second[static_cast<int>(Trg::Now)] && !data.second[static_cast<int>(Trg::Old)])
+		{
+			cdir.second = data.first;
+			break;
+		}
+	}
+	if (cdir.first != cdir.second)
+	{
+		cdir.first = cdir.second;
+	}
+
+	return cdir.first;
+}
+
 bool Player::CheckMove(DIR _dir)
 {
 	if (static_cast<int>(_dir) > static_cast<int>(DIR::RIGHT))
@@ -121,25 +162,51 @@ void Player::DefUpdata(void)
 	MesPacket mpacket;
 	unionData umdata;
 
-		if (GetJoypadInputState(DX_INPUT_KEY_PAD1) & PAD_INPUT_DOWN)
+	for (auto &data : controller->GetCntData())
 	{
-		_pos.y += 10;
-		SetDir(DIR::DOWN);
-	}
-	if (GetJoypadInputState(DX_INPUT_KEY_PAD1) & PAD_INPUT_UP)
-	{
-		_pos.y += -10;
-		SetDir(DIR::UP);
-	}
-	if (GetJoypadInputState(DX_INPUT_KEY_PAD1) & PAD_INPUT_LEFT)
-	{
-		_pos.x += -10;
-		SetDir(DIR::LEFT);
-	}
-	if (GetJoypadInputState(DX_INPUT_KEY_PAD1) & PAD_INPUT_RIGHT)
-	{
-		_pos.x += 10;
-		SetDir(DIR::RIGHT);
+		if ((data.second[static_cast<int>(Trg::Now)]))
+		{
+			if ((CheckDIR() == InputID::Down)&&(data.first == CheckDIR()))
+			{
+				if (!hitOBject())
+				{
+					_pos.y += 10;
+					_bpos.y += 10;
+				}
+				SetDir(DIR::DOWN);
+				break;
+			}
+			if ((CheckDIR() == InputID::Up) && (data.first == CheckDIR()))
+			{
+				if (!hitOBject())
+				{
+					_pos.y += -10;
+					_bpos.y += -10;
+				}
+				SetDir(DIR::UP);
+				break;
+			}
+			if ((CheckDIR() == InputID::Left) && (data.first == CheckDIR()))
+			{
+				if (!hitOBject())
+				{
+					_pos.x += -10;
+					_bpos.x += -10;
+				}
+				SetDir(DIR::LEFT);
+				break;
+			}
+			if ((CheckDIR() == InputID::Right) && (data.first == CheckDIR()))
+			{
+				if (!hitOBject())
+				{
+					_pos.x += 10;
+					_bpos.x += 10;
+				}
+				SetDir(DIR::RIGHT);
+				break;
+			}
+		}
 	}
 	umdata.iData[0] = _pos.x;
 	umdata.iData[1] = _pos.y;
@@ -172,7 +239,6 @@ void Player::AutUpdata(void)
 
 bool Player::CheckAlive(int pnum)
 {
-	aliveFrag[pnum] = true;
 	if (CheckHitKey(KEY_INPUT_O))
 	{
 		aliveFrag[pnum] = false;

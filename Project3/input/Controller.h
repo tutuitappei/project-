@@ -5,7 +5,7 @@
 
 enum class ContType
 {
-	//Key,
+	Key,
 	//Mouse,
 	Pad,
 	Max

@@ -19,7 +19,7 @@ bool Pad::Setup(int no)
 			{InputID::Btn2,PAD_INPUT_2}
 		};
 	}
-	if (no == 1)
+	else
 	{
 		_inputTbl = {
 			{InputID::Up,PAD_INPUT_UP},

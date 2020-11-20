@@ -6,6 +6,11 @@
 #include"../Map.h"
 #include"../Vector2.h"
 
+
+#define PL_X 32
+#define PL_Y 50
+#define HBlockSize 32
+
 enum class DIR
 {
     DOWN,
@@ -48,6 +53,9 @@ private:
     bool Alive(void);
     void Move(void);
 
+    bool hitOBject(void);
+
+    InputID CheckDIR(void);
     bool CheckMove(DIR _dir);
     bool CheckAlive(int pnum);
     bool CheckAnimSt(Animstate _as);
@@ -61,8 +69,10 @@ private:
     int playerID = 0;
     DIR _dir[2];
     Vector2 _pos = { 0,0 };
+    Vector2 _bpos;
     bool aliveFrag[2];
 
+    std::pair<InputID, InputID> cdir;
 
     int animCnt;
 };
