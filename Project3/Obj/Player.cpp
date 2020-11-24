@@ -1,7 +1,7 @@
 #include<DxLib.h>
 #include<functional>
 #include"../Netwark/Network.h"
-#include "Player.h"
+#include"Player.h"
 #include"../_debug/_DebugConOut.h"
 #include"../input/Keyboard1.h"
 #include"../input/Pad.h"
@@ -162,11 +162,11 @@ void Player::DefUpdata(void)
 	MesPacket mpacket;
 	unionData umdata;
 
-	for (auto &data : controller->GetCntData())
+	for (auto& data : controller->GetCntData())
 	{
 		if ((data.second[static_cast<int>(Trg::Now)]))
 		{
-			if ((CheckDIR() == InputID::Down)&&(data.first == CheckDIR()))
+			if ((CheckDIR() == InputID::Down) && (data.first == CheckDIR()))
 			{
 				if (!hitOBject())
 				{
@@ -207,11 +207,19 @@ void Player::DefUpdata(void)
 				break;
 			}
 		}
+		umdata.iData[0] = _pos.x;
+		umdata.iData[1] = _pos.y;
+		//lpNetwark.SendMes(MesType::POS, mpacket);
+		//lpNetwark.GetNetHandle(), & data, sizeof(data)
+
+		if ((data.second[static_cast<int>(Trg::Now)])&& !(data.second[static_cast<int>(Trg::Old)]))
+		{
+			if (data.first == InputID::Btn1)
+			{
+				_bomb.InstanceBomb(_bpos.x, _bpos.y, CheckID());
+			}
+		}
 	}
-	umdata.iData[0] = _pos.x;
-	umdata.iData[1] = _pos.y;
-	//lpNetwark.SendMes(MesType::POS, mpacket);
-	//lpNetwark.GetNetHandle(), & data, sizeof(data)
 }
 
 void Player::NetUpdata(void)

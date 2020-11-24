@@ -17,6 +17,7 @@ enum class MesType : unsigned char
 	TMX_DATA,
 	POS,
 	BOM_SET,
+	DETH,
 	MAX
 };
 struct MesData

@@ -1,9 +1,10 @@
 #pragma once
 #include <string>
 #include "Obj.h"
-#include"Block.h"
 #include"../input/Controller.h"
 #include"../Map.h"
+#include"Bomb.h"
+#include"Block.h"
 #include"../Vector2.h"
 
 
@@ -75,5 +76,8 @@ private:
     std::pair<InputID, InputID> cdir;
 
     int animCnt;
+
+    Block _block;
+    Bomb _bomb;
 };
 
