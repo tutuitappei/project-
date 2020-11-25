@@ -216,6 +216,7 @@ void Player::DefUpdata(void)
 		{
 			if (data.first == InputID::Btn1)
 			{
+				//lpNetwark.SendMes(MesType::BOM_SET, mpacket);
 				_bomb.InstanceBomb(_bpos.x, _bpos.y, CheckID());
 			}
 		}
