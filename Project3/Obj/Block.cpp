@@ -16,6 +16,13 @@ void Block::DrawObj(void)
 {
 }
 
+Vector2 Block::ChangPosTile(Vector2 pos)
+{
+	_changpos.x = pos.x / 32;
+	_changpos.y = pos.y / 32;
+	return _changpos;
+}
+
 void Block::SetMap(void)
 {
 }

@@ -43,6 +43,7 @@ public:
 
     void Update(void) override;
     void DrawObj(void) override;
+    Vector2 ChangPosTile(Vector2 pos) override;
 private:
     std::unique_ptr<Controller> controller;
 
@@ -54,7 +55,7 @@ private:
     bool Alive(void);
     void Move(void);
 
-    bool hitOBject(void);
+    bool hitObject(void);
 
     InputID CheckDIR(void);
     bool CheckMove(DIR _dir);
@@ -71,6 +72,7 @@ private:
     DIR _dir[2];
     Vector2 _pos = { 0,0 };
     Vector2 _bpos;
+    Vector2 _changpos;
     bool aliveFrag[2];
 
     std::pair<InputID, InputID> cdir;

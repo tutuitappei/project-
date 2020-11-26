@@ -12,11 +12,14 @@ public:
 
     void Update(void) override;
     void DrawObj(void) override;
+    Vector2 ChangPosTile(Vector2 pos) override;
 private:
     void Init(void);
     void SetMap(void);
 
     bool Alive(void);
     void Break(void);
+
+    Vector2 _changpos;
 };
 

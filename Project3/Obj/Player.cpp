@@ -36,11 +36,15 @@ void Player::Update(void)
 		controller = std::make_unique<Keyboard1>();
 		controller->Setup(CheckID());
 	}
+	else
+	{
+	}
 
 	(*controller)();
 	if (CheckAlive(playerID))
 	{
 		Move();
+		ChangPosTile(_bpos);
 	}
 
 	animCnt++;
@@ -50,6 +54,13 @@ void Player::DrawObj(void)
 {
 	DrawBox(_bpos.x, _bpos.y, _bpos.x + PL_X, _bpos.y + HBlockSize, 0xffffff, false);
 	DrawGraph(_pos.x, _pos.y, imagechar[CheckID()][(((animCnt / 10) % 4) * 5) + static_cast<int>(_dir[CheckID()])], true);
+}
+
+Vector2 Player::ChangPosTile(Vector2 pos)
+{
+	_changpos.x = pos.x / HBlockSize;
+	_changpos.y = pos.y / HBlockSize;
+	return _changpos;
 }
 
 void Player::SetMap(void)
@@ -116,8 +127,12 @@ void Player::Move(void)
 	}
 }
 
-bool Player::hitOBject(void)
+bool Player::hitObject(void)
 {
+	//if ()
+	//{
+	//	return true;
+	//}
 	return false;
 }
 
@@ -168,7 +183,7 @@ void Player::DefUpdata(void)
 		{
 			if ((CheckDIR() == InputID::Down) && (data.first == CheckDIR()))
 			{
-				if (!hitOBject())
+				if (!hitObject())
 				{
 					_pos.y += 10;
 					_bpos.y += 10;
@@ -178,7 +193,7 @@ void Player::DefUpdata(void)
 			}
 			if ((CheckDIR() == InputID::Up) && (data.first == CheckDIR()))
 			{
-				if (!hitOBject())
+				if (!hitObject())
 				{
 					_pos.y += -10;
 					_bpos.y += -10;
@@ -188,7 +203,7 @@ void Player::DefUpdata(void)
 			}
 			if ((CheckDIR() == InputID::Left) && (data.first == CheckDIR()))
 			{
-				if (!hitOBject())
+				if (!hitObject())
 				{
 					_pos.x += -10;
 					_bpos.x += -10;
@@ -198,7 +213,7 @@ void Player::DefUpdata(void)
 			}
 			if ((CheckDIR() == InputID::Right) && (data.first == CheckDIR()))
 			{
-				if (!hitOBject())
+				if (!hitObject())
 				{
 					_pos.x += 10;
 					_bpos.x += 10;
