@@ -19,6 +19,20 @@ Player::Player()
 	Init();
 }
 
+Player::Player(Vector2 vec, int id)
+{
+	cdir.first = InputID::Down;
+	cdir.second = InputID::Down;
+	_state.first = DIR::DOWN;
+	_state.second = Animstate::Idel;
+	aliveFrag[CheckID()] = true;
+	_pos = vec;
+	_bpos = { _pos.x,_pos.y + (PL_Y - HBlockSize) };
+	animCnt = 0;
+	SetID(id);
+	Init();
+}
+
 Player::~Player()
 {
 }
@@ -50,12 +64,13 @@ void Player::Update(void)
 void Player::DrawObj(void)
 {
 	DrawBox(_bpos.x, _bpos.y, _bpos.x + PL_X, _bpos.y + HBlockSize, 0xffffff, false);
-	DrawGraph(_pos.x, _pos.y, imagechar[CheckID()][(((animCnt / 10) % 4) * 5) + static_cast<int>(_dir[CheckID()])], true);
 
-	for (auto&& bom:_bombvec)
+	for (auto&& bom : _bombvec)
 	{
 		bom->DrawObj();
 	}
+
+	DrawGraph(_pos.x, _pos.y, imagechar[CheckID()][(((animCnt / 10) % 4) * 5) + static_cast<int>(_dir[CheckID()])], true);
 }
 
 Vector2 Player::ChangPosTile(Vector2 pos)

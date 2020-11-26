@@ -37,6 +37,7 @@ class Player :
 {
 public:
     Player();
+    Player(Vector2 vec, int id);
     ~Player();
 
 
