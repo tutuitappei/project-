@@ -17,6 +17,7 @@ void Fire::Update(void)
 
 void Fire::Draw(void)
 {
+	//DrawRotaGraph()
 }
 
 void Fire::AddFire(int a)
@@ -26,7 +27,7 @@ void Fire::AddFire(int a)
 
 void Fire::Init(void)
 {
-	LoadDivGraph("fire.png", 12, 3, 4, 20, 20, &fireimage, true);
+	LoadDivGraph("fire.png", 12, 3, 4, 32, 32, fireimage, true);
 }
 
 void Fire::timeclock(void)

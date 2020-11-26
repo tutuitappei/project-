@@ -36,9 +36,6 @@ void Player::Update(void)
 		controller = std::make_unique<Keyboard1>();
 		controller->Setup(CheckID());
 	}
-	else
-	{
-	}
 
 	(*controller)();
 	if (CheckAlive(playerID))
@@ -54,6 +51,11 @@ void Player::DrawObj(void)
 {
 	DrawBox(_bpos.x, _bpos.y, _bpos.x + PL_X, _bpos.y + HBlockSize, 0xffffff, false);
 	DrawGraph(_pos.x, _pos.y, imagechar[CheckID()][(((animCnt / 10) % 4) * 5) + static_cast<int>(_dir[CheckID()])], true);
+
+	for (auto&& bom:_bombvec)
+	{
+		bom->DrawObj();
+	}
 }
 
 Vector2 Player::ChangPosTile(Vector2 pos)
@@ -125,6 +127,14 @@ void Player::Move(void)
 			DefUpdata();
 		}
 	}
+}
+
+void Player::InstanceBomb(int x, int y, int PLID)
+{
+	Vector2 bombpos = { x,y };
+
+	auto id = PLID;
+	_bombvec.emplace(_bombvec.begin(), std::make_unique<Bomb>(bombpos, id));
 }
 
 bool Player::hitObject(void)
@@ -232,7 +242,7 @@ void Player::DefUpdata(void)
 			if (data.first == InputID::Btn1)
 			{
 				//lpNetwark.SendMes(MesType::BOM_SET, mpacket);
-				_bomb.InstanceBomb(_bpos.x, _bpos.y, CheckID());
+				InstanceBomb(_bpos.x, _bpos.y, CheckID());
 			}
 		}
 	}
@@ -267,6 +277,7 @@ bool Player::CheckAlive(int pnum)
 	{
 		aliveFrag[pnum] = false;
 		SetDir(DIR::DEAD);
+		//lpNetwark.SendMes(MesType::DETH, mpacket);
 	}
 	return aliveFrag[pnum];
 }

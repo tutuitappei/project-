@@ -17,7 +17,7 @@ private:
 	void Init(void);
 	void timeclock(void);
 
-	int fireimage;
+	int fireimage[12];
 	int _longFire;
 
 	std::chrono::system_clock::time_point  start, end;

@@ -1,4 +1,5 @@
 #pragma once
+#include<vector>
 #include <string>
 #include "Obj.h"
 #include"../input/Controller.h"
@@ -7,6 +8,8 @@
 #include"Block.h"
 #include"../Vector2.h"
 
+
+using ShareB = std::shared_ptr<Bomb>;
 
 #define PL_X 32
 #define PL_Y 50
@@ -55,6 +58,8 @@ private:
     bool Alive(void);
     void Move(void);
 
+
+    void InstanceBomb(int x, int y, int PLID);
     bool hitObject(void);
 
     InputID CheckDIR(void);
@@ -75,6 +80,7 @@ private:
     Vector2 _changpos;
     bool aliveFrag[2];
 
+    std::vector<ShareB> _bombvec;
     std::pair<InputID, InputID> cdir;
 
     int animCnt;
