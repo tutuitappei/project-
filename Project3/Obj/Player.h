@@ -1,5 +1,6 @@
 #pragma once
 #include<vector>
+#include<chrono>
 #include <string>
 #include "Obj.h"
 #include"../input/Controller.h"
@@ -14,6 +15,8 @@ using ShareB = std::shared_ptr<Bomb>;
 #define PL_X 32
 #define PL_Y 50
 #define HBlockSize 32
+#define DefSpeed 2
+#define MaxSpeed 8
 
 enum class DIR
 {
@@ -83,6 +86,8 @@ private:
 
     std::vector<ShareB> _bombvec;
     std::pair<InputID, InputID> cdir;
+
+    std::chrono::system_clock::time_point  start, end;
 
     int animCnt;
 

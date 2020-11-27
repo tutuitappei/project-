@@ -172,6 +172,7 @@
     <ClCompile Include="Scene\BaseScene.cpp" />
     <ClCompile Include="Scene\Scenemanager.cpp" />
     <ClCompile Include="Scene\Title.cpp" />
+    <ClCompile Include="TimeKeeper.cpp" />
     <ClCompile Include="Transition\Transition.cpp" />
     <ClCompile Include="_debug\_DebugConOut.cpp" />
     <ClCompile Include="_debug\_DebugDispOut.cpp" />
@@ -207,6 +208,7 @@
     <ClInclude Include="Scene\BaseScene.h" />
     <ClInclude Include="Scene\Scenemanager.h" />
     <ClInclude Include="Scene\Title.h" />
+    <ClInclude Include="TimeKeeper.h" />
     <ClInclude Include="Transition\Transition.h" />
     <ClInclude Include="Vector2.h" />
     <ClInclude Include="_debug\_DebugConOut.h" />

@@ -4,6 +4,8 @@
 #include"../Vector2.h"
 #include "Obj.h"
 
+#define MaxBombID 4
+
 class Bomb :
     public Obj
 {
@@ -28,5 +30,7 @@ private:
     int playerID;
     int hostID;
     int bomdid = 0;
+
+    std::chrono::system_clock::time_point  start, end;
 };
 

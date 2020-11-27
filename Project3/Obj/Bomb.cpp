@@ -2,6 +2,7 @@
 #include"../Netwark/Network.h"
 #include "Bomb.h"
 
+
 Bomb::Bomb()
 {
 	bpos = {0,0};

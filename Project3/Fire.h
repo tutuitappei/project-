@@ -2,7 +2,8 @@
 #include<chrono>
 #include"Map.h"
 
-#define DefFire 3;
+#define DefFire 3
+#define MaxFire 6
 
 class Fire
 {
