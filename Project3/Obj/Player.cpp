@@ -57,7 +57,10 @@ void Player::Update(void)
 		Move();
 		ChangPosTile(_bpos);
 	}
-
+	for (auto&& bom : _bombvec)
+	{
+		bom->Update();
+	}
 	animCnt++;
 }
 
@@ -73,11 +76,10 @@ void Player::DrawObj(void)
 	DrawGraph(_pos.x, _pos.y, imagechar[CheckID()][(((animCnt / 10) % 4) * 5) + static_cast<int>(_dir[CheckID()])], true);
 }
 
-Vector2 Player::ChangPosTile(Vector2 pos)
+void Player::ChangPosTile(Vector2 pos)
 {
 	_changpos.x = pos.x / HBlockSize;
 	_changpos.y = pos.y / HBlockSize;
-	return _changpos;
 }
 
 void Player::SetMap(void)

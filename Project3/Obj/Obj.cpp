@@ -16,7 +16,6 @@ void Obj::DrawObj(void)
 {
 }
 
-Vector2 Obj::ChangPosTile(Vector2 pos)
+void Obj::ChangPosTile(Vector2 pos)
 {
-    return pos;
 }

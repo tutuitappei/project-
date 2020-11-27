@@ -8,7 +8,7 @@ public:
 
 	virtual void Update(void);
 	virtual void DrawObj(void);
-	virtual Vector2 ChangPosTile(Vector2 pos);
+	virtual void ChangPosTile(Vector2 pos);
 private:
 };
 
