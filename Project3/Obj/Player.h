@@ -78,6 +78,7 @@ private:
     std::pair<DIR, Animstate> _state;
     int imagechar[2][20];
     int playerID = 0;
+    int _speed;
     DIR _dir[2];
     Vector2 _pos = { 0,0 };
     Vector2 _bpos;
@@ -87,7 +88,7 @@ private:
     std::vector<ShareB> _bombvec;
     std::pair<InputID, InputID> cdir;
 
-    std::chrono::system_clock::time_point  start, end;
+    std::chrono::system_clock::time_point  start, recently;
 
     int animCnt;
 

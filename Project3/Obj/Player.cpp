@@ -13,8 +13,9 @@ Player::Player()
 	_state.first = DIR::DOWN;
 	_state.second = Animstate::Idel;
 	aliveFrag[CheckID()] = true;
-	_bpos = { _pos.x,_pos.y + (PL_Y - HBlockSize) };
+	_bpos = { _pos.x,_pos.y + (PL_Y - HBlockSize)};
 	animCnt = 0;
+	_speed = DefSpeed;
 
 	Init();
 }
@@ -29,7 +30,9 @@ Player::Player(Vector2 vec, int id)
 	_pos = vec;
 	_bpos = { _pos.x,_pos.y + (PL_Y - HBlockSize) };
 	animCnt = 0;
+	_speed = DefSpeed;
 	SetID(id);
+
 	Init();
 }
 
@@ -212,8 +215,8 @@ void Player::DefUpdata(void)
 			{
 				if (!hitObject())
 				{
-					_pos.y += 10;
-					_bpos.y += 10;
+					_pos.y += _speed;
+					_bpos.y += _speed;
 				}
 				SetDir(DIR::DOWN);
 				break;
@@ -222,8 +225,8 @@ void Player::DefUpdata(void)
 			{
 				if (!hitObject())
 				{
-					_pos.y += -10;
-					_bpos.y += -10;
+					_pos.y += -_speed;
+					_bpos.y += -_speed;
 				}
 				SetDir(DIR::UP);
 				break;
@@ -232,8 +235,8 @@ void Player::DefUpdata(void)
 			{
 				if (!hitObject())
 				{
-					_pos.x += -10;
-					_bpos.x += -10;
+					_pos.x += -_speed;
+					_bpos.x += -_speed;
 				}
 				SetDir(DIR::LEFT);
 				break;
@@ -242,8 +245,8 @@ void Player::DefUpdata(void)
 			{
 				if (!hitObject())
 				{
-					_pos.x += 10;
-					_bpos.x += 10;
+					_pos.x += _speed;
+					_bpos.x += _speed;
 				}
 				SetDir(DIR::RIGHT);
 				break;

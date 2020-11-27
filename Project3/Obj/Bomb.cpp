@@ -43,12 +43,23 @@ void Bomb::ChangPosTile(Vector2 pos)
 	_changpos.y = pos.y / 32;
 }
 
+bool Bomb::CheckAlive(void)
+{
+	return false;
+}
+
 void Bomb::Init(void)
 {
 	LoadDivGraph("image/bomb.png",14,2,7,32,32, bombimage,true);
+	start = _time.GetTime();
 }
 
 bool Bomb::BomClash(void)
 {
+	recently =_time.GetTime();
+	if (_time.SystemTime(start, recently) >= static_cast<long long>(3000))
+	{
+		bomflag = true;
+	}
 	return bomflag;
 }
