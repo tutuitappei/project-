@@ -11,13 +11,17 @@
 enum class MesType : unsigned char
 {
 	NON = 100,
-	STANBY,
-	GAME_S,
-	TMX_SIZE,
-	TMX_DATA,
-	POS,
-	BOM_SET,
-	DETH,
+	COUNT_DOWN,	//接続待ちカウントダウン
+	ID,			//自分のIDとプレイヤー数
+	STANBY,		//
+	GAME_S,		//
+	S_TIME,		//全員の初期化完了後のゲーム開始時間
+	TMX_SIZE,	//
+	TMX_DATA,	//
+	POS,		//
+	BOM_SET,	//
+	DETH,		//
+	LOST,		//切断時に生成
 	MAX
 };
 struct MesData
@@ -93,6 +97,9 @@ private:
 	void LetterReceive(void);
 	void SetHeader(Header head, MesPacket pack);
 	void SendHeader(void);
+
+	int playerID = 0;
+	int maxplayer = 0;
 
 	//unsigned int lengthd;
 	//int count;

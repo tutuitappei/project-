@@ -1,4 +1,5 @@
 #pragma once
+#include<list>
 
 enum class NetworkMode
 {
@@ -16,6 +17,8 @@ enum class ActivState
 	Play,		//ge-mutyuu
 	OffLine	
 };
+
+using ListInt = std::list<std::pair<int, unsigned int>>;
 
 class NetWorkst
 {
