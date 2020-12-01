@@ -162,6 +162,8 @@ void LoginScene::Init(void)
 		}
 		lpNetwark.GetRevStanby();
 		lpNetwark.SendStart();
+
+		lpNetwark.RecvMes();
 	}
 	else
 	{
