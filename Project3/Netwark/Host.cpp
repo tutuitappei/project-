@@ -25,7 +25,10 @@ bool Host::CheckNetwork(void)
 		_nethandle = GetNewAcceptNetWork();
 		if (_nethandle != -1)
 		{
-
+			//if ()
+			//{
+			//	continue;
+			//}
 			StopListenNetWork();
 			_act = ActivState::Init;
 			break;

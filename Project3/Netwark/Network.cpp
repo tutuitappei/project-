@@ -162,7 +162,7 @@ void Netwark::GetRevStanby(void)
 {
 	MesData _mesd;
 	_mesd.type = MesType::TMX_DATA;
-	while (_mesd.type != MesType::STANBY)
+	while (_mesd.type != MesType::STANBY_HOST)
 	{
 		NetWorkRecv(GetNetHandle(), &_mesd, sizeof(_mesd));
 	}
@@ -172,8 +172,8 @@ void Netwark::GetRevStanby(void)
 void Netwark::GetRevStart(void)
 {
 	MesData _mesd;
-	_mesd.type = MesType::STANBY;
-	while (_mesd.type != MesType::GAME_S)
+	_mesd.type = MesType::STANBY_HOST;
+	while (_mesd.type != MesType::STANBY_GEST)
 	{
 		NetWorkRecv(lpNetwark.GetNetHandle(), &_mesd, sizeof(_mesd));
 	}
@@ -185,7 +185,7 @@ void Netwark::SendStanby(void)
 	MesData _mesd;
 	_mesd.data[0] = 0;
 	_mesd.data[1] = 0;
-	_mesd.type = MesType::STANBY;
+	_mesd.type = MesType::STANBY_HOST;
 	NetWorkSend(GetNetHandle(), &_mesd, sizeof(_mesd));
 	TRACE("開始待ち状態の送信\n");
 }
@@ -195,7 +195,7 @@ void Netwark::SendStart(void)
 	MesData _mesd;
 	_mesd.data[0] = 0;
 	_mesd.data[1] = 0;
-	_mesd.type = MesType::GAME_S;
+	_mesd.type = MesType::STANBY_GEST;
 	NetWorkSend(GetNetHandle(), &_mesd, sizeof(_mesd));
 	TRACE("ゲーム開始合図の送信\n");
 }
@@ -223,7 +223,7 @@ bool Netwark::CheckLost(void)
 void Netwark::TmxChat(void)
 {
 	MesData _mesd;
-	_mesd.type = MesType::STANBY;
+	_mesd.type = MesType::STANBY_HOST;
 	_mesd.sendID = 0;
 	_mesd.next = 0;
 	_mesd.data[0] = 0;
@@ -410,6 +410,22 @@ void Netwark::SetHeader(Header head, MesPacket pack)
 
 void Netwark::SendHeader(void)
 {
+}
+
+void Netwark::SetPlayerNum(int id)
+{
+	playerID = id;
+	maxplayer++;
+}
+
+int Netwark::GetPlayerID(void)
+{
+	return playerID;
+}
+
+int Netwark::GetPlayerMAX(void)
+{
+	return maxplayer;
 }
 
 Netwark::Netwark()

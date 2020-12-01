@@ -15,6 +15,7 @@ GameScene::GameScene()
 	oldfCnt = 0;
 	framCnt = 0;
 	Init();
+	//InstancePlayer();
 }
 
 GameScene::~GameScene()
@@ -28,7 +29,10 @@ void GameScene::Draw(void)
 	_map.DrawMap(Layer::Obj);
 	_map.DrawMap(Layer::Char);
 
-	_player.DrawObj();
+	for (auto&& player : _playervec)
+	{
+		player->DrawObj();
+	}
 }
 
 void GameScene::Init(void)
@@ -43,7 +47,7 @@ void GameScene::Init(void)
 		}
 		else if ((lpNetwark.GetNetWorkMode() == NetworkMode::GEST))
 		{
-			playerID = 1;
+			playerID = lpNetwark.GetPlayerID();
 		}
 		else
 		{
@@ -64,11 +68,22 @@ void GameScene::Init(void)
 
 void GameScene::Updata(void)
 {
-	_player.Update();
+	for (auto&& player : _playervec)
+	{
+		player->Update();
+	}
 	_block.Update();
 
 	oldfCnt = framCnt;
 	framCnt++;
+}
+
+void GameScene::InstancePlayer(int x, int y, int PLID)
+{
+	Vector2 pos = { x,y };
+
+	auto id = PLID;
+	_playervec.emplace(_playervec.begin(), std::make_unique<Player>(pos, id));
 }
 
 

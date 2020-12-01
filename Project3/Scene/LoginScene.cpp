@@ -149,7 +149,7 @@ void LoginScene::Init(void)
 	}
 	else if (lpNetwark.GetNetWorkMode() == NetworkMode::GEST)
 	{
-
+		lpNetwark.RecvMes();
 
 		lpNetwark.TmxChat();
 		lpNetwark.TmxDataRev();

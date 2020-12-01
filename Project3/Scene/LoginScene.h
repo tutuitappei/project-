@@ -5,6 +5,8 @@
 #include"../input/Controller.h"
 #include"../Map.h"
 
+#define LoginCnt 3000;
+
 enum class Updatamode
 {
 	SetNetWork,

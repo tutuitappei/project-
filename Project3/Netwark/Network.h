@@ -11,17 +11,17 @@
 enum class MesType : unsigned char
 {
 	NON = 100,
-	COUNT_DOWN,	//接続待ちカウントダウン
-	ID,			//自分のIDとプレイヤー数
-	STANBY,		//
-	GAME_S,		//
-	S_TIME,		//全員の初期化完了後のゲーム開始時間
-	TMX_SIZE,	//
-	TMX_DATA,	//
-	POS,		//
-	BOM_SET,	//
-	DETH,		//
-	LOST,		//切断時に生成
+	COUNT_ROOM,			//接続待ちカウントダウン
+	ID,					//自分のIDとプレイヤー数
+	STANBY_HOST,		//初期化情報送信完了(ホスト)
+	STANBY_GEST,		//初期化完了(ゲスト)
+	COUNT_GAME,			//全員の初期化完了後のゲーム開始カウントダウン
+	TMX_SIZE,			//TMXのサイズの送信(ホスト)
+	TMX_DATA,			//TMXのCSVの送信(ホスト)
+	POS,				//プレイヤーの座標
+	BOM_SET,			//ボムの座標
+	DETH,				//死亡情報
+	LOST,				//切断時に生成
 	MAX
 };
 struct MesData
@@ -89,6 +89,10 @@ public:
 	void TmxCheck(const char* filename);
 	void TmxDataSend(void);
 	void TmxDataRev(void);
+
+	void SetPlayerNum(int id);
+	int GetPlayerID(void);
+	int GetPlayerMAX(void);
 private:
 	Netwark();
 	~Netwark();
