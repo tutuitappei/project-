@@ -39,7 +39,6 @@ void GameScene::Init(void)
 {
 	if ((lpNetwark.GetNetWorkMode() == NetworkMode::HOST) || (lpNetwark.GetNetWorkMode() == NetworkMode::GEST))
 	{
-		playernum = 2;
 		TRACE("プレイヤーの数%d人\n", playernum);
 		if ((lpNetwark.GetNetWorkMode() == NetworkMode::HOST))
 		{

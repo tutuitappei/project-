@@ -18,7 +18,14 @@ enum class ActivState
 	OffLine	
 };
 
-using ListInt = std::list<std::pair<int, unsigned int>>;
+struct PlayerData
+{
+	int handle;
+	unsigned int playerID;
+	int state;
+};
+
+using ListInt = std::list<std::tuple<int, unsigned int, int>>;
 
 class NetWorkst
 {
@@ -26,7 +33,11 @@ public:
 	NetWorkst();
 	virtual ~NetWorkst();
 	virtual NetworkMode GetMode(void) { return NetworkMode::OFF; };
+	void SetHandle(void);
+	void SetPlayerID(void);
+	void SetState(void);
 	int GetHandle(void);
+	int GetPlayerID(void);
 	bool GetActive(void);
 	ActivState GetActivest(void);
 	virtual ActivState ConnectHost(IPDATA hostip);
@@ -36,6 +47,9 @@ protected:
 	const int _portnum = 8086;
 	bool _active;
 	ActivState _act;
+
+	PlayerData _Pdata;
+
 
 	int _nethandle = 0;
 	int _losthandle = 0;

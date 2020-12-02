@@ -23,6 +23,7 @@ bool Host::CheckNetwork(void)
 	while (!ProcessMessage())
 	{
 		_nethandle = GetNewAcceptNetWork();
+		_Pdata.handle = _nethandle;
 		if (_nethandle != -1)
 		{
 			//if ()

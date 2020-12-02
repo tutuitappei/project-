@@ -420,7 +420,7 @@ void Netwark::SetPlayerNum(int id)
 
 int Netwark::GetPlayerID(void)
 {
-	return playerID;
+	return _state->GetPlayerID();
 }
 
 int Netwark::GetPlayerMAX(void)

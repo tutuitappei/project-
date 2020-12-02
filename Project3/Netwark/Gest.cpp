@@ -18,6 +18,7 @@ NetworkMode Gest::GetMode(void)
 ActivState Gest::ConnectHost(IPDATA hostip)
 {
 	_nethandle = ConnectNetWork(hostip, _portnum);
+	_Pdata.handle = _nethandle;
 	if (_nethandle >= 0)
 	{
 		_act = ActivState::Init;
