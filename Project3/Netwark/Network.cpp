@@ -187,6 +187,7 @@ void Netwark::SendStanby(void)
 	_mesd.data[1] = 0;
 	_mesd.type = MesType::STANBY_HOST;
 	NetWorkSend(GetNetHandle(), &_mesd, sizeof(_mesd));
+	SendMes(MesType::STANBY_HOST);
 	TRACE("開始待ち状態の送信\n");
 }
 
@@ -197,6 +198,7 @@ void Netwark::SendStart(void)
 	_mesd.data[1] = 0;
 	_mesd.type = MesType::STANBY_GEST;
 	NetWorkSend(GetNetHandle(), &_mesd, sizeof(_mesd));
+	SendMes(MesType::STANBY_GEST);
 	TRACE("ゲーム開始合図の送信\n");
 }
 
