@@ -86,7 +86,6 @@ bool Netwark::SendMes(MesType _mtype, MesPacket _mpacket)
 		{
 			//header.hd.lenght = _mpacket.size() - 2;
 			header.hd.next = 0;
-
 			NetWorkSend(GetNetHandle(), &_mpacket, sizeof(_mpacket));
 			_mpacket.erase(_mpacket.begin() + _headerSize, _mpacket.end());
 		}

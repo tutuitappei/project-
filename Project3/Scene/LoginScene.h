@@ -5,7 +5,6 @@
 #include"../input/Controller.h"
 #include"../Map.h"
 
-#define LoginCnt 3000;
 
 enum class Updatamode
 {
@@ -31,7 +30,6 @@ private:
 
 	int Screensizex;
 	int Screensizey;
-
 
 	int _id = 0;
 

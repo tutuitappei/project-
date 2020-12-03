@@ -48,6 +48,7 @@ protected:
 	bool _active;
 	ActivState _act;
 
+	ListInt PlayerList;
 	PlayerData _Pdata;
 
 

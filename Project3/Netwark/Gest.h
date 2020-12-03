@@ -7,6 +7,9 @@ public:
 	Gest();
 	~Gest();
 private:
+
+	long long _lcnt = 0;
+
 	NetworkMode GetMode(void)override;
 
 	ActivState ConnectHost(IPDATA hostip)override;

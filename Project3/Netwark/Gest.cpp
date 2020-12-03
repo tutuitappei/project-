@@ -1,4 +1,5 @@
 #include<DxLib.h>
+#include"Network.h"
 #include "Gest.h"
 
 Gest::Gest()
@@ -21,6 +22,11 @@ ActivState Gest::ConnectHost(IPDATA hostip)
 	_Pdata.handle = _nethandle;
 	if (_nethandle >= 0)
 	{
+		lpNetwark.RecvMes();
+		while ()
+		{
+
+		}
 		_act = ActivState::Init;
 
 	}

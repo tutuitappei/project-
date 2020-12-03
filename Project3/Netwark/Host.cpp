@@ -1,8 +1,11 @@
 #include<DxLib.h>
+#include"Network.h"
 #include "Host.h"
 
 Host::Host()
 {
+
+	_lcnt = LoginCnt;
 	_active = !PreparationListenNetWork(_portnum);
 	_act = ActivState::Non;
 }
@@ -18,17 +21,22 @@ NetworkMode Host::GetMode(void)
 
 bool Host::CheckNetwork(void)
 {
+	MesPacket _mpack;
+
+	
 
 	_act = ActivState::Wait;
 	while (!ProcessMessage())
 	{
 		_nethandle = GetNewAcceptNetWork();
 		_Pdata.handle = _nethandle;
+
 		if (_nethandle != -1)
 		{
+			lpNetwark.SendMes(MesType::COUNT_ROOM,);
 			//if ()
 			//{
-			//	continue;
+				continue;
 			//}
 			StopListenNetWork();
 			_act = ActivState::Init;
