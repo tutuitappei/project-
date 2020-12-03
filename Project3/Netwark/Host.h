@@ -10,7 +10,6 @@ public:
 	Host();
 	~Host();
 private:
-
 	long long _lcnt = 0;
 
 	NetworkMode GetMode(void) override;

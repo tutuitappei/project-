@@ -4,7 +4,6 @@
 
 Host::Host()
 {
-
 	_lcnt = LoginCnt;
 	_active = !PreparationListenNetWork(_portnum);
 	_act = ActivState::Non;
@@ -33,7 +32,7 @@ bool Host::CheckNetwork(void)
 
 		if (_nethandle != -1)
 		{
-			lpNetwark.SendMes(MesType::COUNT_ROOM,);
+			lpNetwark.SendMes(MesType::COUNT_ROOM);
 			//if ()
 			//{
 				continue;

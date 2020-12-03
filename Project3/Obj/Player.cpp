@@ -252,7 +252,7 @@ void Player::DefUpdata(void)
 				break;
 			}
 		}
-		umdata.iData[0] = _pos.x;
+		umdata.iData[2] = _pos.x;
 		umdata.iData[1] = _pos.y;
 		//lpNetwark.SendMes(MesType::POS, mpacket);
 		//lpNetwark.GetNetHandle(), & data, sizeof(data)

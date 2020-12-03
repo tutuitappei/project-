@@ -41,7 +41,7 @@ union unionData
 {
 	unsigned int uiData;
 	//int iData;
-	//char cData[4];   //cData[0]→横のマス数:cData[1]→縦のマス数:cData[2]→レイヤーID:cData[3]→今は空の容量確保;
+	//char cData[4];  //cData[0]→横のマス数:cData[1]→縦のマス数:cData[2]→レイヤーID:cData[3]→今は空の容量確保;
 	int iData[2];
 	char cData[8];
 };

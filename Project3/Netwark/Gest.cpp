@@ -23,10 +23,10 @@ ActivState Gest::ConnectHost(IPDATA hostip)
 	if (_nethandle >= 0)
 	{
 		lpNetwark.RecvMes();
-		while ()
-		{
+		//while ()
+		//{
 
-		}
+		//}
 		_act = ActivState::Init;
 
 	}

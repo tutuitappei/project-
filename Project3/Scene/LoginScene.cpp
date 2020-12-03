@@ -135,8 +135,7 @@ void LoginScene::Init(void)
 	data.second = 0;
 	if (lpNetwark.GetNetWorkMode() == NetworkMode::HOST)
 	{
-		//lpNetwark.TmxCheck("map/untitled2.tmx");
-		lpNetwark.TmxCheck("map/movetest.tmx");
+		lpNetwark.TmxCheck("map/untitled2.tmx");
 		lpNetwark.Oneletter();
 
 
