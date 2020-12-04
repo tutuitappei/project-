@@ -1,10 +1,12 @@
 #include<DxLib.h>
+#include"../_debug/_DebugConOut.h"
 #include"Network.h"
 #include "Host.h"
 
 Host::Host()
 {
 	_lcnt = LoginCnt;
+	cntstart = false;
 	_active = !PreparationListenNetWork(_portnum);
 	_act = ActivState::Non;
 }
@@ -20,6 +22,7 @@ NetworkMode Host::GetMode(void)
 
 bool Host::CheckNetwork(void)
 {
+
 	MesPacket _mpack;
 
 	
@@ -32,8 +35,14 @@ bool Host::CheckNetwork(void)
 
 		if (_nethandle != -1)
 		{
+			if (!cntstart)
+			{
+				start = std::chrono::system_clock::now();
+				cntstart = true;
+			}
+			point = std::chrono::system_clock::now();
 			lpNetwark.SendMes(MesType::COUNT_ROOM);
-			//if ()
+			//if (_lcnt > std::chrono::duration_cast<std::chrono::milliseconds>(point - start).count())
 			//{
 				continue;
 			//}

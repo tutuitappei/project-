@@ -7,7 +7,6 @@
 #include "SceneManager.h"
 #include"../Netwark/Network.h"
 #include"../_debug/_DebugConOut.h"
-#include"../input/Pad.h"
 
 
 LoginScene::LoginScene()
@@ -150,8 +149,8 @@ void LoginScene::Init(void)
 	{
 		lpNetwark.RecvMes();
 
-		lpNetwark.TmxChat();
-		lpNetwark.TmxDataRev();
+		//lpNetwark.TmxChat();
+		//lpNetwark.TmxDataRev();
 
 		if (GetNetWorkDataLength(lpNetwark.GetNetHandle()) >= sizeof(data))
 		{
@@ -171,46 +170,9 @@ void LoginScene::Init(void)
 			TRACE("‰Šú‰»’†‚ÉˆÙí‚ª”­¶‚µ‚Ü‚µ‚½\n");
 		}
 	}
-	controller = std::make_unique<Pad>();
-	controller->Setup(_id);
 }
 
 void LoginScene::Updata(void)
 {
 	lpScene.ChangeScene(SCENE::GAME);
-	//for (auto data : controller->GetCntData())
-	//{
-
-	//	if ((data.first == InputID::Down) && (data.second[static_cast<int>(Trg::Now)]))
-	//	{
-	//		imagepos.y += 10;
-	//	}
-	//	if (data.second[static_cast<int>(Trg::Now)] && !data.second[static_cast<int>(Trg::Old)])
-	//	{
-
-	//		if ((data.first == InputID::Left))
-	//		{
-	//			imagepos.x -= 10;
-	//		}
-	//		if ((data.first == InputID::Right))
-	//		{
-	//			imagepos.x += 10;
-	//		}
-	//		if ((data.first == InputID::Up))
-	//		{
-	//			imagepos.y -= 10;
-	//		}
-	//		if ((data.first == InputID::Btn1))
-	//		{
-	//			//Rota(_stage.puyoVec[_targetID]->pos(), _stage.puyoVec[_targetID ^ 1]->pos(), true);
-	//		}
-	//		if ((data.first == InputID::Btn2))
-	//		{
-	//			//Rota(_stage.puyoVec[_targetID]->pos(), _stage.puyoVec[_targetID ^ 1]->pos(), false);
-	//		}
-	//	}
-
-	//}
-
-
 }

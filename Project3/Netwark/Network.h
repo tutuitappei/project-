@@ -4,6 +4,7 @@
 #include<vector>
 #include<chrono>
 #include<thread>
+#include<functional>
 #include"NetWorkst.h"
 
 #define lpNetwark Netwark::GetInstance()
@@ -102,8 +103,12 @@ private:
 	void SetHeader(Header head, MesPacket pack);
 	void SendHeader(void);
 
+	void FuncMode(MesType _mestype);
+
 	int playerID = 0;
 	int maxplayer = 0;
+
+	std::function<void(MesType)> _funcmode;
 
 	//unsigned int lengthd;
 	//int count;

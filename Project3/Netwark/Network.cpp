@@ -84,7 +84,8 @@ bool Netwark::SendMes(MesType _mtype, MesPacket _mpacket)
 	{
 		if (_mpacket.size() < _intSendCnt)
 		{
-			//header.hd.lenght = _mpacket.size() - 2;
+
+			//header.hd.length = _mpacket.size() - 2;
 			header.hd.next = 0;
 			NetWorkSend(GetNetHandle(), &_mpacket, sizeof(_mpacket));
 			_mpacket.erase(_mpacket.begin() + _headerSize, _mpacket.end());
@@ -110,6 +111,36 @@ bool Netwark::SendMes(MesType _mtype, MesPacket _mpacket)
 
 void Netwark::RecvMes(void)
 {
+	_funcmode = [](MesType _masty) {
+		switch (_masty)
+		{
+		case MesType::COUNT_ROOM:
+			break;
+		case MesType::ID:
+			break;
+		case MesType::TMX_SIZE:
+			break;
+		case MesType::TMX_DATA:
+			break;
+		case MesType::STANBY_HOST:
+			break;
+		case MesType::STANBY_GEST:
+			break;
+		case MesType::COUNT_GAME:
+			break;
+		case MesType::POS :
+			break;
+		case MesType::BOM_SET:
+			break;
+		case MesType::DETH:
+			break;
+		case MesType::LOST:
+			break;
+		default:
+			TRACE("不明なデータの受信\n");
+			break;
+		}
+	};
 	//int _intSendCnt = 1400;
 
 	//MesData data;
@@ -127,7 +158,9 @@ void Netwark::RecvMes(void)
 	auto _headerSize = sizeof header;
 
 	NetWorkRecv(GetNetHandle(), &_mpacket, sizeof(_mpacket));
+	_mpacket;
 	list.push_back((header.hd.type, _mpacket));
+	_funcmode(_mpacket.first);
 
 	//do
 	//{
@@ -236,7 +269,7 @@ void Netwark::TmxChat(void)
 		{
 			NetWorkRecv(GetNetHandle(), &_mesd, sizeof(_mesd));
 			_box.resize(_mesd.data[0]);
-			TRACE("受け取ったサイズは%d\n", _mesd.data[0]);
+			TRACE("受信したサイズは%d\n", _mesd.data[0]);
 		}
 		bot = _mesd.data[0];
 	}
@@ -408,6 +441,10 @@ void Netwark::SetHeader(Header head, MesPacket pack)
 }
 
 void Netwark::SendHeader(void)
+{
+}
+
+void Netwark::FuncMode(MesType _mestype)
 {
 }
 

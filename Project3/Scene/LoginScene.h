@@ -2,7 +2,6 @@
 #include<map>
 #include "BaseScene.h"
 #include"../Vector2.h"
-#include"../input/Controller.h"
 #include"../Map.h"
 
 
@@ -26,7 +25,6 @@ public:
 	void Init(void);
 	void Updata(void)override;
 private:
-	std::unique_ptr<Controller> controller;
 
 	int Screensizex;
 	int Screensizey;
