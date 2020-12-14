@@ -293,7 +293,7 @@ void Player::AutUpdata(void)
 
 bool Player::CheckAlive(int pnum)
 {
-	if (CheckHitKey(KEY_INPUT_O))
+	if ()
 	{
 		aliveFrag[pnum] = false;
 		SetDir(DIR::DEAD);

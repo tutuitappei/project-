@@ -4,6 +4,7 @@
 #include"Title.h"
 #include"LoginScene.h"
 #include"GameScene.h"
+#include"GameOver.h"
 
 
 BaseScene* SceneManager::m_pScene = NULL;
@@ -40,8 +41,8 @@ void SceneManager::ChangeScene(SCENE scene)
 	case SCENE::GAME:
 		m_pScene = new GameScene();
 		break;
-	//case SCENE::GAMEOVER:
-	//	m_pScene = new Gameover();
+	case SCENE::GAMEOVER:
+		m_pScene = new GameOver();
 		break;
 	default:
 		break;

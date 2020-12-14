@@ -15,7 +15,7 @@ GameScene::GameScene()
 	oldfCnt = 0;
 	framCnt = 0;
 	Init();
-	//InstancePlayer(,, playerID);
+	InstancePlayer(,, playerID);
 }
 
 GameScene::~GameScene()
