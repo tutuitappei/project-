@@ -174,5 +174,6 @@ void LoginScene::Init(void)
 
 void LoginScene::Updata(void)
 {
+
 	lpScene.ChangeScene(SCENE::GAME);
 }

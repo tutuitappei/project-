@@ -22,6 +22,7 @@ enum class MesType : unsigned char
 	POS,				//プレイヤーの座標
 	BOM_SET,			//ボムの座標
 	DETH,				//死亡情報
+	RESULT,				//勝負の結果情報の送信:MAX5人(ホスト)
 	LOST,				//切断時に生成
 	MAX
 };

@@ -10,16 +10,16 @@ namespace rapid = rapidxml;
 
 Map::Map()
 {
-	/*rapid::xml_document<> doc;
-	rapid::file<> input("./map/untitled.tmx");
-	doc.parse<0>(input.data());
+	//rapid::xml_document<> doc;
+	//rapid::file<> input("./map/untitled2.tmx");
+	//doc.parse<0>(input.data());
 
-	rapid::xml_node<>* node = doc.first_node("map");
-	for (rapid::xml_node<>* child = node->first_node();
-		child != nullptr;
-		child = child->next_sibling()) {
-		cout << child->name() << " : [" << child->value() << "]\n";
-	}*/
+	//rapid::xml_node<>* node = doc.first_node("map");
+	//for (rapid::xml_node<>* child = node->first_node();
+	//	child != nullptr;
+	//	child = child->next_sibling()) {
+	//	cout << child->name() << " : [" << child->value() << "]\n";
+	//}
 
 
 	_maplayer = Layer::Bg;
@@ -35,8 +35,8 @@ Map::~Map()
 
 void Map::SetMapInit()
 {
-	//_tmx.load("map/untitled2.tmx");
-	_tmx.load("map/movetest.tmx");
+	_tmx.load("map/untitled2.tmx");
+	//_tmx.load("map/movetest.tmx");
 }
 
 MapData Map::ReturnData(void)
@@ -52,9 +52,13 @@ void Map::Init(void)
 bool Map::DrawMap(Layer layer)
 {
 	_maplayer = layer;
-	//for (auto& _num : _mapchipdata)
-//{
-//}
+	for (auto& _num : _mapchipdata)
+	{
+		//if ( == _num)
+		//{
+
+		//}
+	}
 	return true;
 }
 

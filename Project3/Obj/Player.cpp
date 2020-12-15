@@ -28,7 +28,7 @@ Player::Player(Vector2 vec, int id)
 	_state.second = Animstate::Idel;
 	aliveFrag[CheckID()] = true;
 	_pos = vec;
-	_bpos = { _pos.x,_pos.y + (PL_Y - HBlockSize) };
+	_bpos = { _pos.x,_pos.y };
 	animCnt = 0;
 	_speed = DefSpeed;
 	SetID(id);
@@ -75,8 +75,8 @@ void Player::DrawObj(void)
 	{
 		bom->DrawObj();
 	}
-
-	DrawGraph(_pos.x, _pos.y, imagechar[CheckID()][(((animCnt / 10) % 4) * 5) + static_cast<int>(_dir[CheckID()])], true);
+	DrawGraph(_pos.x, _pos.y - (PL_Y - HBlockSize), imagechar[CheckID()][(((animCnt / 10) % 4) * 5) + static_cast<int>(_dir[CheckID()])], true);
+	DrawFormatString(_bpos.x-30, _bpos.y - 20, 0xffffff, "ÉvÉåÉCÉÑÅ[%d", (CheckID()/5)+1);
 }
 
 void Player::ChangPosTile(Vector2 pos)
@@ -293,7 +293,7 @@ void Player::AutUpdata(void)
 
 bool Player::CheckAlive(int pnum)
 {
-	if ()
+	if (lpNetwark.CheckLost())
 	{
 		aliveFrag[pnum] = false;
 		SetDir(DIR::DEAD);
