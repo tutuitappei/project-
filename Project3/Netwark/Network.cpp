@@ -389,7 +389,6 @@ void Netwark::LetterSet(void)
 
 
 	MesData _mesd;
-	unionData _uniond;
 	_mesd.type = MesType::TMX_DATA;
 	_mesd.data[0] = 0;
 	_mesd.data[1] = 0;
