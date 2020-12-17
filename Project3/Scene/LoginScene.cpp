@@ -99,7 +99,7 @@ LoginScene::LoginScene()
 		{
 			lpNetwark.SetNetWorkMode(NetworkMode::OFF);
 		}
-	} while (mode < 0 || mode > 4);
+	} while (mode < 0 || mode > 3);
 	TRACE("%d‚Å‚·\n", lpNetwark.GetActive());
 
 

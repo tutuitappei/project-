@@ -31,8 +31,7 @@ struct MesData
 	MesType type;
 	unsigned char next;		//データ送信が分割の場合に次があるかないか
 	unsigned short sendID;	//分割送信時のナンバリング
-	//unsigned int length;
-	int data[2];
+	unsigned int length;
 };
 union Header
 {
@@ -43,9 +42,9 @@ union unionData
 {
 	unsigned int uiData;
 	//int iData;
-	//char cData[4];  //cData[0]→横のマス数:cData[1]→縦のマス数:cData[2]→レイヤーID:cData[3]→今は空の容量確保;
+	char cData[4];  //cData[0]→横のマス数:cData[1]→縦のマス数:cData[2]→レイヤーID:cData[3]→今は空の容量確保;
 	int iData[2];
-	char cData[8];
+	//char cData[8];
 };
 
 using MesPacket = std::vector<unionData>;
@@ -99,6 +98,7 @@ private:
 	Netwark();
 	~Netwark();
 	bool SendWait(void);
+	bool IrregularCheck(MesType _mestype);
 	void LetterSet(void);
 	void LetterReceive(void);
 	void SetHeader(Header head, MesPacket pack);

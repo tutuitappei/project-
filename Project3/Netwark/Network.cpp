@@ -85,14 +85,14 @@ bool Netwark::SendMes(MesType _mtype, MesPacket _mpacket)
 		if (_mpacket.size() < _intSendCnt)
 		{
 
-			//header.hd.length = _mpacket.size() - 2;
+			header.hd.length = _mpacket.size() - 2;
 			header.hd.next = 0;
 			NetWorkSend(GetNetHandle(), &_mpacket, sizeof(_mpacket));
 			_mpacket.erase(_mpacket.begin() + _headerSize, _mpacket.end());
 		}
 		else if (_mpacket.size() >= _intSendCnt)
 		{
-			//header.hd.lenght = _intSendCnt - 2;
+			header.hd.length = _intSendCnt - 2;
 			header.hd.next = 1;
 
 
@@ -109,6 +109,12 @@ bool Netwark::SendMes(MesType _mtype, MesPacket _mpacket)
 	return false;
 }
 
+bool Netwark::IrregularCheck(MesType _mestype)
+{
+
+	return false;
+}
+
 void Netwark::FuncMode(MesType _mestype)
 {
 
@@ -116,7 +122,7 @@ void Netwark::FuncMode(MesType _mestype)
 
 void Netwark::RecvMes(void)
 {
-	_funcmode = [](MesType _mestype) {
+	_funcmode = [&](MesType _mestype) {
 		switch (_mestype)
 		{
 		case MesType::COUNT_ROOM:
@@ -164,8 +170,16 @@ void Netwark::RecvMes(void)
 
 	NetWorkRecv(GetNetHandle(), &_mpacket, sizeof(_mpacket));
 	_mpacket;
-	list.push_back((header.hd.type, _mpacket));
-	_funcmode(_mpacket.first);
+	if (IrregularCheck(_mpacket.first))
+	{
+		TRACE("イレギュラーの発生\n");
+	}
+	else
+	{
+		list.push_back((header.hd.type, _mpacket));
+		_funcmode(_mpacket.first);
+	}
+	
 
 	//do
 	//{
@@ -220,8 +234,6 @@ void Netwark::GetRevStart(void)
 void Netwark::SendStanby(void)
 {
 	MesData _mesd;
-	_mesd.data[0] = 0;
-	_mesd.data[1] = 0;
 	_mesd.type = MesType::STANBY_HOST;
 	NetWorkSend(GetNetHandle(), &_mesd, sizeof(_mesd));
 	SendMes(MesType::STANBY_HOST);
@@ -231,8 +243,6 @@ void Netwark::SendStanby(void)
 void Netwark::SendStart(void)
 {
 	MesData _mesd;
-	_mesd.data[0] = 0;
-	_mesd.data[1] = 0;
 	_mesd.type = MesType::STANBY_GEST;
 	NetWorkSend(GetNetHandle(), &_mesd, sizeof(_mesd));
 	SendMes(MesType::STANBY_GEST);
@@ -261,23 +271,23 @@ bool Netwark::CheckLost(void)
 
 void Netwark::TmxChat(void)
 {
-	MesData _mesd;
-	_mesd.type = MesType::STANBY_HOST;
-	_mesd.sendID = 0;
-	_mesd.next = 0;
-	_mesd.data[0] = 0;
-	_mesd.data[1] = 0;
-	
-	while (_mesd.type != MesType::TMX_SIZE)
-	{
-		if (GetNetWorkDataLength(GetNetHandle()) >= sizeof(_mesd))
-		{
-			NetWorkRecv(GetNetHandle(), &_mesd, sizeof(_mesd));
-			_box.resize(_mesd.data[0]);
-			TRACE("受信したサイズは%d\n", _mesd.data[0]);
-		}
-		bot = _mesd.data[0];
-	}
+	//MesData _mesd;
+	//_mesd.type = MesType::STANBY_HOST;
+	//_mesd.sendID = 0;
+	//_mesd.next = 0;
+	//_mesd.data[0] = 0;
+	//_mesd.data[1] = 0;
+	//
+	//while (_mesd.type != MesType::TMX_SIZE)
+	//{
+	//	if (GetNetWorkDataLength(GetNetHandle()) >= sizeof(_mesd))
+	//	{
+	//		NetWorkRecv(GetNetHandle(), &_mesd, sizeof(_mesd));
+	//		_box.resize(_mesd.data[0]);
+	//		TRACE("受信したサイズは%d\n", _mesd.data[0]);
+	//	}
+	//	bot = _mesd.data[0];
+	//}
 
 }
 
@@ -297,10 +307,10 @@ void Netwark::TmxCheck(const char* filename)
 	_mesd.type = MesType::TMX_SIZE;
 	_mesd.sendID = 0;
 	_mesd.next = 0;
-	_mesd.data[0] = fs.tellg();
-	_mesd.data[1] = 0;
+
+	auto size = fs.tellg();
 	
-	TRACE("受け取ったサイズは%dです\n", _mesd.data[0]);
+	TRACE("受け取ったサイズは%dです\n", static_cast<int>(size));
 
 	//SendMes(_mesd.type, );
 
@@ -323,16 +333,16 @@ void Netwark::TmxDataRev(void)
 	start = std::chrono::system_clock::now();
 	MesData _mesd;
 	_mesd.type = MesType::TMX_SIZE;
-	_mesd.data[0] = 0;
+	//_mesd.data[0] = 0;
 	int _numdata;
 	char _numbox;
-	while ((_mesd.type != MesType::TMX_DATA)||(_mesd.data[0] != bot-88))
+	while ((_mesd.type != MesType::TMX_DATA))
 	{
 		NetWorkRecv(GetNetHandle(), &_mesd, sizeof(_mesd));
-		_numdata = _mesd.data[1];
+		_numdata = _mesd.length;
 		_numbox = static_cast<char>(_numdata);
 		_box = static_cast<TmxBox>(_numbox);
-		TRACE("ID%d  Data%d\n",_mesd.data[0],_numdata);
+		//TRACE("ID%d  Data%d\n",_mesd.data[0],_numdata);
 	}
 
 	//LetterReceive();
@@ -345,17 +355,16 @@ void Netwark::Oneletter(void)
 	start = std::chrono::system_clock::now();
 	MesData _mesd;
 	_mesd.type = MesType::TMX_DATA;
-	_mesd.data[0] = 0;
-	_mesd.data[1] = 0;
+	//_mesd.data[0] = 0;
+	//_mesd.data[1] = 0;
 	std::ifstream ifs("map/untitled2.tmx");
 	char _mapbox;
 
 	while (ifs.get(_mapbox))
 	{
-		_mesd.data[1] = static_cast<int>(_mapbox);
+		//_mesd.data[1] = static_cast<int>(_mapbox);
 		NetWorkSend(GetNetHandle(), &_mesd, sizeof(_mesd));
-		_mesd.data[0]++;
-		TRACE("送った文字数は%d\n", _mesd.data[0]);
+		//_mesd.data[0]++;
 	}
 
 	//LetterSet();
@@ -368,8 +377,7 @@ void Netwark::LetterReceive(void)
 	MesData _mesd;
 	unionData _uniond;
 	_mesd.type = MesType::TMX_DATA;
-	_mesd.data[0] = 0;
-	_mesd.data[1] = 0;
+
 	std::string fs;
 
 	std::ofstream ofs("map/revmap.tmx");
@@ -388,8 +396,7 @@ void Netwark::LetterReceive(void)
 				break;
 			}
 		} while (fs.find("data encoding ") == std::string::npos);
-		_uniond.iData[0] = _mesd.data[0];
-		_uniond.iData[1] = _mesd.data[1];
+		//_uniond.iData[0];
 	}
 	
 }
@@ -405,8 +412,6 @@ void Netwark::LetterSet(void)
 
 	MesData _mesd;
 	_mesd.type = MesType::TMX_DATA;
-	_mesd.data[0] = 0;
-	_mesd.data[1] = 0;
 	std::ifstream ifs("map/untitled2.tmx");
 	std::string fs;
 	//std::iostream 
@@ -446,7 +451,6 @@ bool Netwark::SendWait(void)
 	//}
 	return false;
 }
-
 
 void Netwark::SetHeader(Header head, MesPacket pack)
 {

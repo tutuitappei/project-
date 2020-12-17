@@ -1,4 +1,5 @@
 #include<DxLib.h>
+#include"../_debug/_DebugConOut.h"
 #include "GameOver.h"
 #include "SceneManager.h"
 #include"../Netwark/Network.h"
@@ -18,7 +19,7 @@ GameOver::GameOver()
 	}
 	else
 	{
-
+		TRACE("ƒŠƒUƒ‹ƒg‚Ì’ÊM‚ğ‚µ‚Ä‚¢‚Ü‚¹‚ñ\n");
 	}
 }
 
