@@ -8,18 +8,18 @@ GameOver::GameOver()
 	_iowa.first = _num;
 	_iowa.second = _id;
 
-	//if (lpNetwark.GetNetWorkMode() == NetworkMode::HOST)
-	//{
-	//	lpNetwark.SendMes(MesType::RESULT);
-	//}
-	//else if (lpNetwark.GetNetWorkMode() == NetworkMode::GEST)
-	//{
-	//	lpNetwark.RecvMes();
-	//}
-	//else
-	//{
+	if (lpNetwark.GetNetWorkMode() == NetworkMode::HOST)
+	{
+		lpNetwark.SendMes(MesType::RESULT);
+	}
+	else if (lpNetwark.GetNetWorkMode() == NetworkMode::GEST)
+	{
+		lpNetwark.RecvMes();
+	}
+	else
+	{
 
-	//}
+	}
 }
 
 GameOver::~GameOver()

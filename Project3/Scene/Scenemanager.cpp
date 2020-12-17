@@ -57,7 +57,7 @@ bool SceneManager::Endflag(void)
 SceneManager::SceneManager() : pos(75, 70), screensize(960, 480), screenOffset(64, 32), time(0), color(0xffffff)//, colortimer(0)
 {
 	_endfrag = false;
-	m_pScene = new GameOver();
+	m_pScene = new Title();
 }
 
 SceneManager::~SceneManager()

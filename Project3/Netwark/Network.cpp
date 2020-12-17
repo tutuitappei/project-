@@ -109,10 +109,15 @@ bool Netwark::SendMes(MesType _mtype, MesPacket _mpacket)
 	return false;
 }
 
+void Netwark::FuncMode(MesType _mestype)
+{
+
+}
+
 void Netwark::RecvMes(void)
 {
-	_funcmode = [](MesType _masty) {
-		switch (_masty)
+	_funcmode = [](MesType _mestype) {
+		switch (_mestype)
 		{
 		case MesType::COUNT_ROOM:
 			break;
@@ -128,7 +133,7 @@ void Netwark::RecvMes(void)
 			break;
 		case MesType::COUNT_GAME:
 			break;
-		case MesType::POS :
+		case MesType::POS:
 			break;
 		case MesType::BOM_SET:
 			break;
@@ -279,7 +284,13 @@ void Netwark::TmxChat(void)
 void Netwark::TmxCheck(const char* filename)
 {
 	MesData _mesd;
+	unionData _data;
+	MesPacket packet;
 
+	_data.cData[0] = 21;
+	_data.cData[1] = 17;
+	_data.cData[2] = 4;
+	_data.cData[3] = 0;
 
 	std::ifstream fs(filename);
 	fs.seekg(0, std::ios_base::end);
@@ -288,7 +299,11 @@ void Netwark::TmxCheck(const char* filename)
 	_mesd.next = 0;
 	_mesd.data[0] = fs.tellg();
 	_mesd.data[1] = 0;
+	
 	TRACE("Žó‚¯Žæ‚Á‚½ƒTƒCƒY‚Í%d‚Å‚·\n", _mesd.data[0]);
+
+	//SendMes(_mesd.type, );
+
 	NetWorkSend(GetNetHandle(), &_mesd, sizeof(_mesd));
 }
 
@@ -443,9 +458,6 @@ void Netwark::SendHeader(void)
 {
 }
 
-void Netwark::FuncMode(MesType _mestype)
-{
-}
 
 void Netwark::SetPlayerNum(int id)
 {
