@@ -87,6 +87,7 @@ bool Netwark::SendMes(MesType _mtype, MesPacket _mpacket)
 
 			header.hd.length = _mpacket.size() - 2;
 			header.hd.next = 0;
+			_headerSize;
 			NetWorkSend(GetNetHandle(), &_mpacket, sizeof(_mpacket));
 			_mpacket.erase(_mpacket.begin() + _headerSize, _mpacket.end());
 		}
@@ -126,26 +127,39 @@ void Netwark::RecvMes(void)
 		switch (_mestype)
 		{
 		case MesType::COUNT_ROOM:
+			TRACE("待ち時間カウントダウン受信\n");
 			break;
 		case MesType::ID:
+			TRACE("ID受信\n");
 			break;
 		case MesType::TMX_SIZE:
+			TRACE("TMXサイズ受信\n");
 			break;
 		case MesType::TMX_DATA:
+			TRACE("TMXデータ受信\n");
 			break;
 		case MesType::STANBY_HOST:
+			TRACE("STANBY_HOST受信\n");
 			break;
 		case MesType::STANBY_GEST:
+			TRACE("STANBY_GEST受信\n");
 			break;
 		case MesType::COUNT_GAME:
+			TRACE("ゲームカウントダウン受信\n");
 			break;
 		case MesType::POS:
 			break;
 		case MesType::BOM_SET:
+			TRACE("ボム設置\n");
 			break;
 		case MesType::DETH:
+			TRACE("死亡受信\n");
+			break;
+		case MesType::RESULT:
+			TRACE("RESULT受信\n");
 			break;
 		case MesType::LOST:
+			TRACE("切断受信\n");
 			break;
 		default:
 			TRACE("不明なデータの受信\n");
