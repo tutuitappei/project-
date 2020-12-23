@@ -310,7 +310,7 @@ void Netwark::TmxCheck(const char* filename)
 	MesData _mesd;
 	unionData _data;
 	MesPacket packet;
-
+	packet.clear();
 	_data.cData[0] = 21;
 	_data.cData[1] = 17;
 	_data.cData[2] = 4;
@@ -322,11 +322,13 @@ void Netwark::TmxCheck(const char* filename)
 	_mesd.sendID = 0;
 	_mesd.next = 0;
 
+	packet.push_back(_data);
+
 	auto size = fs.tellg();
 	
 	TRACE("Žó‚¯Žæ‚Á‚½ƒTƒCƒY‚Í%d‚Å‚·\n", static_cast<int>(size));
-
-	//SendMes(_mesd.type, );
+	
+	SendMes(_mesd.type, packet);
 
 	NetWorkSend(GetNetHandle(), &_mesd, sizeof(_mesd));
 }

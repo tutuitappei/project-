@@ -24,7 +24,7 @@ bool Host::CheckNetwork(void)
 {
 
 	MesPacket _mpack;
-
+	_mpack.clear();
 	
 
 	_act = ActivState::Wait;
@@ -41,7 +41,7 @@ bool Host::CheckNetwork(void)
 				cntstart = true;
 			}
 			point = std::chrono::system_clock::now();
-			lpNetwark.SendMes(MesType::COUNT_ROOM);
+			lpNetwark.SendMes(MesType::COUNT_ROOM,_mpack);
 			//if (_lcnt > std::chrono::duration_cast<std::chrono::milliseconds>(point - start).count())
 			//{
 				continue;
