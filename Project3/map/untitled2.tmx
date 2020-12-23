@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.4" tiledversion="1.4.2" orientation="orthogonal" renderorder="right-down" width="21" height="17" tilewidth="32" tileheight="32" infinite="0" nextlayerid="5" nextobjectid="1">
+ <editorsettings>
+  <export target="."/>
+ </editorsettings>
  <tileset firstgid="1" source="../image/map1.tsx"/>
  <layer id="4" name="BG" width="21" height="17">
   <data encoding="csv">

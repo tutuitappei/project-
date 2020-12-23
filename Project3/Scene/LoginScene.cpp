@@ -59,6 +59,7 @@ LoginScene::LoginScene()
 		}
 		if (mode == 1)
 		{
+			TRACE("‘ŠŽè‚ÌƒzƒXƒgIP‚ð“ü—Í‚µ‚Ä‚­‚¾‚³‚¢\n");
 			lpNetwark.SetNetWorkMode(NetworkMode::GEST);
 			std::string ipfn;
 			std::string ip;
