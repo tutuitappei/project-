@@ -122,7 +122,8 @@ void Netwark::FuncMode(MesType _mestype)
 
 void Netwark::RecvMes(void)
 {
-	_funcmode =
+
+	
 	[&](MesType _mestype) {
 		/*switch (_mestype)
 		{
@@ -187,7 +188,7 @@ void Netwark::RecvMes(void)
 	else
 	{
 		list.push_back((header.hd.type, _mpacket));
-		_funcmode(_mpacket.first);
+
 	}
 	do
 	{
@@ -535,9 +536,11 @@ void Netwark::RevUpdata(void)
 					}
 				}
 			}
-			TRACE("%d\n", _revdata[header.hd.type].size());
+			TRACE("%d‚É‚á\n", _revdata[header.hd.type].size());
 		}
+		
 	}
+
 }
 
 void Netwark::RunUpdata(void)
@@ -549,11 +552,6 @@ void Netwark::RunUpdata(void)
 	std::thread th(&Netwark::RevUpdata, this);
 
 	th.detach();
-}
-
-int Netwark::add(int x)
-{
-	return 0;
 }
 
 void Netwark::SendUpdata(MesType mtype)
@@ -571,4 +569,38 @@ void Netwark::SendUpdata(MesType mtype, MesPacket mpacket)
 	auto handle = GetNetHandle();
 
 	//mpacket.emplace(mpacket.begin(),);
+	mpacket.insert(mpacket.begin(), { header.hamu[1] });
+	mpacket.insert(mpacket.begin(), { header.hamu[0] });
+
+	auto _headerSize = sizeof(header);
+
+	if (GetNetWorkDataLength(handle) >= _headerSize)
+	{
+		if (mpacket.size() <= intSendCnt)
+		{
+
+			header.hd.length = mpacket.size() - 2;
+			header.hd.next = 1;
+			header.hd.sendID = 0;
+			NetWorkSend(GetNetHandle(), mpacket.data(), sizeof(mpacket));
+			mpacket.erase(mpacket.begin() + 2, mpacket.end());
+		}
+		else if (mpacket.size() > intSendCnt)
+		{
+			header.hd.length = intSendCnt - 2;
+			header.hd.next = 1;
+
+
+			NetWorkSend(GetNetHandle(), mpacket.data(), sizeof(intSendCnt));
+			mpacket.erase(mpacket.begin() + 2, mpacket.begin() + intSendCnt);
+		}
+		else
+		{
+			TRACE("mpacket.size‚à‚µ‚­‚ÍintSendCnt‚ªˆÙí‚Å‚·\n");
+		}
+	}
+	while (header.hd.next)
+	{
+
+	}
 }

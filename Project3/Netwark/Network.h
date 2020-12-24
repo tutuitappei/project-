@@ -33,7 +33,7 @@ struct MesData
 	MesType type;
 	unsigned char next;		//データ送信が分割の場合に次があるかないか
 	unsigned short sendID;	//分割送信時のナンバリング
-	unsigned int length;
+	unsigned int length;	//データー長
 };
 union Header
 {
@@ -137,8 +137,7 @@ private:
 	std::mutex _mute;	//ロックガードに使われるやつ
 
 	std::map<MesType, std::vector<unionData>> _revdata;
-	
-	int add(int x);
+
 	std::function<void(MesType)> _funcmode;
 };
 
