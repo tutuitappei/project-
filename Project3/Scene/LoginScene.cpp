@@ -2,6 +2,7 @@
 #include<DxLib.h>
 #include <string>
 #include<sstream>
+#include<fstream>
 #include "LoginScene.h"
 #include "Title.h"
 #include "SceneManager.h"
@@ -63,8 +64,9 @@ LoginScene::LoginScene()
 			lpNetwark.SetNetWorkMode(NetworkMode::GEST);
 			std::string ipfn;
 			std::string ip;
+			/*char s[256];*/
 			std::cin >> ip;
-			std::stringstream ipnum(ip);
+			std::istringstream ipnum(ip);
 
 			auto GetIpNum = [&]() {
 				std::getline(ipnum, ipfn, '.');

@@ -35,7 +35,7 @@ bool Host::CheckNetwork(void)
 	_hosuni.iData = 0;
 
 	_act = ActivState::Wait;
-	while (!ProcessMessage())
+	//while (!ProcessMessage())
 	{
 		_nethandle = GetNewAcceptNetWork();
 		_Pdata.handle = _nethandle;
@@ -52,11 +52,11 @@ bool Host::CheckNetwork(void)
 			lpNetwark.SendMes(MesType::COUNT_ROOM,_mpack);
 			//if (_lcnt > std::chrono::duration_cast<std::chrono::milliseconds>(point - start).count())
 			//{
-				continue;
+				//continue;
 			//}
 			StopListenNetWork();
 			_act = ActivState::Init;
-			break;
+			//break;
 		}
 	}
 	return false;

@@ -34,6 +34,7 @@ bool Netwark::SetNetWorkMode(NetworkMode mode)
 		TRACE("SetNetWorkModeで異常発生");
 		break;
 	}
+	RunUpdata(); //スレッド化
 	return false;
 }
 
@@ -112,6 +113,7 @@ bool Netwark::IrregularCheck(MesType _mestype)
 
 	return false;
 }
+
 
 void Netwark::FuncMode(MesType _mestype)
 {
@@ -457,10 +459,6 @@ void Netwark::LetterSet(void)
 
 bool Netwark::SendWait(void)
 {
-	//if ()
-	//{
-	//	return true;
-	//}
 	return false;
 }
 
@@ -497,5 +495,53 @@ Netwark::Netwark()
 
 Netwark::~Netwark()
 {
+}
+
+
+void Netwark::RevUpdata(void)
+{
+	while (ProcessMessage() == 0 && CheckHitKey(KEY_INPUT_ESCAPE) == 0)
+	{
+		Header header;
+		auto _handle = GetNetHandle();
+		std::lock_guard<std::mutex> lock(_mute);	//ロックガード処理
+		int cunt = 0;
+
+		if (GetNetWorkDataLength(_handle) >= sizeof(header))
+		{
+			NetWorkRecv(_handle, &header, sizeof(header));	//データの受信
+
+			if (header.hd.length >= 1)
+			{
+				_revdata[header.hd.type].resize(header.hd.length);
+				
+				if (GetNetWorkDataLength(_handle) >= sizeof(unionData) * header.hd.length)
+				{
+					NetWorkRecv(_handle, &_revdata[header.hd.type][cunt], sizeof(unionData) * header.hd.length);
+				}
+				cunt = header.hd.length;
+				while (header.hd.next)
+				{
+					if (GetNetWorkDataLength(_handle) >= sizeof(header))
+					{
+						NetWorkRecv(_handle, &header, sizeof(header));	//データの受信
+						_revdata[header.hd.type].resize(cunt + header.hd.length);
+						if (GetNetWorkDataLength(_handle) >= sizeof(unionData) * header.hd.length)
+						{
+							NetWorkRecv(_handle, &_revdata[header.hd.type][cunt], sizeof(unionData) * header.hd.length);
+						}
+						cunt += header.hd.length;
+					}
+				}
+			}
+			TRACE("%d\n", _revdata[header.hd.type].size());
+		}
+	}
+}
+
+void Netwark::RunUpdata(void)
+{
+	_thread = std::thread(&Netwark::RevUpdata, this);
+	_thread.detach();
 }
 

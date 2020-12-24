@@ -4,6 +4,8 @@
 #include<vector>
 #include<chrono>
 #include<thread>
+#include<mutex>
+#include<map>
 #include<functional>
 #include"NetWorkst.h"
 
@@ -94,6 +96,9 @@ public:
 	void SetPlayerNum(int id);
 	int GetPlayerID(void);
 	int GetPlayerMAX(void);
+
+	//新規作成
+
 private:
 	Netwark();
 	~Netwark();
@@ -122,5 +127,16 @@ private:
 	std::chrono::system_clock::time_point  start, end;
 
 	static Netwark* s_Instance;
+
+
+	//新規作成
+	void RevUpdata(void);	//受信のアップデート
+	void RunUpdata(void);	//スレッドを作る関数
+
+	std::thread _thread;
+	std::mutex _mute;	//ロックガードに使われるやつ
+
+	std::map<MesType, std::vector<unionData>> _revdata;
+	
 };
 
