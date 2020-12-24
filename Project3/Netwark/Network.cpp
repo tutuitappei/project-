@@ -541,7 +541,11 @@ void Netwark::RevUpdata(void)
 
 void Netwark::RunUpdata(void)
 {
-	_thread = std::thread(&Netwark::RevUpdata, this);
-	_thread.detach();
-}
+	//_thread(&Netwark::RevUpdata, this);
 
+	//_thread.detach();
+
+	std::thread th(&Netwark::RevUpdata, this);
+
+	th.detach();
+}

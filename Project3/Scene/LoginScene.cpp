@@ -19,39 +19,40 @@ LoginScene::LoginScene()
 
 	int mode;
 	auto ipdata = lpNetwark.GetIp();
-	IPDATA hostIp;
+
 	IPDATA oldhostIp;
+
 	TRACE("自分のIPアドレス.%d.%d.%d.%d\n", ipdata.d1, ipdata.d2, ipdata.d3, ipdata.d4);
+	TRACE("モード選択…\n0:ホスト\n1:ゲスト\n");
+	std::ifstream ifs("ini/oldhost.txt");
+	if (!ifs) {
+		TRACE("前の相手のホストIPがありませんでした\n");
+	}
+	std::string buf;
+	ifs >> buf;
+	if (ifs)
+	{
+		std::string ipfn;
+		std::string ip;
+		ip = buf;
+		std::stringstream ipnum(ip);
+
+		auto GetIpNum = [&]() {
+			std::getline(ipnum, ipfn, '.');
+			return atoi(ipfn.c_str());
+		};
+
+
+		oldhostIp.d1 = GetIpNum();
+		oldhostIp.d2 = GetIpNum();
+		oldhostIp.d3 = GetIpNum();
+		oldhostIp.d4 = GetIpNum();
+		TRACE("2:ゲスト(%d.%d.%d.%d)\n", oldhostIp.d1, oldhostIp.d2, oldhostIp.d3, oldhostIp.d4);
+	}
+	ifs.close();
+	TRACE("3:オフライン\n");
 	do
 	{
-		TRACE("モード選択…\n0:ホスト\n1:ゲスト\n");
-		std::ifstream ifs("ini/oldhost.txt");
-		if (!ifs) {
-			TRACE("前の相手のホストIPがありませんでした\n");
-		}
-		std::string buf;
-		ifs >> buf;
-		if (ifs)
-		{
-			std::string ipfn;
-			std::string ip;
-			ip = buf;
-			std::stringstream ipnum(ip);
-
-			auto GetIpNum = [&]() {
-				std::getline(ipnum, ipfn, '.');
-				return atoi(ipfn.c_str());
-			};
-
-
-			oldhostIp.d1 = GetIpNum();
-			oldhostIp.d2 = GetIpNum();
-			oldhostIp.d3 = GetIpNum();
-			oldhostIp.d4 = GetIpNum();
-			TRACE("2:ゲスト(%d.%d.%d.%d)\n", oldhostIp.d1, oldhostIp.d2, oldhostIp.d3, oldhostIp.d4);
-		}
-		ifs.close();
-		TRACE("3:オフライン\n");
 		std::cin >> mode;
 		if (mode == 0)
 		{
@@ -62,35 +63,8 @@ LoginScene::LoginScene()
 		{
 			TRACE("相手のホストIPを入力してください\n");
 			lpNetwark.SetNetWorkMode(NetworkMode::GEST);
-			std::string ipfn;
-			std::string ip;
-			/*char s[256];*/
-			std::cin >> ip;
-			std::istringstream ipnum(ip);
 
-			auto GetIpNum = [&]() {
-				std::getline(ipnum, ipfn, '.');
-				return atoi(ipfn.c_str());
-			};
-
-
-			hostIp.d1 = GetIpNum();
-			hostIp.d2 = GetIpNum();
-			hostIp.d3 = GetIpNum();
-			hostIp.d4 = GetIpNum();
-
-			lpNetwark.ConnectHost(hostIp);
-
-			std::ofstream ofs("ini/oldhost.txt");
-			if (ofs)
-			{
-				ofs << ip << std::endl;
-			}
-			else
-			{
-				TRACE("ファイルオープンに失敗\n");
-			}
-			ofs.close();
+			SetHostIP();
 
 		}
 		if (mode == 2)
@@ -102,7 +76,8 @@ LoginScene::LoginScene()
 		{
 			lpNetwark.SetNetWorkMode(NetworkMode::OFF);
 		}
-	} while (mode < 0 || mode > 3);
+	} while (mode <= 0 || mode >= 4);
+
 	TRACE("%dです\n", lpNetwark.GetActive());
 
 
@@ -150,7 +125,6 @@ void LoginScene::Init(void)
 	}
 	else if (lpNetwark.GetNetWorkMode() == NetworkMode::GEST)
 	{
-		lpNetwark.RecvMes();
 
 		//lpNetwark.TmxChat();
 		//lpNetwark.TmxDataRev();
@@ -163,8 +137,6 @@ void LoginScene::Init(void)
 		}
 		lpNetwark.GetRevStanby();
 		lpNetwark.SendStart();
-
-		lpNetwark.RecvMes();
 	}
 	else
 	{
@@ -179,4 +151,38 @@ void LoginScene::Updata(void)
 {
 
 	lpScene.ChangeScene(SCENE::GAME);
+}
+
+void LoginScene::SetHostIP(void)
+{
+	std::string ipfn;
+	std::string ip;
+	/*char s[256];*/
+	std::cin >> ip;
+	std::istringstream ipnum(ip);
+
+	auto GetIpNum = [&]() {
+		std::getline(ipnum, ipfn, '.');
+		return atoi(ipfn.c_str());
+	};
+
+	hostIp.d1 = GetIpNum();
+	hostIp.d2 = GetIpNum();
+	hostIp.d3 = GetIpNum();
+	hostIp.d4 = GetIpNum();
+
+
+
+	std::ofstream ofs("ini/oldhost.txt");
+	if (ofs)
+	{
+		ofs << ip << std::endl;
+	}
+	else
+	{
+		TRACE("ファイルオープンに失敗\n");
+	}
+	ofs.close();
+
+	lpNetwark.ConnectHost(hostIp);
 }

@@ -36,5 +36,10 @@ private:
 
 	Layer _layer;
 	Map _map;
+
+	//V‹K
+	void SetHostIP(void);
+
+	IPDATA hostIp;
 };
 
