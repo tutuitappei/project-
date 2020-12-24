@@ -23,6 +23,8 @@ LoginScene::LoginScene()
 	IPDATA oldhostIp;
 
 	TRACE("自分のIPアドレス.%d.%d.%d.%d\n", ipdata.d1, ipdata.d2, ipdata.d3, ipdata.d4);
+	do
+	{
 	TRACE("モード選択…\n0:ホスト\n1:ゲスト\n");
 	std::ifstream ifs("ini/oldhost.txt");
 	if (!ifs) {
@@ -50,14 +52,15 @@ LoginScene::LoginScene()
 		TRACE("2:ゲスト(%d.%d.%d.%d)\n", oldhostIp.d1, oldhostIp.d2, oldhostIp.d3, oldhostIp.d4);
 	}
 	ifs.close();
+
 	TRACE("3:オフライン\n");
-	do
-	{
 		std::cin >> mode;
 		if (mode == 0)
 		{
 			lpNetwark.SetNetWorkMode(NetworkMode::HOST);
 			lpNetwark.ChecLink();
+
+			//lpNetwark.Thread();
 		}
 		if (mode == 1)
 		{
@@ -66,18 +69,20 @@ LoginScene::LoginScene()
 
 			SetHostIP();
 
+			lpNetwark.Thread();
 		}
 		if (mode == 2)
 		{
 			lpNetwark.SetNetWorkMode(NetworkMode::GEST);
 			lpNetwark.ConnectHost(oldhostIp);
+
+			lpNetwark.Thread();
 		}
 		if (mode == 3)
 		{
 			lpNetwark.SetNetWorkMode(NetworkMode::OFF);
 		}
-	} while (mode <= 0 || mode >= 4);
-	lpNetwark.Thread();
+	} while (mode < 0 || mode > 3);
 	TRACE("%dです\n", lpNetwark.GetActive());
 
 
@@ -121,7 +126,7 @@ void LoginScene::Init(void)
 		NetWorkSend(lpNetwark.GetNetHandle(), &data, sizeof(data));
 
 		lpNetwark.SendStanby();
-		lpNetwark.GetRevStart();
+		//lpNetwark.GetRevStart();
 	}
 	else if (lpNetwark.GetNetWorkMode() == NetworkMode::GEST)
 	{
@@ -131,11 +136,11 @@ void LoginScene::Init(void)
 
 		if (GetNetWorkDataLength(lpNetwark.GetNetHandle()) >= sizeof(data))
 		{
-			NetWorkRecv(lpNetwark.GetNetHandle(), &data, sizeof(data));
-			imagepos.x = data.first;
-			imagepos.y = data.second;
+			//NetWorkRecv(lpNetwark.GetNetHandle(), &data, sizeof(data));
+			//imagepos.x = data.first;
+			//imagepos.y = data.second;
 		}
-		lpNetwark.GetRevStanby();
+		//lpNetwark.GetRevStanby();
 		lpNetwark.SendStart();
 	}
 	else

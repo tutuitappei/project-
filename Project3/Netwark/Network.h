@@ -98,6 +98,9 @@ public:
 
 	//V‹Kì¬
 	void Thread(void);
+
+	void SendUpdata(MesType mtype);
+	void SendUpdata(MesType mtype, MesPacket _mpacket);
 private:
 	Netwark();
 	~Netwark();
@@ -112,8 +115,6 @@ private:
 
 	int playerID = 0;
 	int maxplayer = 0;
-
-	std::function<void(MesType)> _funcmode;
 
 	//unsigned int lengthd;
 	//int count;
@@ -137,5 +138,7 @@ private:
 
 	std::map<MesType, std::vector<unionData>> _revdata;
 	
+	int add(int x);
+	std::function<void(MesType)> _funcmode;
 };
 

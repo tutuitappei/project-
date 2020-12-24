@@ -45,6 +45,7 @@ void Netwark::Thread(void)
 {
 	RunUpdata(); //スレッド化
 }
+
 NetworkMode Netwark::GetNetWorkMode(void)
 {
 	return _state->GetMode();
@@ -121,8 +122,9 @@ void Netwark::FuncMode(MesType _mestype)
 
 void Netwark::RecvMes(void)
 {
-	_funcmode = [&](MesType _mestype) {
-		switch (_mestype)
+	_funcmode =
+	[&](MesType _mestype) {
+		/*switch (_mestype)
 		{
 		case MesType::COUNT_ROOM:
 			TRACE("待ち時間カウントダウン受信\n");
@@ -162,7 +164,7 @@ void Netwark::RecvMes(void)
 		default:
 			TRACE("不明なデータの受信\n");
 			break;
-		}
+		}*/
 	};
 	int _intSendCnt = 1400;
 
@@ -244,19 +246,19 @@ void Netwark::GetRevStart(void)
 
 void Netwark::SendStanby(void)
 {
-	MesData _mesd;
-	_mesd.type = MesType::STANBY_HOST;
-	NetWorkSend(GetNetHandle(), &_mesd, sizeof(_mesd));
-	SendMes(MesType::STANBY_HOST);
+	//MesData _mesd;
+	//_mesd.type = MesType::STANBY_HOST;
+	//NetWorkSend(GetNetHandle(), &_mesd, sizeof(_mesd));
+	SendUpdata(MesType::STANBY_HOST);
 	TRACE("開始待ち状態の送信\n");
 }
 
 void Netwark::SendStart(void)
 {
-	MesData _mesd;
-	_mesd.type = MesType::STANBY_GEST;
-	NetWorkSend(GetNetHandle(), &_mesd, sizeof(_mesd));
-	SendMes(MesType::STANBY_GEST);
+	//MesData _mesd;
+	//_mesd.type = MesType::STANBY_GEST;
+	//NetWorkSend(GetNetHandle(), &_mesd, sizeof(_mesd));
+	SendUpdata(MesType::STANBY_GEST);
 	TRACE("ゲーム開始合図の送信\n");
 }
 
@@ -325,9 +327,9 @@ void Netwark::TmxCheck(const char* filename)
 	
 	TRACE("受け取ったサイズは%dです\n", static_cast<int>(size));
 	
-	SendMes(_mesd.type, packet);
+	SendUpdata(_mesd.type, packet);
 
-	NetWorkSend(GetNetHandle(), &_mesd, sizeof(_mesd));
+	//NetWorkSend(GetNetHandle(), &_mesd, sizeof(_mesd));
 }
 
 void Netwark::TmxDataSend(void)
@@ -416,44 +418,44 @@ void Netwark::LetterReceive(void)
 
 void Netwark::LetterSet(void)
 {
-	MesPacket _data;
-	SetHeader(Header{ MesType::TMX_SIZE,0,0,1 }, _data);
+	//MesPacket _data;
+	//SetHeader(Header{ MesType::TMX_SIZE,0,0,1 }, _data);
 
 
-	NetWorkSend(GetNetHandle(), &_data, sizeof(_data));
+	//NetWorkSend(GetNetHandle(), &_data, sizeof(_data));
 
 
-	MesData _mesd;
-	_mesd.type = MesType::TMX_DATA;
-	std::ifstream ifs("map/untitled2.tmx");
-	std::string fs;
-	//std::iostream 
+	//MesData _mesd;
+	//_mesd.type = MesType::TMX_DATA;
+	//std::ifstream ifs("map/untitled2.tmx");
+	//std::string fs;
+	////std::iostream 
 
-	//auto GetLetters = [&]() {
-	//};
+	////auto GetLetters = [&]() {
+	////};
 
-	while (!ifs.eof())
-	{
-		do
-		{
-			if (ifs.eof())
-			{
-				break;
-			}
-		} while (fs.find("data encoding ") == std::string::npos);
-		if (!ifs.eof())
-		{
-			//ifs.getline();
-			while (fs.find("< / data>") == std::string::npos)
-			{
-			}
-		}
+	//while (!ifs.eof())
+	//{
+	//	do
+	//	{
+	//		if (ifs.eof())
+	//		{
+	//			break;
+	//		}
+	//	} while (fs.find("data encoding ") == std::string::npos);
+	//	if (!ifs.eof())
+	//	{
+	//		//ifs.getline();
+	//		while (fs.find("< / data>") == std::string::npos)
+	//		{
+	//		}
+	//	}
 
-	}
-	if (SendWait())
-	{
+	//}
+	//if (SendWait())
+	//{
 
-	}
+	//}
 }
 
 bool Netwark::SendWait(void)
@@ -502,32 +504,32 @@ void Netwark::RevUpdata(void)
 	while (ProcessMessage() == 0 && CheckHitKey(KEY_INPUT_ESCAPE) == 0)
 	{
 		Header header;
-		auto _handle = GetNetHandle();
+		auto handle = GetNetHandle();
 		std::lock_guard<std::mutex> lock(_mute);	//ロックガード処理
 		int cunt = 0;
 
-		if (GetNetWorkDataLength(_handle) >= sizeof(header))
+		if (GetNetWorkDataLength(handle) >= sizeof(header))
 		{
-			NetWorkRecv(_handle, &header, sizeof(header));	//データの受信
+			NetWorkRecv(handle, &header, sizeof(header));	//データの受信
 
 			if (header.hd.length >= 1)
 			{
 				_revdata[header.hd.type].resize(header.hd.length);
 				
-				if (GetNetWorkDataLength(_handle) >= sizeof(unionData) * header.hd.length)
+				if (GetNetWorkDataLength(handle) >= sizeof(unionData) * header.hd.length)
 				{
-					NetWorkRecv(_handle, &_revdata[header.hd.type][cunt], sizeof(unionData) * header.hd.length);
+					NetWorkRecv(handle, &_revdata[header.hd.type][cunt], sizeof(unionData) * header.hd.length);
 				}
 				cunt = header.hd.length;
 				while (header.hd.next)
 				{
-					if (GetNetWorkDataLength(_handle) >= sizeof(header))
+					if (GetNetWorkDataLength(handle) >= sizeof(header))
 					{
-						NetWorkRecv(_handle, &header, sizeof(header));	//データの受信
+						NetWorkRecv(handle, &header, sizeof(header));	//データの受信
 						_revdata[header.hd.type].resize(cunt + header.hd.length);
-						if (GetNetWorkDataLength(_handle) >= sizeof(unionData) * header.hd.length)
+						if (GetNetWorkDataLength(handle) >= sizeof(unionData) * header.hd.length)
 						{
-							NetWorkRecv(_handle, &_revdata[header.hd.type][cunt], sizeof(unionData) * header.hd.length);
+							NetWorkRecv(handle, &_revdata[header.hd.type][cunt], sizeof(unionData) * header.hd.length);
 						}
 						cunt += header.hd.length;
 					}
@@ -547,4 +549,26 @@ void Netwark::RunUpdata(void)
 	std::thread th(&Netwark::RevUpdata, this);
 
 	th.detach();
+}
+
+int Netwark::add(int x)
+{
+	return 0;
+}
+
+void Netwark::SendUpdata(MesType mtype)
+{
+	MesPacket data;
+	SendUpdata(mtype, std::move(data));
+}
+
+void Netwark::SendUpdata(MesType mtype, MesPacket mpacket)
+{
+	int intSendCnt = 1400;
+	int cunt = 0;
+
+	Header header{ mtype,0,0,0 };
+	auto handle = GetNetHandle();
+
+	//mpacket.emplace(mpacket.begin(),);
 }
