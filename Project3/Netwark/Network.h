@@ -67,7 +67,6 @@ public:
 	}
 
 	void Updata(void);
-	void Thread(void);
 
 	IPDATA GetIp(void);
 	bool SetNetWorkMode(NetworkMode mode);
@@ -98,7 +97,7 @@ public:
 	int GetPlayerMAX(void);
 
 	//V‹Kì¬
-
+	void Thread(void);
 private:
 	Netwark();
 	~Netwark();

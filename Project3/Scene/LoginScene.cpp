@@ -77,7 +77,7 @@ LoginScene::LoginScene()
 			lpNetwark.SetNetWorkMode(NetworkMode::OFF);
 		}
 	} while (mode <= 0 || mode >= 4);
-
+	lpNetwark.Thread();
 	TRACE("%d‚Å‚·\n", lpNetwark.GetActive());
 
 

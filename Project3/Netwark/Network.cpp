@@ -34,7 +34,6 @@ bool Netwark::SetNetWorkMode(NetworkMode mode)
 		TRACE("SetNetWorkModeで異常発生");
 		break;
 	}
-	RunUpdata(); //スレッド化
 	return false;
 }
 
@@ -44,7 +43,7 @@ void Netwark::Updata(void)
 
 void Netwark::Thread(void)
 {
-
+	RunUpdata(); //スレッド化
 }
 NetworkMode Netwark::GetNetWorkMode(void)
 {
