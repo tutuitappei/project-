@@ -15,8 +15,6 @@ LoginScene::LoginScene()
 	Screensizex = 0;
 	Screensizey = 0;
 
-	_map.SetMapInit();
-
 	int mode;
 	auto ipdata = lpNetwark.GetIp();
 
@@ -117,6 +115,9 @@ void LoginScene::Init(void)
 	data.second = 0;
 	if (lpNetwark.GetNetWorkMode() == NetworkMode::HOST)
 	{
+
+		_map.SetMapInit();
+
 		lpNetwark.TmxCheck("map/untitled2.tmx");
 		lpNetwark.Oneletter();
 
