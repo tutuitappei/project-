@@ -573,7 +573,7 @@ void Netwark::SendUpdata(MesType mtype, MesPacket mpacket)
 	mpacket.insert(mpacket.begin(), { header.hamu[0] });
 
 	auto headerSize = sizeof(header);
-	header.hd.next = 0;
+	
 	header.hd.sendID = 0;
 
 	if (GetNetWorkDataLength(handle) >= headerSize)
@@ -585,7 +585,8 @@ void Netwark::SendUpdata(MesType mtype, MesPacket mpacket)
 			{
 
 				header.hd.length = mpacket.size() - 2;
-			
+				header.hd.next = 0;
+
 				NetWorkSend(GetNetHandle(), mpacket.data(), sizeof(mpacket));
 				mpacket.erase(mpacket.begin() + 2, mpacket.end());
 			}
