@@ -572,35 +572,40 @@ void Netwark::SendUpdata(MesType mtype, MesPacket mpacket)
 	mpacket.insert(mpacket.begin(), { header.hamu[1] });
 	mpacket.insert(mpacket.begin(), { header.hamu[0] });
 
-	auto _headerSize = sizeof(header);
+	auto headerSize = sizeof(header);
+	header.hd.next = 0;
+	header.hd.sendID = 0;
 
-	if (GetNetWorkDataLength(handle) >= _headerSize)
+	if (GetNetWorkDataLength(handle) >= headerSize)
 	{
-		if (mpacket.size() <= intSendCnt)
+		do
 		{
 
-			header.hd.length = mpacket.size() - 2;
-			header.hd.next = 1;
-			header.hd.sendID = 0;
-			NetWorkSend(GetNetHandle(), mpacket.data(), sizeof(mpacket));
-			mpacket.erase(mpacket.begin() + 2, mpacket.end());
-		}
-		else if (mpacket.size() > intSendCnt)
-		{
-			header.hd.length = intSendCnt - 2;
-			header.hd.next = 1;
+			if (mpacket.size() <= intSendCnt)
+			{
+
+				header.hd.length = mpacket.size() - 2;
+			
+				NetWorkSend(GetNetHandle(), mpacket.data(), sizeof(mpacket));
+				mpacket.erase(mpacket.begin() + 2, mpacket.end());
+			}
+			else if (mpacket.size() > intSendCnt)
+			{
+				header.hd.length = intSendCnt - 2;
+				header.hd.next = 1;
 
 
-			NetWorkSend(GetNetHandle(), mpacket.data(), sizeof(intSendCnt));
-			mpacket.erase(mpacket.begin() + 2, mpacket.begin() + intSendCnt);
-		}
-		else
-		{
-			TRACE("mpacket.size‚à‚µ‚­‚ÍintSendCnt‚ªˆÙí‚Å‚·\n");
-		}
+				NetWorkSend(GetNetHandle(), mpacket.data(), sizeof(intSendCnt));
+				mpacket.erase(mpacket.begin() + 2, mpacket.begin() + intSendCnt);
+
+				header.hd.sendID++;
+			}
+			else
+			{
+				TRACE("mpacket.size‚à‚µ‚­‚ÍintSendCnt‚ªˆÙí‚Å‚·\n");
+			}
+			
+		} while (header.hd.next);
 	}
-	while (header.hd.next)
-	{
-
-	}
+	
 }
