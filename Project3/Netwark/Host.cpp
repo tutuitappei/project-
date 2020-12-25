@@ -23,16 +23,16 @@ NetworkMode Host::GetMode(void)
 bool Host::CheckNetwork(void)
 {
 
-	MesPacket _mpack;
-	unionData _hosuni;
+	MesPacket mpack;
+	unionData hosuni;
 
-	_mpack.clear();
-	_hosuni.uiData = 0;
+	mpack.clear();
+	hosuni.uiData = 0;
 	for (int i = 0; i < 4; i++)
 	{
-		_hosuni.cData[i] = 0;
+		hosuni.cData[i] = 0;
 	}
-	_hosuni.iData = 0;
+	hosuni.iData = 0;
 
 	_act = ActivState::Wait;
 	//while (!ProcessMessage())
@@ -49,7 +49,7 @@ bool Host::CheckNetwork(void)
 			}
 			point = std::chrono::system_clock::now();
 			
-			lpNetwark.SendMes(MesType::COUNT_ROOM,_mpack);
+			lpNetwark.SendUpdata(MesType::COUNT_ROOM,mpack);
 			//if (_lcnt > std::chrono::duration_cast<std::chrono::milliseconds>(point - start).count())
 			//{
 				//continue;

@@ -46,6 +46,11 @@ void Netwark::Thread(void)
 	RunUpdata(); //ƒXƒŒƒbƒh‰»
 }
 
+bool Netwark::GetFrag(void)
+{
+	return startFlag;
+}
+
 NetworkMode Netwark::GetNetWorkMode(void)
 {
 	return _state->GetMode();
@@ -493,6 +498,7 @@ int Netwark::GetPlayerMAX(void)
 
 Netwark::Netwark()
 {
+	startFlag = false;
 }
 
 Netwark::~Netwark()
@@ -502,6 +508,8 @@ Netwark::~Netwark()
 
 void Netwark::RevUpdata(void)
 {
+	_funcmode;
+
 	while (ProcessMessage() == 0 && CheckHitKey(KEY_INPUT_ESCAPE) == 0)
 	{
 		Header header;
@@ -590,7 +598,7 @@ void Netwark::SendUpdata(MesType mtype, MesPacket mpacket)
 				NetWorkSend(GetNetHandle(), mpacket.data(), sizeof(mpacket));
 				mpacket.erase(mpacket.begin() + 2, mpacket.end());
 			}
-			else if (mpacket.size() > intSendCnt)
+			else
 			{
 				header.hd.length = intSendCnt - 2;
 				header.hd.next = 1;
@@ -600,10 +608,6 @@ void Netwark::SendUpdata(MesType mtype, MesPacket mpacket)
 				mpacket.erase(mpacket.begin() + 2, mpacket.begin() + intSendCnt);
 
 				header.hd.sendID++;
-			}
-			else
-			{
-				TRACE("mpacket.size‚à‚µ‚­‚ÍintSendCnt‚ªˆÙí‚Å‚·\n");
 			}
 			
 		} while (header.hd.next);

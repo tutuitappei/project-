@@ -18,8 +18,8 @@ void SceneManager::Run(void)
 	SetDrawScreen(DX_SCREEN_BACK);							// •`‰ææ‚ðÊÞ¯¸ÊÞ¯Ì§‚ÉÝ’è
 	ClsDrawScreen();										// ‰æ–Ê‚ÌÁ‹Ž
 
-	m_pScene->Draw();
 	m_pScene->Updata();
+	m_pScene->Draw();
 
 	//time++;
 }

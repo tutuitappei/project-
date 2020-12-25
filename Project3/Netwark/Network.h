@@ -98,6 +98,7 @@ public:
 
 	//新規作成
 	void Thread(void);
+	bool GetFrag(void);
 
 	void SendUpdata(MesType mtype);
 	void SendUpdata(MesType mtype, MesPacket _mpacket);
@@ -111,7 +112,6 @@ private:
 	void SetHeader(Header head, MesPacket pack);
 	void SendHeader(void);
 
-	void FuncMode(MesType _mestype);
 
 	int playerID = 0;
 	int maxplayer = 0;
@@ -132,6 +132,10 @@ private:
 	//新規作成
 	void RevUpdata(void);	//受信のアップデート
 	void RunUpdata(void);	//スレッドを作る関数
+
+	bool startFlag;
+
+	void FuncMode(MesType _mestype);
 
 	std::thread _thread;
 	std::mutex _mute;	//ロックガードに使われるやつ
