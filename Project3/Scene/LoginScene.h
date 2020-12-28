@@ -49,8 +49,8 @@ private:
 
 	std::map<Updatamode, std::function<bool(void)>> updatefunc;
 
-	IPDATA oldhostIp;
 	Updatamode key;
+	IPDATA oldhostIp;
 	IPDATA hostIp;
 };
 

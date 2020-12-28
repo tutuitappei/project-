@@ -112,6 +112,8 @@ private:
 	void SetHeader(Header head, MesPacket pack);
 	void SendHeader(void);
 
+	void FuncMode(MesType _mestype);
+
 
 	int playerID = 0;
 	int maxplayer = 0;
@@ -133,15 +135,28 @@ private:
 	void RevUpdata(void);	//受信のアップデート
 	void RunUpdata(void);	//スレッドを作る関数
 
+	void Countroom(MesPacket mest);			//接続待ちカウントダウン
+	void Iddata(MesPacket mest);			//自分のIDとプレイヤー数
+	void StanbyHost(MesPacket mest);		//初期化情報送信完了(ホスト)
+	void StanbyGest(MesPacket mest);		//初期化完了(ゲスト)
+	void Countgame(MesPacket mest);			//全員の初期化完了後のゲーム開始カウントダウン
+	void TmxSize(MesPacket mest);			//TMXのサイズの送信(ホスト)
+	void TmxData(MesPacket mest);			//TMXのCSVの送信(ホスト)
+	void Posd(MesPacket mest);				//プレイヤーの座標
+	void Bomset(MesPacket mest);			//ボムの座標
+	void Deth(MesPacket mest);				//死亡情報
+	void Result(MesPacket mest);			//勝負の結果情報の送信:MAX5人(ホスト)
+	void LostNet(MesPacket mest);			//切断時に生成
+
 	bool startFlag;
 
-	void FuncMode(MesType _mestype);
 
 	std::thread _thread;
 	std::mutex _mute;	//ロックガードに使われるやつ
+	MesType keytype;
 
 	std::map<MesType, std::vector<unionData>> _revdata;
 
-	std::function<void(MesType)> _funcmode;
+	std::map<MesType, std::function<void(MesPacket)>> _funcmode;
 };
 

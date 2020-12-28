@@ -499,6 +499,11 @@ int Netwark::GetPlayerMAX(void)
 Netwark::Netwark()
 {
 	startFlag = false;
+
+	keytype = MesType::NON;
+
+	//_funcmode[MesType::COUNT_ROOM] = std::bind(&Netwark::Countroom, this);
+	//_funcmode[MesType::ID] = std::bind(&Netwark::Iddata, this);
 }
 
 Netwark::~Netwark()
@@ -613,4 +618,55 @@ void Netwark::SendUpdata(MesType mtype, MesPacket mpacket)
 		} while (header.hd.next);
 	}
 	
+}
+
+void Netwark::Countroom(MesPacket mest)
+{
+}
+
+void Netwark::Iddata(MesPacket mest)
+{
+}
+
+void Netwark::StanbyHost(MesPacket mest)
+{
+	startFlag = true;
+}
+
+void Netwark::StanbyGest(MesPacket mest)
+{
+}
+
+void Netwark::Countgame(MesPacket mest)
+{
+}
+
+void Netwark::TmxSize(MesPacket mest)
+{
+}
+
+void Netwark::TmxData(MesPacket mest)
+{
+}
+
+void Netwark::Posd(MesPacket mest)
+{
+}
+
+void Netwark::Bomset(MesPacket mest)
+{
+}
+
+void Netwark::Deth(MesPacket mest)
+{
+	TRACE("€–S‚ğóM\n");
+}
+
+void Netwark::Result(MesPacket mest)
+{
+}
+
+void Netwark::LostNet(MesPacket mest)
+{
+	TRACE("Ø’f‚ğóM\n");
 }
