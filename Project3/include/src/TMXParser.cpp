@@ -3,6 +3,7 @@
 #include <cstdlib>
 #include <iostream>
 #include <sstream>
+#include<fstream>
 
 namespace TMX {
 
@@ -172,4 +173,5 @@ namespace TMX {
 
     return false;
   }
+  
 }

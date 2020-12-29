@@ -74,3 +74,4 @@ bool NetWorkst::CheckLostNetwork(void)
 {
 	return false;
 }
+

@@ -1,5 +1,6 @@
 #include<DxLib.h>
 #include<iostream>
+#include <sstream>
 #include <fstream>
 #include<string>
 #include <vector>
@@ -500,10 +501,28 @@ Netwark::Netwark()
 {
 	startFlag = false;
 
-	keytype = MesType::NON;
+	readtmx("map/untitled2.tmx");
 
-	//_funcmode[MesType::COUNT_ROOM] = std::bind(&Netwark::Countroom, this);
-	//_funcmode[MesType::ID] = std::bind(&Netwark::Iddata, this);
+
+	_width = 0;
+	_hight = 0;
+	_layernum = 0;
+
+	keytype = MesType::NON;
+	MesPacket pack;
+	using namespace std::placeholders;
+	//_funcmode[MesType::COUNT_ROOM] = std::bind(&Netwark::Countroom, _1, this);
+	//_funcmode[MesType::ID]; = std::bind(&Netwark::Iddata, this);
+	//_funcmode[MesType::STANBY_HOST]; = std::bind(&Netwark::Countroom, this);
+	//_funcmode[MesType::STANBY_GEST]; = std::bind(&Netwark::Iddata, this);
+	//_funcmode[MesType::COUNT_GAME]; = std::bind(&Netwark::Countroom, this);
+	//_funcmode[MesType::TMX_SIZE]; = std::bind(&Netwark::Iddata, this);
+	//_funcmode[MesType::TMX_DATA]; = std::bind(&Netwark::Countroom, this);
+	//_funcmode[MesType::POS]; = std::bind(&Netwark::Iddata, this);
+	//_funcmode[MesType::BOM_SET]; = std::bind(&Netwark::Iddata, this);
+	//_funcmode[MesType::DETH]; = std::bind(&Netwark::Countroom, this);
+	//_funcmode[MesType::RESULT]; = std::bind(&Netwark::Iddata, this);
+	//_funcmode[MesType::LOST]; = std::bind(&Netwark::Iddata, this);
 }
 
 Netwark::~Netwark()
@@ -549,7 +568,8 @@ void Netwark::RevUpdata(void)
 					}
 				}
 			}
-			TRACE("%dにゃ\n", _revdata[header.hd.type].size());
+			TRACE("受信size%d\n", _revdata[header.hd.type].size());
+			//_funcmode[header.hd.type](_revdata[header.hd.type]);
 		}
 		
 	}
@@ -620,53 +640,163 @@ void Netwark::SendUpdata(MesType mtype, MesPacket mpacket)
 	
 }
 
-void Netwark::Countroom(MesPacket mest)
+void Netwark::Countroom(const MesPacket& mest)
 {
 }
 
-void Netwark::Iddata(MesPacket mest)
+void Netwark::Iddata(const MesPacket& mest)
 {
 }
 
-void Netwark::StanbyHost(MesPacket mest)
+void Netwark::StanbyHost(const MesPacket& mest)
 {
 	startFlag = true;
 }
 
-void Netwark::StanbyGest(MesPacket mest)
+void Netwark::StanbyGest(const MesPacket& mest)
 {
 }
 
-void Netwark::Countgame(MesPacket mest)
+void Netwark::Countgame(const MesPacket& mest)
 {
 }
 
-void Netwark::TmxSize(MesPacket mest)
+void Netwark::TmxSize(const MesPacket& mest)
 {
 }
 
-void Netwark::TmxData(MesPacket mest)
+void Netwark::TmxData(const MesPacket& mest)
+{
+	std::string fs;
+	std::ofstream ofs("map/revmap.tmx");
+	std::ifstream ifs("tmx.dat");
+	if ((!ofs) || (!ifs))
+	{
+		TRACE("何かのファイルオープンに失敗\n");
+	}
+
+	if (!ofs.eof())
+	{
+		do
+		{
+			if (ofs.eof())
+			{
+				break;
+			}
+		} while (fs.find("data encoding ") == std::string::npos);
+		//_uniond.iData[0];
+	}
+}
+
+void Netwark::Posd(const MesPacket& mest)
 {
 }
 
-void Netwark::Posd(MesPacket mest)
+void Netwark::Bomset(const MesPacket& mest)
 {
 }
 
-void Netwark::Bomset(MesPacket mest)
-{
-}
-
-void Netwark::Deth(MesPacket mest)
+void Netwark::Deth(const MesPacket& mest)
 {
 	TRACE("死亡を受信\n");
 }
 
-void Netwark::Result(MesPacket mest)
+void Netwark::Result(const MesPacket& mest)
 {
 }
 
-void Netwark::LostNet(MesPacket mest)
+void Netwark::LostNet(const MesPacket& mest)
 {
 	TRACE("切断を受信\n");
+}
+
+void Netwark::readtmx(std::string path)
+{
+	std::ifstream tempfile(path, std::ios::in | std::ios::binary);
+	std::string str;
+	std::string numstr;
+	std::stringstream strstream;
+	std::string s;
+	unionData udata;
+	MesPacket datapacket;
+	unionData sizedata;
+
+	int writecnt = 0;
+
+	while (!tempfile.eof())
+	{
+		std::getline(tempfile, str);
+		if (str.find("layer id") != -1)
+		{
+			_layernum++;
+			sizedata.cData[2] = _layernum;
+		}
+		if (str.find("map version") != -1)
+		{
+			strstream.str(str);
+			do
+			{
+				std::getline(strstream, s, '"');
+				if (_width == 0)
+				{
+					if (s.find("width=") != -1)
+					{
+						std::getline(strstream, s, '"');
+						sizedata.cData[0] = std::stoi(s);
+						_width = sizedata.cData[0];
+						TRACE("W%d\n", _width);
+					}
+				}
+				if (_hight == 0)
+				{
+					if (s.find("height=") != -1)
+					{
+						std::getline(strstream, s, '"');
+						sizedata.cData[1] = std::stoi(s);
+						_hight = sizedata.cData[1];
+						TRACE("H%d\n", _hight);
+					}
+				}
+
+			} while (!strstream.eof());
+		}
+		if (str.find_first_of("data encoding") == std::string::npos)
+		{
+			strstream.str(str);
+			strstream.seekg(0, std::ios::beg);
+			do
+			{
+				std::string str_num = "";
+				std::getline(strstream, str_num, ',');
+
+				if (str_num == "\r")
+				{
+					continue;
+				}
+				if (str_num.size())
+				{
+					auto num = std::atoi(str_num.c_str());
+					if (writecnt % 2 == 0)
+					{
+						udata.cData[(writecnt / 2) % 4] = num;
+					}
+					else
+					{
+						udata.cData[(writecnt / 2) % 4] |= ((num << 4) & 0xff);
+					}
+					writecnt++;
+					if (writecnt%8==0)
+					{
+						datapacket.insert(datapacket.end(), { udata.uiData });
+					}
+				}
+			} while (!strstream.eof());
+		}
+	}
+	if (writecnt%8!=0)
+	{
+		datapacket.insert(datapacket.end(), { udata.uiData });
+
+	}
+
 }

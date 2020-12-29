@@ -15,7 +15,8 @@ LoginScene::LoginScene()
 	Screensizex = 0;
 	Screensizey = 0;
 
-	
+	_map.SetMapInit();
+
 	updatefunc[Updatamode::SetNetWork] = std::bind(&LoginScene::SetNetwork, this);
 	updatefunc[Updatamode::SetHostIP] = std::bind(&LoginScene::SetHostIP, this);
 	updatefunc[Updatamode::SetOldIP] = std::bind(&LoginScene::SetOldIP, this);

@@ -1,5 +1,6 @@
 #pragma once
 #include<list>
+#include<string>
 
 enum class NetworkMode
 {
@@ -43,6 +44,8 @@ public:
 	virtual ActivState ConnectHost(IPDATA hostip);
 	virtual bool CheckNetwork(void);
 	virtual bool CheckLostNetwork(void);
+
+
 protected:
 	const int _portnum = 8086;
 	bool _active;
