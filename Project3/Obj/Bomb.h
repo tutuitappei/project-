@@ -34,6 +34,6 @@ private:
     int bomdid = 0;
 
     std::chrono::system_clock::time_point  start, recently;
-    TimeKeeper _time;
+   // TimeKeeper _time;
 };
 

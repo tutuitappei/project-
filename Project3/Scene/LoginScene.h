@@ -5,6 +5,8 @@
 #include"../Vector2.h"
 #include"../Map.h"
 
+#include"../TimeKeeper.h"
+
 
 enum class Updatamode
 {
@@ -46,6 +48,7 @@ private:
 	bool Played(void);
 	bool SetOldIP(void);
 
+	bool thFlag;
 
 	std::map<Updatamode, std::function<bool(void)>> updatefunc;
 

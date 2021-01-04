@@ -15,6 +15,8 @@ LoginScene::LoginScene()
 	Screensizex = 0;
 	Screensizey = 0;
 
+	thFlag = false;
+
 	_map.SetMapInit();
 
 	updatefunc[Updatamode::SetNetWork] = std::bind(&LoginScene::SetNetwork, this);
@@ -215,16 +217,30 @@ bool LoginScene::SetNetwork(void)
 
 bool LoginScene::StartInit(void)
 {
-	lpNetwark.Thread();
+	MesPacket pack;
+//	lpNetwark.Thread();
 	if (lpNetwark.GetNetWorkMode() == NetworkMode::HOST)
 	{
-		lpNetwark.SendUpdata(MesType::COUNT_ROOM);
+		if (!thFlag)
+		{
+			std::thread Hth(&Netwark::Hostupdata, &lpNetwark);
+			Hth.detach();
+			thFlag = true;
+		}
+
+		unionTime times {lpTime.GetTime()};
+		pack.insert(pack.end(), { times.numtime[0] });
+		pack.insert(pack.end(), { times.numtime[1] });
+		//lpNetwark.SendUpdata(MesType::COUNT_ROOM,pack);
 	}
 	else
 	{
 		if (lpNetwark.GetFrag())
 		{
 			lpNetwark.SendUpdata(MesType::STANBY_GEST);
+			std::thread th(&Netwark::RevUpdata, &lpNetwark);
+
+			th.detach();
 			key = Updatamode::Play;
 		}
 	}

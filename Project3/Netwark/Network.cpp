@@ -4,6 +4,7 @@
 #include <fstream>
 #include<string>
 #include <vector>
+#include<chrono>
 #include "Network.h"
 #include"../_debug/_DebugConOut.h"
 #include"Host.h"
@@ -582,9 +583,21 @@ void Netwark::RunUpdata(void)
 
 	//_thread.detach();
 
-	std::thread th(&Netwark::RevUpdata, this);
+	if (_state->GetMode() == NetworkMode::HOST)
+	{
+		std::thread th(&Netwark::Hostupdata, this);
 
-	th.detach();
+		th.detach();
+	}
+	else if (_state->GetMode() == NetworkMode::GEST)
+	{
+
+	}
+	else
+	{
+
+	}
+
 }
 
 void Netwark::SendUpdata(MesType mtype)
@@ -595,8 +608,28 @@ void Netwark::SendUpdata(MesType mtype)
 
 void Netwark::SendUpdata(MesType mtype, MesPacket mpacket)
 {
-	int intSendCnt = 1400;
+	int intSendCnt = 0;
 	int cunt = 0;
+
+	std::string fs;
+	std::string ost;
+	std::ifstream is("ini/setting.txt");
+	do
+	{
+		std::getline(is, fs);
+		if (is.eof())
+		{
+			break;
+		}
+	} while (fs.find("byte length") == -1);
+	if ((fs.find_first_of('"') != std::string::npos)&&(fs.find_last_of('"') != std::string::npos))
+	{
+		int first = fs.find_first_of('"') + 1;
+		int last = fs.find_last_of('"');
+		ost = fs.substr(first, last - first);
+		intSendCnt = std::stoi(ost);
+		TRACE("");
+	}
 
 	Header header{ mtype,0,0,0 };
 	auto handle = GetNetHandle();
@@ -609,34 +642,32 @@ void Netwark::SendUpdata(MesType mtype, MesPacket mpacket)
 	
 	header.hd.sendID = 0;
 
-	if (GetNetWorkDataLength(handle) >= headerSize)
+	do
 	{
-		do
+
+		if (mpacket.size() <= intSendCnt)
 		{
 
-			if (mpacket.size() <= intSendCnt)
-			{
-
-				header.hd.length = mpacket.size() - 2;
-				header.hd.next = 0;
-
-				NetWorkSend(GetNetHandle(), mpacket.data(), sizeof(mpacket));
-				mpacket.erase(mpacket.begin() + 2, mpacket.end());
-			}
-			else
-			{
-				header.hd.length = intSendCnt - 2;
-				header.hd.next = 1;
+			header.hd.length = mpacket.size() - 2;
+			header.hd.next = 0;
+			mpacket[1].uiData = header.hamu[1];
+			TRACE("%d\n", sizeof(mpacket.data()));
+			NetWorkSend(GetNetHandle(), mpacket.data(),mpacket.size()*4);
+			mpacket.erase(mpacket.begin() + 2, mpacket.end());
+		}
+		else
+		{
+			header.hd.length = intSendCnt - 2;
+			header.hd.next = 1;
 
 
-				NetWorkSend(GetNetHandle(), mpacket.data(), sizeof(intSendCnt));
-				mpacket.erase(mpacket.begin() + 2, mpacket.begin() + intSendCnt);
+			NetWorkSend(GetNetHandle(), mpacket.data(), sizeof(intSendCnt));
+			mpacket.erase(mpacket.begin() + 2, mpacket.begin() + intSendCnt);
 
-				header.hd.sendID++;
-			}
+			header.hd.sendID++;
+		}
 			
-		} while (header.hd.next);
-	}
+	} while (header.hd.next);
 	
 }
 
@@ -708,6 +739,25 @@ void Netwark::Result(const MesPacket& mest)
 void Netwark::LostNet(const MesPacket& mest)
 {
 	TRACE("Ø’f‚ðŽóM\n");
+}
+
+void Netwark::Hostupdata(void)
+{
+	MesPacket pack;
+	while (ProcessMessage() == 0 && CheckHitKey(KEY_INPUT_ESCAPE) == 0)
+	{
+
+		_state->CheckNetwork();
+		TRACE("");
+		unionTime times{ lpTime.GetTime() };
+		pack.insert(pack.end(), { times.numtime[0] });
+		pack.insert(pack.end(), { times.numtime[1] });
+		lpNetwark.SendUpdata(MesType::COUNT_ROOM, pack);
+		while (lpTime.SystemTimeseconds(times.timepoint, lpTime.GetTime())>15)
+		{
+			TRACE("%d•b", lpTime.SystemTimeseconds(times.timepoint, lpTime.GetTime()));
+		}
+	}
 }
 
 void Netwark::readtmx(std::string path)

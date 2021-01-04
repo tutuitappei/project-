@@ -49,6 +49,11 @@ union unionData
 	//int iData[2];
 	//char cData[8];
 };
+union unionTime
+{
+	std::chrono::system_clock::time_point timepoint;
+	unsigned int numtime[2];
+};
 
 using MesPacket = std::vector<unionData>;
 using RevPacket = std::pair<MesType, MesPacket>;
@@ -101,6 +106,8 @@ public:
 	void Thread(void);
 	bool GetFrag(void);
 
+	void Hostupdata(void);
+	void RevUpdata(void);	//受信のアップデート
 	void readtmx(std::string path);
 
 	void SendUpdata(MesType mtype);
@@ -135,7 +142,7 @@ private:
 
 
 	//新規作成
-	void RevUpdata(void);	//受信のアップデート
+	
 	void RunUpdata(void);	//スレッドを作る関数
 
 	void Countroom(const MesPacket& mest);			//接続待ちカウントダウン

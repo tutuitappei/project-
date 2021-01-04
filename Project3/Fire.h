@@ -25,6 +25,6 @@ private:
 	std::chrono::system_clock::time_point  start, recently;
 
 	Map _map;
-	TimeKeeper _time;
+	//TimeKeeper _time;
 };
 
